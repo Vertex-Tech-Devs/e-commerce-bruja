@@ -1,0 +1,278 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Base badge styles
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xs $spacing-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: $border-radius;
+  transition: background-color $transition-base, color $transition-base;
+}
+
+// Badge variants
+.badge-primary {
+  color: $color-background;
+  background-color: var(--color-primary);
+}
+
+.badge-secondary {
+  color: $color-background;
+  background-color: var(--color-secondary);
+}
+
+.badge-success {
+  color: $color-background;
+  background-color: var(--color-success);
+}
+
+.badge-danger {
+  color: $color-background;
+  background-color: var(--color-error);
+}
+
+.badge-warning {
+  color: $color-background;
+  background-color: var(--color-warning);
+}
+
+.badge-info {
+  color: $color-background;
+  background-color: var(--color-info);
+}
+
+// Badge with outline style
+.badge-outline {
+  background-color: transparent;
+  border: 1px solid currentColor;
+}
+
+.badge-outline-primary {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.badge-outline-secondary {
+  color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.badge-outline-success {
+  color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.badge-outline-danger {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.badge-outline-warning {
+  color: var(--color-warning);
+  border-color: var(--color-warning);
+}
+
+.badge-outline-info {
+  color: var(--color-info);
+  border-color: var(--color-info);
+}
+
+// Badge sizes
+.badge-sm {
+  padding: $spacing-xs;
+  font-size: $font-size-xs;
+}
+
+.badge-lg {
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-sm;
+}
+
+// Badge with pill shape
+.badge-pill {
+  border-radius: 9999px;
+}
+
+// Badge with dot
+.badge-dot {
+  padding: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
+
+// Badge with icon
+.badge-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+
+  .badge-icon-svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+}
+
+// Badge with animation
+.badge-animated {
+  animation: badge-pulse 2s infinite;
+}
+
+@keyframes badge-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Badge with hover effect
+.badge-hover {
+  cursor: pointer;
+  transition: transform $transition-base;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Badge with gradient background
+.badge-gradient {
+  background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+  color: $color-background;
+}
+
+// Badge with shadow
+.badge-shadow {
+  box-shadow: var(--shadow-sm);
+}
+
+// Badge with custom styles
+.badge-custom {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+// Badge with status indicator
+.badge-status {
+  position: relative;
+  padding-left: $spacing-md;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: $spacing-xs;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: -0.25rem;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+}
+
+// Badge with counter
+.badge-counter {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 $spacing-xs;
+  font-size: $font-size-xs;
+  line-height: 1.25rem;
+  text-align: center;
+  border-radius: 9999px;
+  background-color: var(--color-error);
+  color: $color-background;
+}
+
+// Badge with notification
+.badge-notification {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--color-error);
+  border: 2px solid $color-background;
+}
+
+// Badge with loading state
+.badge-loading {
+  position: relative;
+  padding-right: $spacing-lg;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: $spacing-xs;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-top: -0.375rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: badge-loading-spinner 0.75s linear infinite;
+  }
+}
+
+@keyframes badge-loading-spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Badge with ripple effect
+.badge-ripple {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+  }
+
+  &:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+} 

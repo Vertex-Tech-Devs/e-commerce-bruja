@@ -1,0 +1,347 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Base table styles
+.table {
+  width: 100%;
+  margin-bottom: $spacing-md;
+  color: var(--color-text);
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: var(--color-background);
+}
+
+// Table header
+.table-header {
+  background-color: var(--color-surface);
+  border-bottom: 2px solid var(--color-border);
+}
+
+// Table header cell
+.table-header-cell {
+  padding: $spacing-sm;
+  font-weight: $font-weight-semibold;
+  text-align: left;
+  vertical-align: bottom;
+  border-bottom: 2px solid var(--color-border);
+}
+
+// Table body
+.table-body {
+  border-top: 1px solid var(--color-border);
+}
+
+// Table row
+.table-row {
+  &:nth-child(even) {
+    background-color: var(--color-surface);
+  }
+
+  &:hover {
+    background-color: rgba($color-primary, 0.05);
+  }
+}
+
+// Table cell
+.table-cell {
+  padding: $spacing-sm;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+}
+
+// Table footer
+.table-footer {
+  background-color: var(--color-surface);
+  border-top: 2px solid var(--color-border);
+}
+
+// Table footer cell
+.table-footer-cell {
+  padding: $spacing-sm;
+  font-weight: $font-weight-semibold;
+  text-align: left;
+  vertical-align: top;
+  border-top: 2px solid var(--color-border);
+}
+
+// Table variants
+.table-bordered {
+  border: 1px solid var(--color-border);
+
+  .table-header-cell,
+  .table-cell,
+  .table-footer-cell {
+    border: 1px solid var(--color-border);
+  }
+}
+
+.table-striped {
+  .table-row:nth-child(odd) {
+    background-color: var(--color-surface);
+  }
+}
+
+.table-hover {
+  .table-row:hover {
+    background-color: rgba($color-primary, 0.05);
+  }
+}
+
+.table-sm {
+  .table-header-cell,
+  .table-cell,
+  .table-footer-cell {
+    padding: $spacing-xs;
+  }
+}
+
+.table-lg {
+  .table-header-cell,
+  .table-cell,
+  .table-footer-cell {
+    padding: $spacing-md;
+  }
+}
+
+// Table with fixed header
+.table-fixed-header {
+  position: relative;
+  max-height: 400px;
+  overflow-y: auto;
+
+  .table-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
+// Table with fixed first column
+.table-fixed-first-column {
+  position: relative;
+
+  .table-header-cell:first-child,
+  .table-cell:first-child,
+  .table-footer-cell:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: inherit;
+  }
+}
+
+// Table with responsive design
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// Table with sortable columns
+.table-sortable {
+  .table-header-cell {
+    cursor: pointer;
+    user-select: none;
+
+    &::after {
+      content: '↕';
+      margin-left: $spacing-xs;
+      opacity: 0.5;
+    }
+
+    &.sort-asc::after {
+      content: '↑';
+      opacity: 1;
+    }
+
+    &.sort-desc::after {
+      content: '↓';
+      opacity: 1;
+    }
+  }
+}
+
+// Table with selectable rows
+.table-selectable {
+  .table-row {
+    cursor: pointer;
+
+    &.selected {
+      background-color: rgba($color-primary, 0.1);
+    }
+  }
+}
+
+// Table with expandable rows
+.table-expandable {
+  .table-row-expanded {
+    background-color: var(--color-surface);
+  }
+
+  .table-cell-expanded {
+    padding: $spacing-md;
+  }
+}
+
+// Table with loading state
+.table-loading {
+  position: relative;
+  min-height: 200px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2rem;
+    height: 2rem;
+    margin-top: -1rem;
+    margin-left: -1rem;
+    border: 3px solid var(--color-surface);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: table-loading-spinner 0.75s linear infinite;
+  }
+}
+
+@keyframes table-loading-spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Table with empty state
+.table-empty {
+  text-align: center;
+  padding: $spacing-lg;
+  color: var(--color-text-muted);
+}
+
+// Table with pagination
+.table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md;
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+// Table with search
+.table-search {
+  margin-bottom: $spacing-md;
+}
+
+// Table with filters
+.table-filters {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+// Table with actions
+.table-actions {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+// Table with status indicators
+.table-status {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+
+  &::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+  }
+
+  &.status-success::before {
+    background-color: var(--color-success);
+  }
+
+  &.status-warning::before {
+    background-color: var(--color-warning);
+  }
+
+  &.status-error::before {
+    background-color: var(--color-error);
+  }
+}
+
+// Table with progress bars
+.table-progress {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--color-surface);
+  border-radius: $border-radius;
+  overflow: hidden;
+
+  .table-progress-bar {
+    height: 100%;
+    background-color: var(--color-primary);
+    transition: width $transition-base;
+  }
+}
+
+// Table with badges
+.table-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+// Table with avatars
+.table-avatar {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  .avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+// Table with checkboxes
+.table-checkbox {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+// Table with tooltips
+.table-tooltip {
+  position: relative;
+
+  &::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    padding: $spacing-xs $spacing-sm;
+    margin-bottom: $spacing-xs;
+    font-size: $font-size-sm;
+    color: $color-background;
+    background-color: var(--color-text);
+    border-radius: $border-radius;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity $transition-base, visibility $transition-base;
+  }
+
+  &:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+} 

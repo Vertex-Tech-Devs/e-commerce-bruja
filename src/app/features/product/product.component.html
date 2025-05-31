@@ -1,0 +1,22 @@
+<div class="product-container" *ngIf="product">
+  <div class="product-content">
+    <div class="product-image">
+    </div>
+
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="price">${{ product.price | number:'1.2-2' }}</p>
+      <p class="description">{{ product.description }}</p>
+
+      <div class="quantity-selector">
+        <button (click)="decreaseQuantity()" [disabled]="quantity <= 1">-</button>
+        <span>{{ quantity }}</span>
+        <button (click)="increaseQuantity()">+</button>
+      </div>
+
+      <button class="add-to-cart" (click)="addToCart()">
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div> 
