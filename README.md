@@ -1,52 +1,52 @@
 # E-commerce Bruja - Frontend
 
-Este proyecto es el frontend de un e-commerce desarrollado en Angular. Actualmente está configurado para que el desarrollador frontend trabaje exclusivamente en el dashboard de administración.
+This project is the frontend for an e-commerce platform built with Angular. It is currently set up for a frontend developer to focus exclusively on building the admin dashboard.
 
-## 🚀 Descripción
-El objetivo es construir un dashboard de administración moderno y funcional para gestionar productos, órdenes y usuarios. El proyecto ya está configurado para que, al levantarlo, se muestre directamente el dashboard.
+## 🚀 Project Description
+The goal is to develop a modern, functional admin dashboard for managing products, orders, and users. The project is configured so that, upon running, it displays the admin dashboard by default.
 
-## 📦 Requerimientos
-- Node.js v20.x (usa `nvm use` para la versión correcta)
+## 📦 Requirements
+- Node.js v20.x (use `nvm use` for the correct version)
 - Angular CLI v17+
-- Acceso a Firebase (solo si se requiere integración, no necesario para desarrollo de UI)
+- Firebase access (only if you need integration; not required for UI development)
 
-## ⚙️ Instalación
-1. Clona el repositorio:
+## ⚙️ Installation
+1. Clone the repository:
    ```bash
-   git clone <URL_DEL_REPO>
+   git clone <REPO_URL>
    cd e-commerce-bruja
    ```
-2. Instala las dependencias:
+2. Install dependencies:
    ```bash
    npm install
    ```
-3. Usa la versión de Node recomendada:
+3. Use the recommended Node version:
    ```bash
    nvm use
    ```
 
-## 🖥️ Uso
-Para levantar el proyecto en modo desarrollo:
+## 🖥️ Usage
+To start the project in development mode:
 ```bash
 ng serve
 ```
-Esto abrirá la app en [http://localhost:4200](http://localhost:4200) y mostrará directamente el dashboard de administración.
+This will open the app at [http://localhost:4200](http://localhost:4200) and display the admin dashboard.
 
-## 📁 Estructura de carpetas relevante
-- `src/app/features/admin/` → Aquí está el dashboard y sus páginas/componentes
-- `src/app/app.routes.ts` → Configuración de rutas (el dashboard es la ruta principal)
-- `src/environments/` → Variables de entorno (no se suben al repo)
+## 📁 Folder Structure
+- `src/app/features/admin/` → The dashboard and its pages/components
+- `src/app/app.routes.ts` → Routing configuration (dashboard is the main route)
+- `src/environments/` → Environment variables (not included in the repo)
 
-## 🧑‍💻 Buenas prácticas
-- Usa componentes standalone y Angular 17+
-- Mantén los estilos y templates en archivos separados
-- Sigue la estructura de carpetas por feature
-- No subas credenciales ni archivos de entorno
-- Haz commits claros y descriptivos
+## 🧑‍💻 Best Practices
+- Use standalone components and Angular 17+
+- Keep styles and templates in separate files
+- Follow the feature-based folder structure
+- Do not commit credentials or environment files
+- Write clear and descriptive commit messages
 
-## 📝 Notas
-- El backend y la integración con Firebase están fuera del alcance de este repo para el frontend.
-- Si necesitas agregar librerías, consulta primero con el equipo.
+## 📝 Notes
+- Backend and Firebase integration are out of scope for this frontend repo.
+- If you need to add libraries, please consult with the team first.
 
-## 📬 Contacto
-Para dudas o soporte, contacta a Juan Espeche.
+## 📬 Contact
+For questions or support, contact Juan Espeche.
