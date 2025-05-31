@@ -49,4 +49,4 @@ This will open the app at [http://localhost:4200](http://localhost:4200) and dis
 - If you need to add libraries, please consult with the team first.
 
 ## 📬 Contact
-For questions or support, contact Juan Espeche.
+For questions or support, please contact the project maintainer or team.
