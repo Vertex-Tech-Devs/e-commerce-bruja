@@ -25,12 +25,35 @@ The goal is to develop a modern, functional admin dashboard for managing product
    nvm use
    ```
 
-## 🖥️ Usage
+## 🗝️ Environment Variables
+- Copy `src/environments/environment.example.ts` to `src/environments/environment.ts` and fill in your Firebase credentials.
+- **Never commit your real environment files.**
+
+## 🖥️ Local Development
 To start the project in development mode:
 ```bash
-ng serve
+npm start
 ```
 This will open the app at [http://localhost:4200](http://localhost:4200) and display the admin dashboard.
+
+Other useful scripts:
+- `npm run build` – Build the project for production
+- `npm run lint` – Lint the codebase
+- `npm run test` – Run unit tests
+
+## 🚀 Remote Development & Deployment
+
+### Firebase Hosting
+- The project is ready for deployment on Firebase Hosting.
+- Build the project and deploy:
+  ```bash
+  npm run build
+  firebase deploy
+  ```
+
+### Vercel / Netlify
+- You can also deploy the `dist/e-commerce-bruja/browser` folder to Vercel or Netlify as a static site.
+- Configure environment variables in the dashboard of your chosen platform.
 
 ## 📁 Folder Structure
 - `src/app/features/admin/` → The dashboard and its pages/components
