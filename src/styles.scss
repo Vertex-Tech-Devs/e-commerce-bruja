@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import Bootstrap */
+@import "bootstrap/scss/bootstrap";
+
+/* Custom variables */
+:root {
+  --custom-primary: #1a1a1a;
+  --custom-secondary: #4a4a4a;
+  --custom-accent: #007bff;
+}
+
+/* Custom styles that extend Bootstrap can be added below */

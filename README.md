@@ -12,18 +12,18 @@ The goal is to develop a modern, functional admin dashboard for managing product
 
 ## ⚙️ Installation
 1. Clone the repository:
-   ```bash
+```bash
    git clone <REPO_URL>
    cd e-commerce-bruja
    ```
 2. Install dependencies:
-   ```bash
+```bash
    npm install
-   ```
+```
 3. Use the recommended Node version:
-   ```bash
+```bash
    nvm use
-   ```
+```
 
 ## 🗝️ Environment Variables
 - Copy `src/environments/environment.example.ts` to `src/environments/environment.ts` and fill in your Firebase credentials.
@@ -46,7 +46,7 @@ Other useful scripts:
 ### Firebase Hosting
 - The project is ready for deployment on Firebase Hosting.
 - Build the project and deploy:
-  ```bash
+```bash
   npm run build
   firebase deploy
   ```
