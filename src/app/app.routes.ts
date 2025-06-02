@@ -13,15 +13,15 @@ export const routes: Routes = [
   },
   {
     path: 'product',
-    loadChildren: () => import('./features/product/product.routes').then(m => m.PRODUCT_ROUTES)
+    loadChildren: () => import('./features/shop/product-detail/product.routes').then(m => m.PRODUCT_ROUTES)
   },
   {
     path: 'cart',
-    loadChildren: () => import('./features/cart/cart.routes').then(m => m.CART_ROUTES)
+    loadChildren: () => import('./features/shop/cart/cart.routes').then(m => m.CART_ROUTES)
   },
   {
     path: 'checkout',
-    loadChildren: () => import('./features/checkout/checkout.routes').then(m => m.CHECKOUT_ROUTES),
+    loadChildren: () => import('./features/shop/checkout/checkout.routes').then(m => m.CHECKOUT_ROUTES),
     canActivate: [authGuard]
   },
   {

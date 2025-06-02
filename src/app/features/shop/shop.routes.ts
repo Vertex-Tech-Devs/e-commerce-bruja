@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ShopComponent } from './shop.component';
+import { ShopComponent } from './layout/shop.component';
 
 export const SHOP_ROUTES: Routes = [
   {
