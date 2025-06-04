@@ -1,25 +1,25 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Auth, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from '@angular/fire/auth';
+import { from, Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(true); // Temporalmente siempre autenticado
+  private auth = inject(Auth);
 
-  constructor() {}
+  login(email: string, password: string) {
+    return from(signInWithEmailAndPassword(this.auth, email, password));
+  }
+
+  logout() {
+    return from(signOut(this.auth));
+  }
 
   isAuthenticated(): Observable<boolean> {
-    return this.isAuthenticatedSubject.asObservable();
+    return new Observable((observer) => {
+      onAuthStateChanged(this.auth, (user: User | null) => {
+        observer.next(!!user);
+        observer.complete();
+      });
+    });
   }
-
-  login(email: string, password: string): Observable<boolean> {
-    // TODO: Implementar lógica de login real
-    this.isAuthenticatedSubject.next(true);
-    return of(true);
-  }
-
-  logout(): void {
-    this.isAuthenticatedSubject.next(false);
-  }
-} 
+}
