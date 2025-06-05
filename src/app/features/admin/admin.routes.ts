@@ -9,15 +9,20 @@ export const adminRoutes: Routes = [
     children: [
       {
         path: '',
-        canActivate: [authGuard],
-        loadComponent: () =>
-          import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
       },
       {
-        path: '',
-        loadChildren: () =>
-          import('./login/login.routes').then((m) => m.loginRoutes),
+        path: 'dashboard',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./dashboard/dashboard.component').then((m) => m.DashboardComponent)
       },
-    ],
-  },
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./login/login.component').then((m) => m.LoginComponent)
+      }
+    ]
+  }
 ];

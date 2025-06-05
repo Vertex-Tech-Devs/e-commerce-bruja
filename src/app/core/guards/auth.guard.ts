@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-  import { map, take } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 
 export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
@@ -9,13 +9,15 @@ export const authGuard: CanActivateFn = () => {
 
   return authService.isAuthenticated().pipe(
     take(1),
-    map((isAuth) => {
-      if (isAuth) {
-        return true;
-      } else {
-        router.navigate(['/admin/login']);
-        return false;
+    tap((isAuth) => {
+      if (!isAuth) {
+        router.navigate(['/admin/login'], {
+          queryParams: { authError: '1' }
+        });
       }
+    }),
+    map((isAuth) => {
+      return isAuth;
     })
   );
 };

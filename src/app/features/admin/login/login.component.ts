@@ -1,30 +1,67 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
+  selector: 'app-login',
   standalone: true,
-  selector: 'app-admin-login',
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  email = '';
-  password = '';
-  error = '';
+export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
+  authErrorMessage = '';
+  isAlreadyLogged = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
+  }
 
-  async login() {
-    this.error = '';
-    try {
-      await this.authService.login(this.email, this.password);
-      this.router.navigate(['/admin']);
-    } catch (e) {
-      this.error = 'Credenciales inválidas';
+  ngOnInit(): void {
+    this.authService.isAuthenticated().pipe(take(1)).subscribe((isAuth) => {
+      this.isAlreadyLogged = isAuth;
+    });
+
+    this.route.queryParams.subscribe(params => {
+      if (params['authError']) {
+        this.authErrorMessage = 'Debes iniciar sesión para acceder al panel de administración.';
+      }
+    });
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.authService.login(email, password).pipe(take(1)).subscribe({
+        next: () => {
+          this.router.navigate(['/admin']);
+        },
+        error: () => {
+          this.authErrorMessage = 'Error al iniciar sesión. Verifica tus credenciales.';
+        }
+      });
     }
+  }
+
+  logout(): void {
+    this.authService.logout().pipe(take(1)).subscribe(() => {
+      this.router.navigate(['/admin/login']);
+    });
   }
 }

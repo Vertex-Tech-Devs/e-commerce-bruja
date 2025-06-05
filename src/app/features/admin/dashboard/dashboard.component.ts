@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="dashboard">
-      <!-- Start building your dashboard here -->
+      Dashboard
     </div>
   `,
   styles: [`
