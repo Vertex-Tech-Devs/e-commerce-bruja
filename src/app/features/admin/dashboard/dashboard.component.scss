@@ -1,0 +1,20 @@
+.my-custom-header {
+  display: flex;
+  justify-content: space-between; // Alinea los elementos a los extremos
+  align-items: center; // Centra verticalmente los elementos
+  background-color: #212121; // El color de fondo que ya tenías
+  color: white; // El color del texto
+  padding: 10px; // Un poco de padding interno
+  width: 100%; // Asegura que ocupe todo el ancho disponible
+  box-sizing: border-box; // Incluye padding y borde en el ancho total
+}
+
+.my-custom-header h3 {
+  // Opcional: si quieres que "Bienvenido" esté más cerca del borde izquierdo
+  margin-left: 0;
+}
+
+.my-custom-header i { // Selector para el ícono y el nombre "Federico"
+  // Opcional: si quieres que "Federico" esté más cerca del borde derecho
+  margin-right: 0;
+}

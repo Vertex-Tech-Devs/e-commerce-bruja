@@ -1,5 +1,5 @@
-/* Import Bootstrap */
-@import "bootstrap/scss/bootstrap";
+/* You can add global styles to this file, and also import other style files */
+@use "bootstrap/scss/bootstrap" as bootstrap;
 
 /* Custom variables */
 :root {
