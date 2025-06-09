@@ -7,23 +7,6 @@
     "test": "ng test"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@angular/animations": "^19.2.14",
-    "@angular/common": "^19.2.14",
-    "@angular/compiler": "^19.2.0",
-    "@angular/core": "^19.2.14",
-    "@angular/fire": "^19.2.0",
-    "@angular/forms": "^19.2.0",
-    "@angular/platform-browser": "^19.2.0",
-    "@angular/platform-browser-dynamic": "^19.2.0",
-    "@angular/platform-server": "^19.2.0",
-    "@angular/router": "^19.2.14",
-    "@angular/ssr": "^19.2.14",
-    "@popperjs/core": "^2.11.8",
-    "bootstrap": "5.3.6",
-    "bootstrap-icons": "1.13.1",
-    "express": "^4.18.2",
-=======
     "@angular/animations": "^20.0.0",
     "@angular/common": "^20.0.0",
     "@angular/compiler": "^20.0.0",
@@ -34,7 +17,6 @@
     "@angular/platform-browser-dynamic": "^20.0.0",
     "@angular/router": "^20.0.0",
     "bootstrap": "^5.3.6",
->>>>>>> 0d5a447835de600f72df83d11a7b36c8f10ff561
     "firebase": "^11.8.1",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.2",
