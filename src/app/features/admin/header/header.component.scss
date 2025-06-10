@@ -1,0 +1,32 @@
+$admin-header-bg: #f8f9fa;
+$admin-header-text: #343a40;
+.admin-header {
+  background-color: $admin-header-bg;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .welcome-message {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: $admin-header-text;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+
+    .user-name {
+      font-size: 1.1rem;
+      color: $admin-header-text;
+      margin-right: 0.5rem;
+    }
+
+    .user-icon {
+      font-size: 1.8rem;
+      color: $admin-header-text;
+    }
+  }
+}
