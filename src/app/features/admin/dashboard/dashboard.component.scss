@@ -1,20 +1,57 @@
-.my-custom-header {
-  display: flex;
-  justify-content: space-between; // Alinea los elementos a los extremos
-  align-items: center; // Centra verticalmente los elementos
-  background-color: #212121; // El color de fondo que ya tenías
-  color: white; // El color del texto
-  padding: 10px; // Un poco de padding interno
-  width: 100%; // Asegura que ocupe todo el ancho disponible
-  box-sizing: border-box; // Incluye padding y borde en el ancho total
+
+$sidebar-width: 250px; // Asegúrate que coincida con el ancho de tu sidebar
+
+.dashboard-wrapper {
+  min-height: 100vh; // Asegura que el contenedor principal ocupe toda la altura de la pantalla
+  width: 100%; // Ocupa todo el ancho disponible
+  overflow-x: hidden; // Previene el scroll horizontal
 }
 
-.my-custom-header h3 {
-  // Opcional: si quieres que "Bienvenido" esté más cerca del borde izquierdo
-  margin-left: 0;
+#page-content-wrapper {
+  flex-grow: 1;
+
+  padding-left: 0;
 }
 
-.my-custom-header i { // Selector para el ícono y el nombre "Federico"
-  // Opcional: si quieres que "Federico" esté más cerca del borde derecho
-  margin-right: 0;
+.dashboard-title {
+  padding-top: 1rem; // Espacio entre el header y el título
+  padding-left: 1.5rem; // Espacio a la izquierda para el contenido principal
+  padding-right: 1.5rem; // Espacio a la derecha
+  margin-bottom: 1.5rem; // Espacio inferior
+}
+
+.container {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+
+/* Media Queries para diseño responsive */
+@media (min-width: 768px) {
+  // En pantallas grandes, el contenido principal debe tener un margen para el sidebar
+  #page-content-wrapper {
+    margin-left: $sidebar-width; // Crea el espacio para el sidebar fijo
+  }
+
+  // Si el sidebar tiene `position: fixed`, su ancho no afecta el flujo de la página.
+  // Por eso, el `margin-left` en `#page-content-wrapper` es necesario.
+}
+
+@media (max-width: 767.98px) {
+  // En pantallas más pequeñas, podríamos querer ocultar el sidebar por defecto
+  // y que el contenido ocupe todo el ancho. Podrías añadir un botón para mostrar/ocultar.
+  .sidebar {
+    position: absolute; // Para que no ocupe espacio cuando está oculto
+    left: -$sidebar-width; // Oculta el sidebar fuera de la vista
+    transition: left 0.3s ease; // Animación de entrada/salida
+  }
+
+  // Si decides tener un botón de toggle para el sidebar en móvil
+  // .sidebar.active {
+  //   left: 0;
+  // }
+
+  #page-content-wrapper {
+    margin-left: 0; // Contenido ocupa todo el ancho
+  }
 }
