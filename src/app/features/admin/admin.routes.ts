@@ -23,6 +23,7 @@ export const adminRoutes: Routes = [
         loadComponent: () =>
           import('./login/login.component').then((m) => m.LoginComponent)
       }
+
     ]
   }
 ];
