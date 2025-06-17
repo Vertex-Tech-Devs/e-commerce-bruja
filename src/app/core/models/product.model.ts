@@ -1,4 +1,4 @@
-export interface IProduct {
+export interface Product {
   id: string;
   name: string;
   description: string;
@@ -7,12 +7,12 @@ export interface IProduct {
   category: string;
   stock: number;
   rating?: number;
-  reviews?: IReview[];
+  reviews?: Review[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface IReview {
+export interface Review {
   id: string;
   userId: string;
   userName: string;

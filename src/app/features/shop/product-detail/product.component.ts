@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { IProduct } from '@core/models/product.model';
+import { Product } from '@core/models/product.model';
 
 @Component({
   selector: 'app-product',
@@ -14,7 +14,7 @@ import { IProduct } from '@core/models/product.model';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
-  product: IProduct | null = null;
+  product: Product | null = null;
   quantity: number = 1;
 
   constructor() {

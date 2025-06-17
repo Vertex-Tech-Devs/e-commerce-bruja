@@ -1,57 +1,44 @@
-
-$sidebar-width: 250px; // Asegúrate que coincida con el ancho de tu sidebar
+$sidebar-width: 250px;
 
 .dashboard-wrapper {
-  min-height: 100vh; // Asegura que el contenedor principal ocupe toda la altura de la pantalla
-  width: 100%; // Ocupa todo el ancho disponible
-  overflow-x: hidden; // Previene el scroll horizontal
+  display: flex; // Asegura que el sidebar y el contenido estén lado a lado
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 #page-content-wrapper {
-  flex-grow: 1;
+  flex-grow: 1; // El contenido ocupará el espacio restante
+  width: 100%; // Importante para flexbox, asegura que ocupe el espacio disponible
+  padding-left: 0; // Reset inicial
+  transition: all 0.3s ease-in-out; // Transición para cuando el sidebar se desliza
 
-  padding-left: 0;
+  .dashboard-title {
+    padding-top: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
-.dashboard-title {
-  padding-top: 1rem; // Espacio entre el header y el título
-  padding-left: 1.5rem; // Espacio a la izquierda para el contenido principal
-  padding-right: 1.5rem; // Espacio a la derecha
-  margin-bottom: 1.5rem; // Espacio inferior
-}
-
-.container {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-
-/* Media Queries para diseño responsive */
+// Media Query para pantallas grandes (desktop)
 @media (min-width: 768px) {
-  // En pantallas grandes, el contenido principal debe tener un margen para el sidebar
   #page-content-wrapper {
-    margin-left: $sidebar-width; // Crea el espacio para el sidebar fijo
+    margin-left: $sidebar-width; // Deja espacio para el sidebar fijo
   }
-
-  // Si el sidebar tiene `position: fixed`, su ancho no afecta el flujo de la página.
-  // Por eso, el `margin-left` en `#page-content-wrapper` es necesario.
 }
 
+// Media Query para pantallas pequeñas (móviles)
 @media (max-width: 767.98px) {
-  // En pantallas más pequeñas, podríamos querer ocultar el sidebar por defecto
-  // y que el contenido ocupe todo el ancho. Podrías añadir un botón para mostrar/ocultar.
-  .sidebar {
-    position: absolute; // Para que no ocupe espacio cuando está oculto
-    left: -$sidebar-width; // Oculta el sidebar fuera de la vista
-    transition: left 0.3s ease; // Animación de entrada/salida
-  }
-
-  // Si decides tener un botón de toggle para el sidebar en móvil
-  // .sidebar.active {
-  //   left: 0;
-  // }
-
   #page-content-wrapper {
-    margin-left: 0; // Contenido ocupa todo el ancho
+    margin-left: 0; // Ocupa todo el ancho cuando el sidebar está oculto
   }
+  // Si quieres que el contenido se mueva ligeramente cuando el sidebar se abre en móvil,
+  // puedes añadir una clase al `dashboard-wrapper` en Angular y aplicar un margen.
+  // Por ahora, el sidebar simplemente se superpondrá al contenido.
 }
