@@ -140,7 +140,9 @@
               class="card-body text-center d-flex align-items-center justify-content-center"
               style="height: 100px"
             >
-              <div class="display-1 fw-bold">123</div>
+              <div class="display-1 fw-bold">
+                {{ totalProducts$ | async }}
+              </div>
             </div>
           </div>
         </div>

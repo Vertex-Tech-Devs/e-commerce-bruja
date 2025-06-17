@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { IProduct } from '@core/models/product.model';
+import { Product } from '@core/models/product.model';
 
 @Component({
   selector: 'app-shop',
@@ -14,7 +14,7 @@ import { IProduct } from '@core/models/product.model';
   styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
-  products: IProduct[] = [];
+  products: Product[] = [];
 
   constructor() {
     // TODO: Initialize services
