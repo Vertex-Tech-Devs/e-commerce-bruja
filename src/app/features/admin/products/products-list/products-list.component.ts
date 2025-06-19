@@ -42,17 +42,14 @@ export class ProductsListComponent implements OnInit {
    */
   deleteProduct(product: Product): void {
     console.log('Intento de eliminar producto:', product.name);
-
     // Simulación de confirmación para evitar el bloqueo de 'confirm()'
     // En un entorno de producción, aquí invocarías un modal de confirmación.
     const confirmed = true; // Por ahora, asumimos que siempre se confirma para la demostración
 
     if (confirmed) {
-      // Usamos .then() y .catch() porque deleteProduct() devuelve una Promise, no un Observable.
       this._productService.deleteProduct(product.id)
         .then(() => {
           console.log('Producto eliminado con éxito:', product.name);
-          // Vuelve a cargar la lista de productos para reflejar el cambio
           // Esto es importante para que la UI se actualice después de la eliminación.
           this.products$ = this._productService.getProducts();
         })
