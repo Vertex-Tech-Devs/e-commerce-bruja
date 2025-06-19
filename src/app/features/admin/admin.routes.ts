@@ -1,7 +1,7 @@
+import { ProductsListComponent } from './products/products-list/products-list.component';
 import { Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { authGuard } from '@core/guards/auth.guard';
-import { ProductComponent } from './product/product.component';
 
 export const adminRoutes: Routes = [
   {
@@ -28,9 +28,9 @@ export const adminRoutes: Routes = [
         path: 'products',
         canActivate: [authGuard],
         loadComponent: () =>
-          import('./product/product.component').then((m) => m.ProductComponent)
+          import('./products/products-list/products-list.component').then((m) => m.ProductsListComponent)
       },
 
-     ]
+    ]
   }
 ];

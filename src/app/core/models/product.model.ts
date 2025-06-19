@@ -3,13 +3,8 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  images: string[];
   category: string;
   stock: number;
-  rating?: number;
-  reviews?: Review[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface Review {
@@ -19,4 +14,4 @@ export interface Review {
   rating: number;
   comment: string;
   createdAt: Date;
-} 
+}
