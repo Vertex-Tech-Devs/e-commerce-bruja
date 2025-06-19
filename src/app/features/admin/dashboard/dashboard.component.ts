@@ -5,10 +5,11 @@ import { map } from 'rxjs/operators';
 import { HeaderComponent } from "../shared/header/header.component";
 import { SidebarComponent } from "../shared/sidebar/sidebar.component";
 import { ProductService } from '../../../core/services/product.service';
+import { OrdersComponent } from '../orders/orders.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, HeaderComponent, SidebarComponent],
+  imports: [CommonModule, HeaderComponent, SidebarComponent, OrdersComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
