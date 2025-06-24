@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   category: string;
   stock: number;
+  image: string;
 }
 
 export interface Review {

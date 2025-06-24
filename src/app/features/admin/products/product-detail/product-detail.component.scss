@@ -1,0 +1,19 @@
+// src/app/features/admin/products/product-detail/product-detail.component.scss
+
+/* Estilos específicos para este componente si son necesarios */
+/* Por ejemplo, para el margen del contenedor principal si no lo manejas globalmente */
+
+// .container-fluid {
+//   padding-left: 20px; // Ajusta según el sidebar
+//   padding-right: 20px;
+// }
+
+// Si tu sidebar tiene un ancho fijo y empuja el contenido:
+// body { // Esto probablemente lo harías a nivel global o en tu app.component.scss
+//   margin-left: 250px; // Ejemplo: si tu sidebar tiene 250px de ancho
+// }
+
+// Para un mejor espaciado con el header y sidebar
+// .container-fluid {
+//   padding-top: 80px; /* Ajusta según la altura de tu header */
+// }
