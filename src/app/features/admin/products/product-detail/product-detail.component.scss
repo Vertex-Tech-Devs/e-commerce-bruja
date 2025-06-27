@@ -1,19 +1,44 @@
-// src/app/features/admin/products/product-detail/product-detail.component.scss
+@use "sass:color";
 
-/* Estilos específicos para este componente si son necesarios */
-/* Por ejemplo, para el margen del contenedor principal si no lo manejas globalmente */
+$primary-color: #007bff;
 
-// .container-fluid {
-//   padding-left: 20px; // Ajusta según el sidebar
-//   padding-right: 20px;
-// }
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
 
-// Si tu sidebar tiene un ancho fijo y empuja el contenido:
-// body { // Esto probablemente lo harías a nivel global o en tu app.component.scss
-//   margin-left: 250px; // Ejemplo: si tu sidebar tiene 250px de ancho
-// }
+#page-content-wrapper {
+  flex-grow: 1;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
 
-// Para un mejor espaciado con el header y sidebar
-// .container-fluid {
-//   padding-top: 80px; /* Ajusta según la altura de tu header */
-// }
+  @media (min-width: 768px) {
+    margin-left: 250px;
+    padding-top: 80px;
+  }
+
+
+  @media (max-width: 767.98px) {
+    margin-left: 0;
+    padding-top: 80px;
+  }
+
+
+  .container.my-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .card {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  }
+
+  img.img-fluid {
+    max-height: 300px;
+    object-fit: contain;
+  }
+
+}

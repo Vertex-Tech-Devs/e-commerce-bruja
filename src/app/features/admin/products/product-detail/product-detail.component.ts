@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // Añade RouterModule
-import { CommonModule, CurrencyPipe } from '@angular/common'; // Necesario para ngIf, ngFor, y pipes
-import { Product } from 'src/app/core/models/product.model'; // Ajusta la ruta a tu modelo
-import { ProductService } from 'src/app/core/services/product.service'; // Asumiendo que tienes un ProductService
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { Product } from 'src/app/core/models/product.model';
+import { ProductService } from 'src/app/core/services/product.service';
 import { HeaderComponent } from '@features/admin/shared/header/header.component';
 import { SidebarComponent } from '@features/admin/shared/sidebar/sidebar.component';
+import { from } from 'rxjs';
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss'],
-  standalone: true, // ¡Importante! Marca este componente como standalone
+  standalone: true,
   imports: [
     CommonModule,
     RouterModule,
@@ -38,7 +39,6 @@ export class ProductDetailComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al cargar el producto:', error);
-          // Puedes redirigir o mostrar un mensaje
           this.router.navigate(['/admin/products']);
         }
       });
@@ -60,15 +60,16 @@ export class ProductDetailComponent implements OnInit {
 
   deleteProduct(): void {
     if (this.productId && confirm('¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.')) {
-      this.productService.deleteProduct(this.productId).subscribe({
+      from(this.productService.deleteProduct(this.productId)).subscribe({
         next: () => {
           console.log('Producto eliminado con éxito.');
           this.router.navigate(['/admin/products']);
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al eliminar el producto:', error);
         }
       });
+
     }
   }
 }
