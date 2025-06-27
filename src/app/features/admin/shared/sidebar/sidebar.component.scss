@@ -1,3 +1,4 @@
+@use "sass:color";
 
 $sidebar-width: 250px;
 $sidebar-bg: #343a40;
@@ -22,7 +23,7 @@ $sidebar-active-color: #fff;
 
   .sidebar-header {
     padding: 20px;
-    background: darken($sidebar-bg, 5%);
+    background: color.adjust($sidebar-bg, $lightness: -5%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
