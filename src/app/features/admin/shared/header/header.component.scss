@@ -1,40 +1,6 @@
-// $admin-header-bg: #020202;
-// $admin-header-text: #f9f7f7;
-// .admin-header {
-//   background-color: $admin-header-bg;
-//   padding: 1rem 1.5rem;
-//   border-bottom: 1px solid #e9ecef;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-
-//   .welcome-message {
-//     font-size: 1.25rem;
-//     font-weight: 500;
-//     color: $admin-header-text;
-//   }
-
-//   .user-info {
-//     display: flex;
-//     align-items: center;
-
-//     .user-name {
-//       font-size: 1.1rem;
-//       color: $admin-header-text;
-//       margin-right: 0.5rem;
-//     }
-
-//     .user-icon {
-//       font-size: 1.8rem;
-//       color: $admin-header-text;
-//     }
-//   }
-// }
-
-
 $admin-header-bg: #020202;
 $admin-header-text: #f9f7f7;
-$sidebar-width: 250px; // Usa la misma variable que en admin.component.scss
+$sidebar-width: 250px;
 
 .admin-header {
   background-color: $admin-header-bg;
@@ -44,43 +10,40 @@ $sidebar-width: 250px; // Usa la misma variable que en admin.component.scss
   justify-content: space-between;
   align-items: center;
 
-  position: fixed; // Ya lo tienes, es crucial
+  position: fixed;
   top: 0;
-  z-index: 1040; // Asegúrate de que esté por debajo del sidebar si este es 1050 (tu z-index-top)
+  z-index: 1040;
 
-  // --- AJUSTES CLAVE AQUÍ PARA LAYOUT RESPONSIVE ---
-
-  // Para pantallas de escritorio y tablets ( >= 768px )
   @media (min-width: 768px) {
-    left: $sidebar-width; // Empieza después del sidebar
-    width: calc(100% - #{$sidebar-width}); // Ocupa el resto del ancho
-  }
+    left: $sidebar-width;
+    width: calc(100% - #{$sidebar-width});
 
-  // Para pantallas móviles ( < 768px )
-  @media (max-width: 767.98px) {
-    left: 0; // Ocupa todo el ancho
-    width: 100%;
-  }
 
-  .welcome-message {
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: $admin-header-text;
-  }
-
-  .user-info {
-    display: flex;
-    align-items: center;
-
-    .user-name {
-      font-size: 1.1rem;
-      color: $admin-header-text;
-      margin-right: 0.5rem;
+    @media (max-width: 767.98px) {
+      left: 0;
+      width: 100%;
     }
 
-    .user-icon {
-      font-size: 1.8rem;
+    .welcome-message {
+      font-size: 1.25rem;
+      font-weight: 500;
       color: $admin-header-text;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+
+      .user-name {
+        font-size: 1.1rem;
+        color: $admin-header-text;
+        margin-right: 0.5rem;
+      }
+
+      .user-icon {
+        font-size: 1.8rem;
+        color: $admin-header-text;
+      }
     }
   }
 }
