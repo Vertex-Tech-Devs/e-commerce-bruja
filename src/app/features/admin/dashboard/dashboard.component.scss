@@ -1,17 +1,17 @@
 $sidebar-width: 250px;
 
 .dashboard-wrapper {
-  display: flex; // Asegura que el sidebar y el contenido estén lado a lado
+  display: flex;
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
 }
 
 #page-content-wrapper {
-  flex-grow: 1; // El contenido ocupará el espacio restante
-  width: 100%; // Importante para flexbox, asegura que ocupe el espacio disponible
-  padding-left: 0; // Reset inicial
-  transition: all 0.3s ease-in-out; // Transición para cuando el sidebar se desliza
+  flex-grow: 1;
+  width: 100%;
+  padding-left: 0;
+  transition: all 0.3s ease-in-out;
 
   .dashboard-title {
     padding-top: 1rem;
@@ -26,19 +26,16 @@ $sidebar-width: 250px;
   }
 }
 
-// Media Query para pantallas grandes (desktop)
+
 @media (min-width: 768px) {
   #page-content-wrapper {
-    margin-left: $sidebar-width; // Deja espacio para el sidebar fijo
+    margin-left: $sidebar-width;
   }
 }
 
-// Media Query para pantallas pequeñas (móviles)
+
 @media (max-width: 767.98px) {
   #page-content-wrapper {
-    margin-left: 0; // Ocupa todo el ancho cuando el sidebar está oculto
+    margin-left: 0;
   }
-  // Si quieres que el contenido se mueva ligeramente cuando el sidebar se abre en móvil,
-  // puedes añadir una clase al `dashboard-wrapper` en Angular y aplicar un margen.
-  // Por ahora, el sidebar simplemente se superpondrá al contenido.
 }

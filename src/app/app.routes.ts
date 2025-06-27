@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'admin',
+    redirectTo: 'admin/dashboard',
     pathMatch: 'full'
   },
   {
@@ -24,6 +25,13 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./features/admin/admin.routes').then(m => m.adminRoutes)
+    loadChildren: () => import('./features/admin/admin.routes').then(m => m.adminRoutes),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./features/admin/login/login.component').then((m) => m.LoginComponent)
   }
+  // Añade una ruta comodín para cualquier otra ruta no encontrada (ej. PageNotFoundComponent)
+  // { path: '**', redirectTo: '/admin/dashboard' } // O a una página 404
 ];
