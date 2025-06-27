@@ -1,66 +1,64 @@
-<div class="d-flex dashboard-wrapper">
-    <app-sidebar></app-sidebar>
-  <div id="page-content-wrapper">
-    <app-header></app-header>
-    <div class="container my-4">
-      <div class="container mt-4 mb-5 product-table-container">
-        <div class="card p-3 shadow-sm rounded-3">
-          <div class="card-body">
-            <h2 class="card-title text-center mb-4">Lista de Productos</h2>
-            <div class="table-responsive">
-              <table class="table table-hover align-middle product-table">
-                <thead>
-                  <tr>
-                    <th scope="col" class="col-nombre">Nombre</th>
-                    <th scope="col" class="col-descripcion">Descripción</th>
-                    <th scope="col" class="text-end col-precio">Precio</th>
-                    <th scope="col" class="col-categoria">Categoría</th>
-                    <th scope="col" class="col-stock text-center">Stock</th>
-                    <th scope="col" class="text-center col-acciones">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody *ngIf="products$ | async as products; else loading">
-                  <tr *ngFor="let product of products">
-                    <td data-label="Nombre">{{ product.name }}</td>
-                    <td data-label="Descripción">{{ product.description }}</td>
-                    <td class="text-end" data-label="Precio">{{ product.price | currency:'ARS':'$' }}</td>
-                    <td data-label="Categoría">{{ product.category }}</td>
-                    <td class="text-center" data-label="Stock">{{ product.stock }}</td>
-                    <td class="text-center" data-label="Acciones">
-                      <button class="btn btn-outline-primary btn-sm me-2" (click)="editProduct(product)" title="Editar">
-                        <i class="bi bi-pencil"></i>
-                      </button>
-                      <button class="btn btn-outline-danger btn-sm" (click)="deleteProduct(product)" title="Eliminar">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr *ngIf="products.length === 0">
-                    <td colspan="6" class="text-center text-muted py-4">
-                      No hay productos disponibles para mostrar.
-                    </td>
-                  </tr>
-                </tbody>
-                <ng-template #loading>
-                  <tbody>
-                    <tr>
-                      <td colspan="6" class="text-center text-muted py-4">
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span role="status"> Cargando productos...</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </ng-template>
-              </table>
-            </div>
-          </div>
+<div class="container">
+  <div class="container mb-5 product-table-container">
+    <div class="card p-3 shadow-sm rounded-3">
+      <div class="card-body">
+        <h2 class="card-title text-center mb-4">Lista de Productos</h2>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle product-table">
+            <thead>
+              <tr>
+                <th scope="col" class="col-nombre">Nombre</th>
+                <th scope="col" class="col-descripcion">Descripción</th>
+                <th scope="col" class="text-end col-precio">Precio</th>
+                <th scope="col" class="col-categoria">Categoría</th>
+                <th scope="col" class="col-stock text-center">Stock</th>
+                <th scope="col" class="text-center col-acciones">Acciones</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="products$ | async as products; else loading">
+              <tr *ngFor="let product of products">
+                <td data-label="Nombre">{{ product.name }}</td>
+                <td data-label="Descripción">{{ product.description }}</td>
+                <td class="text-end" data-label="Precio">{{ product.price | currency:'ARS':'$' }}</td>
+                <td data-label="Categoría">{{ product.category }}</td>
+                <td class="text-center" data-label="Stock">{{ product.stock }}</td>
+                <td class="text-center" data-label="Acciones">
+                  <button
+                    class="btn btn-outline-info btn-sm me-2"
+                    [routerLink]="['/admin/products/detail', product.id]"
+                    title="Ver Detalles">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-outline-danger btn-sm" (click)="deleteProduct(product)" title="Eliminar">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="products.length === 0">
+                <td colspan="6" class="text-center text-muted py-4">
+                  No hay productos disponibles para mostrar.
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #loading>
+              <tbody>
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-4">
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status"> Cargando productos...</span>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
         </div>
       </div>
-
-      <!-- El botón FAB (Floating Action Button) puede quedarse al final, o ajustarse si interfiere -->
-      <button class="btn btn-primary btn-lg rounded-circle fab-button shadow-lg" (click)="newProduct()" title="Nuevo Producto">
-        <i class="bi bi-plus-lg"></i>
-      </button>
     </div>
   </div>
+
+  <!-- El botón FAB (Floating Action Button) -->
+  <button class="btn btn-primary btn-lg rounded-circle fab-button shadow-lg" (click)="newProduct()" title="Nuevo Producto">
+    <i class="bi bi-plus-lg"></i>
+  </button>
 </div>
+

@@ -1,5 +1,7 @@
 $admin-header-bg: #020202;
 $admin-header-text: #f9f7f7;
+$sidebar-width: 250px;
+
 .admin-header {
   background-color: $admin-header-bg;
   padding: 1rem 1.5rem;
@@ -8,25 +10,40 @@ $admin-header-text: #f9f7f7;
   justify-content: space-between;
   align-items: center;
 
-  .welcome-message {
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: $admin-header-text;
-  }
+  position: fixed;
+  top: 0;
+  z-index: 1040;
 
-  .user-info {
-    display: flex;
-    align-items: center;
+  @media (min-width: 768px) {
+    left: $sidebar-width;
+    width: calc(100% - #{$sidebar-width});
 
-    .user-name {
-      font-size: 1.1rem;
-      color: $admin-header-text;
-      margin-right: 0.5rem;
+
+    @media (max-width: 767.98px) {
+      left: 0;
+      width: 100%;
     }
 
-    .user-icon {
-      font-size: 1.8rem;
+    .welcome-message {
+      font-size: 1.25rem;
+      font-weight: 500;
       color: $admin-header-text;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+
+      .user-name {
+        font-size: 1.1rem;
+        color: $admin-header-text;
+        margin-right: 0.5rem;
+      }
+
+      .user-icon {
+        font-size: 1.8rem;
+        color: $admin-header-text;
+      }
     }
   }
 }

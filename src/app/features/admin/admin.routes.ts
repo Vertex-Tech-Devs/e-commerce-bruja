@@ -1,4 +1,3 @@
-import { ProductsListComponent } from './products/products-list/products-list.component';
 import { Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { authGuard } from '@core/guards/auth.guard';
@@ -7,6 +6,7 @@ export const adminRoutes: Routes = [
   {
     path: '',
     component: AdminComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -15,22 +15,28 @@ export const adminRoutes: Routes = [
       },
       {
         path: 'dashboard',
-        canActivate: [authGuard],
         loadComponent: () =>
           import('./dashboard/dashboard.component').then((m) => m.DashboardComponent)
       },
-      {
-        path: 'login',
-        loadComponent: () =>
-          import('./login/login.component').then((m) => m.LoginComponent)
-      },
+
       {
         path: 'products',
-        canActivate: [authGuard],
-        loadComponent: () =>
-          import('./products/products-list/products-list.component').then((m) => m.ProductsListComponent)
-      },
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./products/products-list/products-list.component').then((m) => m.ProductsListComponent)
+          },
+          {
+            path: 'detail/:id',
+            loadComponent: () =>
+              import('./products/product-detail/product-detail.component').then((m) => m.ProductDetailComponent)
+          },
+        ]
+      }
 
     ]
   }
 ];
+
+
