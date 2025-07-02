@@ -22,7 +22,7 @@ export const adminRoutes: Routes = [
       {
         path: 'orders',
         loadComponent: () =>
-          import('./orders/orders.component').then((m) => m.OrdersComponent)
+          import('./orders/orders-list.component').then((m) => m.OrdersListComponent)
       },
       {
         path: 'products',
@@ -37,8 +37,19 @@ export const adminRoutes: Routes = [
             loadComponent: () =>
               import('./products/product-detail/product-detail.component').then((m) => m.ProductDetailComponent)
           },
+          // {
+          //   path: 'edit/:id',
+          //   loadComponent: () =>
+          //     import('./products/product-edit/product-edit.component').then((m) => m.ProductEditComponent)
+          // },
+
         ]
-      }
+      },
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import('./orders/orders-list.component').then((m) => m.OrdersListComponent)
+      },
 
     ]
   }
