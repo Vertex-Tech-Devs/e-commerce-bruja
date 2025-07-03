@@ -10,13 +10,14 @@ $sidebar-active-color: #fff;
 .z-index-top {
   z-index: 1050;
 }
+
 .sidebar {
   width: $sidebar-width;
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  z-index: 1000;
+  z-index: 1045;
   background-color: $sidebar-bg;
   padding-top: 1rem;
   transition: all 0.3s ease-in-out;
@@ -31,52 +32,52 @@ $sidebar-active-color: #fff;
     padding: 20px 0;
     list-style: none;
 
-  .sidebar-link {
-    padding: 10px 20px;
-    font-size: 1.1em;
-    display: block;
-    color: $sidebar-link-color;
-    text-decoration: none;
-    transition: all 0.3s;
-
-    &:hover {
-      background: $sidebar-link-hover-bg;
-      color: $sidebar-active-color;
+    .sidebar-link {
+      padding: 10px 20px;
+      font-size: 1.1em;
+      display: block;
+      color: $sidebar-link-color;
       text-decoration: none;
+      transition: all 0.3s;
+
+      &:hover {
+        background: $sidebar-link-hover-bg;
+        color: $sidebar-active-color;
+        text-decoration: none;
+      }
+
+      &.active {
+        background: $sidebar-active-bg;
+        color: $sidebar-active-color;
+        font-weight: bold;
+      }
+
+      i {
+        margin-right: 10px;
+        font-size: 1.2em;
+      }
     }
 
-    &.active {
-      background: $sidebar-active-bg;
-      color: $sidebar-active-color;
-      font-weight: bold;
-    }
-
-    i {
-      margin-right: 10px;
-      font-size: 1.2em;
-    }
   }
-
-}
 
 }
 
 @media (max-width: 767.98px) {
   .sidebar {
-    left: -$sidebar-width; // Oculta el sidebar por completo fuera de la pantalla
+    left: -$sidebar-width;
   }
 
   .sidebar.active {
-    left: 0; // Muestra el sidebar deslizándolo hacia la pantalla
+    left: 0;
   }
 }
 
-// Media Query para pantallas grandes (768px o más)
+
 @media (min-width: 768px) {
   .sidebar {
-    left: 0; // Asegura que el sidebar siempre esté visible en desktop
+    left: 0;
   }
-  // Oculta el botón de hamburguesa en pantallas grandes
+
   #sidebarCollapse {
     display: none !important; // Usa !important para anular cualquier estilo de Bootstrap
   }
