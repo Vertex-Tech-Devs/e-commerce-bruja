@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProductService } from '../../../core/services/product.service';
+import { OrdersListComponent } from '../orders/orders-list.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, OrdersListComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
