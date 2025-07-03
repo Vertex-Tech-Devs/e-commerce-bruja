@@ -77,7 +77,6 @@ $sidebar-active-color: #fff;
     left: 0;
   }
 
-  // Oculta el botón de hamburguesa en pantallas grandes
   #sidebarCollapse {
     display: none !important; // Usa !important para anular cualquier estilo de Bootstrap
   }

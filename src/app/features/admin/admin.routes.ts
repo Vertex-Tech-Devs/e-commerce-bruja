@@ -33,6 +33,13 @@ export const adminRoutes: Routes = [
               import('./products/products-list/products-list.component').then((m) => m.ProductsListComponent)
           },
           {
+            path: 'create', // La URL será /admin/products/create
+            loadComponent: () =>
+              import(
+                './products/product-create/product-create.component'
+              ).then((m) => m.ProductCreateComponent),
+          },
+          {
             path: 'detail/:id',
             loadComponent: () =>
               import('./products/product-detail/product-detail.component').then((m) => m.ProductDetailComponent)

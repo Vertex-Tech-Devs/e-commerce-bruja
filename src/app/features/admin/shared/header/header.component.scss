@@ -10,37 +10,45 @@ $header-height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   position: fixed;
   top: 0;
   z-index: 1040;
   left: 0;
   width: 100%;
 
+  left: 0;
+  width: 100%;
+
+  .welcome-message {
+    // Escondemos el mensaje en móvil para dar espacio
+    display: none;
+  }
+
   @media (min-width: 768px) {
     left: $sidebar-width;
     width: calc(100% - #{$sidebar-width});
 
     .welcome-message {
+      display: inline; // Lo volvemos a mostrar en pantallas grandes
       font-size: 1.25rem;
       font-weight: 500;
       color: $admin-header-text;
     }
+  }
 
-    .user-info {
-      display: flex;
-      align-items: center;
+  .user-info {
+    display: flex;
+    align-items: center;
 
-      .user-name {
-        font-size: 1.1rem;
-        color: $admin-header-text;
-        margin-right: 0.5rem;
-      }
+    .user-name {
+      font-size: 1.1rem;
+      color: $admin-header-text;
+      margin-right: 0.5rem;
+    }
 
-      .user-icon {
-        font-size: 1.8rem;
-        color: $admin-header-text;
-      }
+    .user-icon {
+      font-size: 1.8rem;
+      color: $admin-header-text;
     }
   }
 }
