@@ -20,6 +20,11 @@ export const adminRoutes: Routes = [
       },
 
       {
+        path: 'orders',
+        loadComponent: () =>
+          import('./orders/orders-list.component').then((m) => m.OrdersListComponent)
+      },
+      {
         path: 'products',
         children: [
           {
@@ -39,8 +44,14 @@ export const adminRoutes: Routes = [
             loadComponent: () =>
               import('./products/product-detail/product-detail.component').then((m) => m.ProductDetailComponent)
           },
+          // {
+          //   path: 'edit/:id',
+          //   loadComponent: () =>
+          //     import('./products/product-edit/product-edit.component').then((m) => m.ProductEditComponent)
+          // },
+
         ]
-      }
+      },
 
     ]
   }

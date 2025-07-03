@@ -1,36 +1,25 @@
-import { ICartItem } from './cart.model';
+export interface OrderItem {
+  productId: string;
+  productName: string;
+  quantity: number;
+  price: number;
+}
 
-export interface IShippingAddress {
-  fullName: string;
-  address: string;
+export interface ShippingAddress {
+  street: string;
   city: string;
-  postalCode: string;
+  state: string;
+  zipCode: string;
   country: string;
 }
 
-export interface IPaymentMethod {
-  cardNumber: string;
-  expiryDate: string;
-  cvv: string;
-  cardName: string;
-}
-
-export interface IOrder {
+export interface Order {
   id: string;
   userId: string;
-  items: ICartItem[];
-  shippingAddress: IShippingAddress;
-  paymentMethod: IPaymentMethod;
-  total: number;
-  status: OrderStatus;
-  createdAt: Date;
-  updatedAt?: Date;
+  clientName: string;
+  orderDate: Date;
+  totalAmount: number;
+  status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
+  items: OrderItem[];
+  shippingAddress: ShippingAddress;
 }
-
-export enum OrderStatus {
-  PENDING = 'pending',
-  PROCESSING = 'processing',
-  SHIPPED = 'shipped',
-  DELIVERED = 'delivered',
-  CANCELLED = 'cancelled'
-} 

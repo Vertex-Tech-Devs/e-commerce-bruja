@@ -1,6 +1,7 @@
 $admin-header-bg: #020202;
 $admin-header-text: #f9f7f7;
 $sidebar-width: 250px;
+$header-height: 80px;
 
 .admin-header {
   background-color: $admin-header-bg;
@@ -12,6 +13,8 @@ $sidebar-width: 250px;
   position: fixed;
   top: 0;
   z-index: 1040;
+  left: 0;
+  width: 100%;
 
   left: 0;
   width: 100%;
