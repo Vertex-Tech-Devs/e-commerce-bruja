@@ -45,11 +45,6 @@ export const adminRoutes: Routes = [
 
         ]
       },
-      {
-        path: 'orders',
-        loadComponent: () =>
-          import('./orders/orders-list.component').then((m) => m.OrdersListComponent)
-      },
 
     ]
   }
