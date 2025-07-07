@@ -1,8 +1,9 @@
 <div class="container my-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Crear Nuevo Producto</h2>
+    <h2 class="mb-0">{{ pageTitle }}</h2>
     <button class="btn btn-outline-secondary" (click)="onCancel()">
-      <i class="bi bi-arrow-left"></i> Volver a la Lista
+      <i class="bi bi-arrow-left"></i>
+      {{ isEditMode ? 'Volver al Detalle' : 'Volver a la Lista' }}
     </button>
   </div>
 
@@ -63,17 +64,17 @@
         </div>
 
         <div class="mb-4">
-          <label for="imageUrl" class="form-label">URL de la Imagen</label>
-          <input type="url" id="imageUrl" class="form-control" formControlName="imageUrl"
-            [ngClass]="{ 'is-invalid': imageUrl?.invalid && (imageUrl?.dirty || imageUrl?.touched) }">
-          <div *ngIf="imageUrl?.invalid && (imageUrl?.dirty || imageUrl?.touched)" class="invalid-feedback">
-            <div *ngIf="imageUrl?.errors?.['required']">La URL de la imagen es obligatoria.</div>
-            <div *ngIf="imageUrl?.errors?.['pattern']">Por favor, introduce una URL válida.</div>
+          <label for="image" class="form-label">URL de la Imagen</label>
+          <input type="url" id="image" class="form-control" formControlName="image"
+            [ngClass]="{ 'is-invalid': image?.invalid && (image?.dirty || image?.touched) }">
+          <div *ngIf="image?.invalid && (image?.dirty || image?.touched)" class="invalid-feedback">
+            <div *ngIf="image?.errors?.['required']">La URL de la imagen es obligatoria.</div>
+            <div *ngIf="image?.errors?.['pattern']">Por favor, introduce una URL válida.</div>
           </div>
         </div>
 
-        <div *ngIf="imageUrl?.valid" class="mb-4 text-center">
-            <img [src]="imageUrl?.value" alt="Vista previa de la imagen" class="img-fluid rounded" style="max-height: 200px;">
+        <div *ngIf="image?.valid" class="mb-4 text-center">
+            <img [src]="image?.value" alt="Vista previa de la imagen" class="img-fluid rounded" style="max-height: 200px;">
         </div>
 
         <div class="d-flex justify-content-end">
@@ -82,7 +83,7 @@
           </button>
           <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isSubmitting">
             <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            {{ isSubmitting ? 'Guardando...' : 'Guardar Producto' }}
+            {{ isSubmitting ? 'Guardando...' : (isEditMode ? 'Actualizar Producto' : 'Crear Producto') }}
           </button>
         </div>
       </form>
