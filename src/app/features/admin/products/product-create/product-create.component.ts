@@ -6,8 +6,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '@core/services/product.service';
+import { Product } from '@core/models/product.model';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-create',
@@ -20,9 +22,14 @@ export class ProductCreateComponent implements OnInit {
   private _fb = inject(FormBuilder);
   private _productService = inject(ProductService);
   private _router = inject(Router);
+  private _route = inject(ActivatedRoute);
 
   public productForm!: FormGroup;
   public isSubmitting = false;
+  public isEditMode = false;
+  public productId: string | null = null;
+  public pageTitle = 'Crear Nuevo Producto';
+  public originalProductName: string = '';
 
   ngOnInit(): void {
     this.productForm = this._fb.group({
@@ -31,7 +38,43 @@ export class ProductCreateComponent implements OnInit {
       price: [null, [Validators.required, Validators.min(0)]],
       stock: [null, [Validators.required, Validators.min(0)]],
       category: ['', Validators.required],
-      imageUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
+      image: ['', [Validators.required, Validators.pattern('https?://.+')]],
+    });
+
+    this.productId = this._route.snapshot.paramMap.get('id');
+    if (this.productId) {
+      this.isEditMode = true;
+      this.pageTitle = 'Editar Producto';
+      this.loadProductForEdit(this.productId);
+    }
+  }
+
+  private loadProductForEdit(id: string): void {
+    this._productService.getProductById(id).pipe(
+      take(1)
+    ).subscribe({
+      next: (product: Product) => {
+        if (product) {
+          this.originalProductName = product.name;
+          this.pageTitle = `Editar: ${this.originalProductName}`;
+
+          this.productForm.patchValue({
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            stock: product.stock,
+            category: product.category,
+            image: product.image
+          });
+        } else {
+          console.error('Producto no encontrado para editar:', id);
+          this._router.navigate(['/admin/products']);
+        }
+      },
+      error: (error: any) => {
+        console.error('Error al cargar el producto para edición:', error);
+        this._router.navigate(['/admin/products']);
+      }
     });
   }
 
@@ -40,7 +83,7 @@ export class ProductCreateComponent implements OnInit {
   get price() { return this.productForm.get('price'); }
   get stock() { return this.productForm.get('stock'); }
   get category() { return this.productForm.get('category'); }
-  get imageUrl() { return this.productForm.get('imageUrl'); }
+  get image() { return this.productForm.get('image'); }
 
   onSubmit(): void {
     if (this.productForm.invalid) {
@@ -48,21 +91,37 @@ export class ProductCreateComponent implements OnInit {
       return;
     }
 
-    this.isSubmitting = true; // Deshabilita el botón para evitar doble envío
-    const newProduct = this.productForm.value;
+    this.isSubmitting = true;
+    const productData = this.productForm.value;
 
-    this._productService.createProduct(newProduct)
-      .then(() => {
-        console.log('Producto creado exitosamente!');
-        this._router.navigate(['/admin/products']);
-      })
-      .catch((error) => {
-        console.error('Error al crear el producto:', error);
-        this.isSubmitting = false; // Vuelve a habilitar el botón si hay un error
-      });
+    if (this.isEditMode && this.productId) {
+      this._productService.updateProduct(this.productId, productData)
+        .then(() => {
+          console.log('Producto actualizado exitosamente!');
+          this._router.navigate(['/admin/products/detail', this.productId]);
+        })
+        .catch((error) => {
+          console.error('Error al actualizar el producto:', error);
+          this.isSubmitting = false;
+        });
+    } else {
+      this._productService.createProduct(productData)
+        .then(() => {
+          console.log('Producto creado exitosamente!');
+          this._router.navigate(['/admin/products']);
+        })
+        .catch((error) => {
+          console.error('Error al crear el producto:', error);
+          this.isSubmitting = false;
+        });
+    }
   }
 
   onCancel(): void {
-    this._router.navigate(['/admin/products']);
+    if (this.isEditMode && this.productId) {
+      this._router.navigate(['/admin/products/detail', this.productId]);
+    } else {
+      this._router.navigate(['/admin/products']);
+    }
   }
 }
