@@ -3,6 +3,7 @@ export interface OrderItem {
   productName: string;
   quantity: number;
   price: number;
+  productImage?: string;
 }
 
 export interface ShippingAddress {
@@ -17,9 +18,16 @@ export interface Order {
   id: string;
   userId: string;
   clientName: string;
+  clientEmail?: string;
+  clientPhone?: string;
   orderDate: Date;
   totalAmount: number;
   status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
   items: OrderItem[];
   shippingAddress: ShippingAddress;
+  billingAddress?: ShippingAddress;
+  paymentMethod?: string;
+  shippingCost?: number;
+  taxAmount?: number;
+  subtotal?: number;
 }

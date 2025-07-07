@@ -1,0 +1,100 @@
+.container-fluid {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  padding: 1rem 1.5rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+dl.row {
+  dt {
+    font-weight: 600;
+    color: #495057;
+  }
+
+  dd {
+    margin-bottom: 0.5rem;
+  }
+}
+
+
+table.table-striped {
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+  }
+
+  thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    color: #495057;
+    font-weight: 600;
+  }
+
+  tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+
+img.img-fluid.rounded {
+  border: 1px solid #dee2e6;
+}
+
+.form-select-sm {
+  font-size: 0.875rem;
+  padding: 0.25rem 1.75rem 0.25rem 0.5rem;
+  border-radius: 0.3rem;
+  background-position: right 0.75rem center;
+  background-size: 0.65em 0.65em;
+}
+
+.btn {
+  border-radius: 0.5rem;
+}
+
+
+@media (max-width: 767.98px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  dl.row {
+
+    dt,
+    dd {
+      width: 100%;
+      text-align: left;
+    }
+
+    dt {
+      margin-bottom: 0.25rem;
+    }
+
+    dd {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  table.table-striped {
+    font-size: 0.875rem;
+
+    th,
+    td {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+}
