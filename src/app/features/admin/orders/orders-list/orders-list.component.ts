@@ -104,11 +104,6 @@ export class OrdersListComponent implements OnInit {
   }
 
   // --- Métodos de Acción ---
-  viewOrderDetails(order: Order): void {
-    console.log('Ver detalles del pedido:', order.id);
-    this._router.navigate(['/admin/orders/detail', order.id]);
-  }
-
   editOrder(order: Order): void {
     console.log('Editar pedido:', order.id);
     this._router.navigate(['/admin/orders/edit', order.id]);
