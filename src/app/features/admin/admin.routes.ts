@@ -18,12 +18,6 @@ export const adminRoutes: Routes = [
         loadComponent: () =>
           import('./dashboard/dashboard.component').then((m) => m.DashboardComponent)
       },
-
-      {
-        path: 'orders',
-        loadComponent: () =>
-          import('./orders/orders-list.component').then((m) => m.OrdersListComponent)
-      },
       {
         path: 'products',
         children: [
@@ -49,6 +43,23 @@ export const adminRoutes: Routes = [
             loadComponent: () =>
               import('./products/product-create/product-create.component').then((m) => m.ProductCreateComponent),
           },
+
+        ]
+      },
+      {
+        path: 'orders',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./orders/orders-list/orders-list.component').then((m) => m.OrdersListComponent)
+          },
+          {
+            path: 'detail/:id',
+            loadComponent: () =>
+              import('./orders/order-detail/order-detail.component').then((m) => m.OrderDetailComponent)
+          },
+
         ]
       },
 
