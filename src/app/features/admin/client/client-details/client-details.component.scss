@@ -1,0 +1,44 @@
+.main-content-area-dynamic {
+  padding-bottom: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 0.5rem;
+}
+
+h2 {
+  color: #343a40;
+  font-weight: 600;
+}
+
+h3.card-title {
+  color: #007bff;
+  font-weight: 500;
+}
+
+.card-text strong {
+  color: #555;
+}
+
+hr {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.alert-info {
+  background-color: #e0f7fa;
+  border-color: #b2ebf2;
+  color: #00838f;
+}
+
+// Estilos para el botón "Volver"
+.btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+
+  &:hover {
+    background-color: #6c757d;
+    color: #fff;
+  }
+}

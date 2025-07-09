@@ -1,3 +1,4 @@
+// admin.routes.ts
 import { Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { authGuard } from '@core/guards/auth.guard';
@@ -11,12 +12,12 @@ export const adminRoutes: Routes = [
       {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('./dashboard/dashboard.component').then((m) => m.DashboardComponent)
+          import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
         path: 'products',
@@ -24,7 +25,9 @@ export const adminRoutes: Routes = [
           {
             path: '',
             loadComponent: () =>
-              import('./products/products-list/products-list.component').then((m) => m.ProductsListComponent)
+              import('./products/products-list/products-list.component').then(
+                (m) => m.ProductsListComponent
+              ),
           },
           {
             path: 'create',
@@ -36,15 +39,18 @@ export const adminRoutes: Routes = [
           {
             path: 'detail/:id',
             loadComponent: () =>
-              import('./products/product-detail/product-detail.component').then((m) => m.ProductDetailComponent)
+              import('./products/product-detail/product-detail.component').then(
+                (m) => m.ProductDetailComponent
+              ),
           },
           {
             path: 'edit/:id',
             loadComponent: () =>
-              import('./products/product-create/product-create.component').then((m) => m.ProductCreateComponent),
+              import('./products/product-create/product-create.component').then(
+                (m) => m.ProductCreateComponent
+              ),
           },
-
-        ]
+        ],
       },
       {
         path: 'orders',
@@ -52,19 +58,28 @@ export const adminRoutes: Routes = [
           {
             path: '',
             loadComponent: () =>
-              import('./orders/orders-list/orders-list.component').then((m) => m.OrdersListComponent)
+              import('./orders/orders-list/orders-list.component').then((m) => m.OrdersListComponent),
           },
           {
             path: 'detail/:id',
             loadComponent: () =>
-              import('./orders/order-detail/order-detail.component').then((m) => m.OrderDetailComponent)
+              import('./orders/order-detail/order-detail.component').then((m) => m.OrderDetailComponent),
           },
-
-        ]
+        ],
       },
 
-    ]
-  }
+      {
+        path: 'customers',
+        loadComponent: () =>
+          import('./client/clients-list/clients-list.component').then((m) => m.ClientsListComponent),
+      },
+      {
+        path: 'clients/:email/details',
+        loadComponent: () =>
+          import('./client/client-details/client-details.component').then(
+            (m) => m.ClientDetailsComponent
+          ),
+      },
+    ],
+  },
 ];
-
-
