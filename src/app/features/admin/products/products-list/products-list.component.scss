@@ -3,50 +3,34 @@
 $primary-color: #007bff;
 $text-light: #6c757d;
 
-/* Estilos para el layout general del dashboard */
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
-/* Estilos específicos para el Sidebar */
 app-sidebar {
   min-width: 250px;
-  /* Ancho mínimo para el sidebar (ajusta este valor) */
   max-width: 250px;
-  /* Ancho máximo para el sidebar (ajusta este valor para que sea fijo) */
   flex-shrink: 0;
-  /* Evita que el sidebar se encoja */
   height: 100vh;
-  /* Asegura que el sidebar ocupe la altura completa de la ventana */
   overflow-y: auto;
-  /* Permite scroll si el contenido del sidebar es largo */
-  // Aquí puedes añadir estilos de fondo, sombra, etc., para tu sidebar
 }
 
-/* Estilos para el contenedor principal del contenido */
 #page-content-wrapper {
   flex-grow: 1;
-  /* Permite que este div ocupe todo el espacio restante */
   width: 100%;
-  /* Asegura que ocupe todo el ancho disponible de su contenedor flex */
   overflow-y: auto;
-  /* Permite scroll vertical para el contenido de la página */
   overflow-x: hidden;
-  /* Evita scroll horizontal innecesario */
-  // Aquí puedes añadir padding o margen si lo necesitas para separar del header
 }
 
 
-/* EL RESTO DE TUS ESTILOS DE TABLA Y BOTÓN FAB VAN AQUÍ DEBAJO */
 .product-table-container {
   display: flex;
-  justify-content: center; // Centra el contenedor principal de la tabla
-  padding: 2rem 0;
+  justify-content: center;
 
   .card {
-    width: 100%; // Ocupa el 100% del ancho del contenedor
+    width: 100%;
     max-width: 1000px;
     border: none;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05) !important;
@@ -135,27 +119,18 @@ app-sidebar {
 
 @media (max-width: 768px) {
 
-  /* En móviles, queremos que el sidebar se comporte de forma diferente,
-     quizás oculto o como un menú tipo "hamburguesa". */
   .dashboard-wrapper {
     flex-direction: column;
-    /* Apila los elementos verticalmente */
   }
 
   app-sidebar {
     width: 100%;
-    /* El sidebar ocupa todo el ancho en móvil */
     height: auto;
-    /* La altura se ajusta al contenido */
     max-height: 80px;
-    /* O una altura fija para un menú superior/inferior */
-    // Aquí puedes añadir estilos para que el sidebar se vea como una barra superior o inferior
-    // en lugar de lateral.
   }
 
   #page-content-wrapper {
     width: 100%;
-    /* Ocupa todo el ancho */
     flex-grow: 1;
   }
 
