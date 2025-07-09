@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -34,13 +34,13 @@ export class ClientsListComponent implements OnInit, OnDestroy {
 
   clients$!: Observable<Client[]>;
 
-  private clientsSubscription: Subscription | undefined;
+  private _clientService = inject(ClientService);
+  private _router = inject(Router);
 
-  constructor(private clientService: ClientService, private router: Router) { }
-
+  constructor() { }
   ngOnInit(): void {
     this.clients$ = combineLatest([
-      this.clientService.getClients(),
+      this._clientService.getClients(),
       this.searchTermSubject.pipe(debounceTime(300), distinctUntilChanged()),
     ]).pipe(
       map(([allClients, searchTerm]) => {
@@ -54,12 +54,12 @@ export class ClientsListComponent implements OnInit, OnDestroy {
           );
         }
 
-        this.totalPages = Math.ceil(tempClients.length / this.itemsPerPage);
 
-        if (this.currentPage > this.totalPages && this.totalPages > 0) {
+        this.totalPages = Math.max(1, Math.ceil(tempClients.length / this.itemsPerPage));
+
+
+        if (this.currentPage > this.totalPages) {
           this.currentPage = this.totalPages;
-        } else if (this.totalPages === 0 && this.currentPage !== 1) {
-          this.currentPage = 1;
         }
 
 
@@ -69,7 +69,6 @@ export class ClientsListComponent implements OnInit, OnDestroy {
         return tempClients.slice(startIndex, endIndex);
       })
     );
-
   }
 
   ngOnDestroy(): void {
@@ -85,11 +84,10 @@ export class ClientsListComponent implements OnInit, OnDestroy {
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.searchTermSubject.next(this.searchTermSubject.value);
     }
   }
 
   viewClientHistory(email: string): void {
-    this.router.navigate(['/admin/clients', email, 'details']);
+    this._router.navigate(['/admin/clients', email, 'details']);
   }
 }

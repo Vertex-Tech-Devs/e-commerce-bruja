@@ -30,7 +30,7 @@
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
-            <tbody *ngIf="clients$ | async as paginatedClients">
+            <tbody *ngIf="clients$ | async as paginatedClients; else loading">
               <tr *ngIf="paginatedClients.length === 0">
                 <td colspan="6" class="text-center text-muted">
                   No se encontraron clientes.
@@ -57,7 +57,10 @@
               <tbody>
                 <tr>
                   <td colspan="6" class="text-center text-muted py-4">
-                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
                     <span role="status"> Cargando clientes...</span>
                   </td>
                 </tr>

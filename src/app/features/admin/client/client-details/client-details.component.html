@@ -1,4 +1,5 @@
-<div class="main-content-area-dynamic"> <div class="container-fluid mt-4">
+<div class="main-content-area-dynamic">
+  <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="mb-0">
         <i class="bi bi-person-lines-fill me-2"></i>Detalles del Cliente
@@ -10,33 +11,110 @@
 
     <div class="card shadow-sm" *ngIf="clientDetails">
       <div class="card-body">
-        <h3 class="card-title mb-3">{{ clientDetails.fullName }}</h3>
-        <p class="card-text">
-          <strong>Email:</strong> {{ clientDetails.email }}
-        </p>
-        <p class="card-text">
-          <strong>Teléfono:</strong> {{ clientDetails.phone }}
-        </p>
-        <p class="card-text">
-          <strong>Fecha Primer Pedido:</strong>
-          {{ clientDetails.firstOrderDate | date : "dd/MM/yyyy" }}
-        </p>
-        <p class="card-text">
-          <strong>N.º de Pedidos:</strong> {{ clientDetails.numberOfOrders }}
-        </p>
-
+        <div class="card mb-4 client-details-card">
+          <div class="card-header bg-light">
+            <h3 class="card-title mb-0 text-primary">
+              {{ clientDetails.fullName }}
+            </h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="card-text mb-2">
+                  <strong>Email:</strong> {{ clientDetails.email }}
+                </p>
+                <p class="card-text mb-2">
+                  <strong>Teléfono:</strong> {{ clientDetails.phone }}
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="card-text mb-2">
+                  <strong>Fecha Primer Pedido:</strong>
+                  {{ clientDetails.firstOrderDate | date : "dd/MM/yyyy" }}
+                </p>
+                <p class="card-text mb-2">
+                  <strong>N.º de Pedidos:</strong>
+                  {{ clientDetails.numberOfOrders }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <hr />
 
         <h4>Historial de Pedidos</h4>
-        <div class="alert alert-info" role="alert">
-          Esta sección mostrará la lista de pedidos realizados por
-          {{ clientDetails.fullName }}. ¡Próxima tarea!
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th scope="col">ID Pedido</th>
+                <th scope="col">Fecha</th>
+                <th scope="col" class="text-end">Total</th>
+                <th scope="col">Estado</th>
+                <th scope="col" class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="clientOrders$ | async as orders; else loadingOrders">
+              <tr *ngIf="orders.length === 0">
+                <td colspan="5" class="text-center text-muted">
+                  Este cliente no tiene pedidos registrados.
+                </td>
+              </tr>
+              <tr *ngFor="let order of orders">
+                <td>{{ order.id }}</td>
+                <td>{{ order.orderDate | date : "dd/MM/yyyy HH:mm" }}</td>
+                <td class="text-end">
+                  {{ order.totalAmount | currency : "ARS" : "$" }}
+                </td>
+                <td>
+                  <span
+                    [ngClass]="{
+                      'badge bg-warning text-dark': order.status === 'pending',
+                      'badge bg-info': order.status === 'shipped',
+                      'badge bg-success': order.status === 'delivered',
+                      'badge bg-danger': order.status === 'cancelled'
+                    }"
+                  >
+                    {{ order.status | titlecase }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-outline-info btn-sm"
+                    [routerLink]="['/admin/orders/detail', order.id]"
+                    title="Ver Detalles del Pedido"
+                  >
+                    <i class="bi bi-eye"></i> Ver Detalles
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #loadingOrders>
+              <tbody>
+                <tr>
+                  <td colspan="5" class="text-center text-muted py-4">
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
+                    <span role="status"> Cargando historial de pedidos...</span>
+                  </td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
         </div>
       </div>
     </div>
 
-    <div class="alert alert-warning text-center mt-4" *ngIf="!clientDetails && clientEmail">
-      <p class="mb-0">No se encontraron detalles para el cliente con el email: {{ clientEmail }}</p>
+    <div
+      class="alert alert-warning text-center mt-4"
+      *ngIf="!clientDetails && clientEmail"
+    >
+      <p class="mb-0">
+        No se encontraron detalles para el cliente con el email:
+        {{ clientEmail }}
+      </p>
     </div>
     <div class="alert alert-danger text-center mt-4" *ngIf="!clientEmail">
       <p class="mb-0">Error: No se ha proporcionado un email de cliente.</p>
