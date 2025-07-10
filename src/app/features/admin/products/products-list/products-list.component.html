@@ -21,7 +21,10 @@
               (ngModelChange)="onFilterCategoryChange($event)"
             >
               <option value="all">Todas las Categorías</option>
-              <option *ngFor="let category of categoryOptions.slice(1)" [value]="category">
+              <option
+                *ngFor="let category of categoryOptions.slice(1)"
+                [value]="category"
+              >
                 {{ category | titlecase }}
               </option>
             </select>
@@ -51,12 +54,23 @@
               </tr>
             </thead>
             <tbody *ngIf="products$ | async as products; else loading">
-              <tr *ngIf="products.length === 0 && (searchTermSubject.value || filterCategorySubject.value !== 'all')">
+              <tr
+                *ngIf="
+                  products.length === 0 &&
+                  (searchTermSubject.value || filterCategorySubject.value !== 'all')
+                "
+              >
                 <td colspan="6" class="text-center text-muted py-4">
                   No se encontraron productos que coincidan con los criterios.
                 </td>
               </tr>
-              <tr *ngIf="products.length === 0 && !searchTermSubject.value && filterCategorySubject.value === 'all'">
+              <tr
+                *ngIf="
+                  products.length === 0 &&
+                  !searchTermSubject.value &&
+                  filterCategorySubject.value === 'all'
+                "
+              >
                 <td colspan="6" class="text-center text-muted py-4">
                   No hay productos disponibles para mostrar.
                 </td>
@@ -64,17 +78,26 @@
               <tr *ngFor="let product of products">
                 <td data-label="Nombre">{{ product.name }}</td>
                 <td data-label="Descripción">{{ product.description }}</td>
-                <td class="text-end" data-label="Precio">{{ product.price | currency:'ARS':'$' }}</td>
+                <td class="text-end" data-label="Precio">
+                  {{ product.price | currency : "ARS" : "$" }}
+                </td>
                 <td data-label="Categoría">{{ product.category }}</td>
-                <td class="text-center" data-label="Stock">{{ product.stock }}</td>
+                <td class="text-center" data-label="Stock">
+                  {{ product.stock }}
+                </td>
                 <td class="text-center" data-label="Acciones">
                   <button
                     class="btn btn-outline-info btn-sm me-2"
                     [routerLink]="['/admin/products/detail', product.id]"
-                    title="Ver Detalles">
+                    title="Ver Detalles"
+                  >
                     <i class="bi bi-eye"></i>
                   </button>
-                  <button class="btn btn-outline-danger btn-sm" (click)="deleteProduct(product)" title="Eliminar">
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="confirmDelete(product)"
+                    title="Eliminar"
+                  >
                     <i class="bi bi-trash"></i>
                   </button>
                 </td>
@@ -84,7 +107,10 @@
               <tbody>
                 <tr>
                   <td colspan="6" class="text-center text-muted py-4">
-                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
                     <span role="status"> Cargando productos...</span>
                   </td>
                 </tr>
@@ -93,7 +119,10 @@
           </table>
         </div>
 
-        <div *ngIf="totalProducts > 0" class="d-flex justify-content-center mt-4">
+        <div
+          *ngIf="totalProducts > 0"
+          class="d-flex justify-content-center mt-4"
+        >
           <nav aria-label="Paginación de productos">
             <ul class="pagination">
               <li class="page-item" [class.disabled]="currentPageSubject.value === 1">
@@ -102,32 +131,57 @@
                 </a>
               </li>
               <li class="page-item" [class.disabled]="currentPageSubject.value === 1">
-                <a class="page-link" (click)="goToPage(currentPageSubject.value - 1)" aria-label="Anterior">
+                <a
+                  class="page-link"
+                  (click)="goToPage(currentPageSubject.value - 1)"
+                  aria-label="Anterior"
+                >
                   <span aria-hidden="true">&lsaquo;</span>
                 </a>
               </li>
-              <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
-                  [class.active]="currentPageSubject.value === i + 1">
+              <li
+                class="page-item"
+                *ngFor="let page of [].constructor(totalPages); let i = index"
+                [class.active]="currentPageSubject.value === i + 1"
+              >
                 <a class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
               </li>
-              <li class="page-item" [class.disabled]="currentPageSubject.value === totalPages">
-                <a class="page-link" (click)="goToPage(currentPageSubject.value + 1)" aria-label="Siguiente">
+              <li
+                class="page-item"
+                [class.disabled]="currentPageSubject.value === totalPages"
+              >
+                <a
+                  class="page-link"
+                  (click)="goToPage(currentPageSubject.value + 1)"
+                  aria-label="Siguiente"
+                >
                   <span aria-hidden="true">&rsaquo;</span>
                 </a>
               </li>
-              <li class="page-item" [class.disabled]="currentPageSubject.value === totalPages">
-                <a class="page-link" (click)="goToPage(totalPages)" aria-label="Última">
+              <li
+                class="page-item"
+                [class.disabled]="currentPageSubject.value === totalPages"
+              >
+                <a
+                  class="page-link"
+                  (click)="goToPage(totalPages)"
+                  aria-label="Última"
+                >
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
             </ul>
           </nav>
         </div>
-        </div>
+      </div>
     </div>
   </div>
 
-  <button class="btn btn-primary btn-lg rounded-circle fab-button shadow-lg" (click)="newProduct()" title="Nuevo Producto">
+  <button
+    class="btn btn-primary btn-lg rounded-circle fab-button shadow-lg"
+    (click)="newProduct()"
+    title="Nuevo Producto"
+  >
     <i class="bi bi-plus-lg"></i>
   </button>
 </div>
