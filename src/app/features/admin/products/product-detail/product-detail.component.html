@@ -20,10 +20,18 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-4">
-                <img [src]="product.image" class="img-fluid rounded" alt="Imagen del producto" *ngIf="product.image; else noImage">
+                <img
+                  [src]="product.image"
+                  class="img-fluid rounded"
+                  alt="Imagen del producto"
+                  *ngIf="product.image; else noImage"
+                />
                 <ng-template #noImage>
-                  <div class="d-flex align-items-center justify-content-center bg-light text-muted rounded" style="height: 250px;">
-                    <i class="bi bi-image" style="font-size: 4rem;"></i>
+                  <div
+                    class="d-flex align-items-center justify-content-center bg-light text-muted rounded"
+                    style="height: 250px"
+                  >
+                    <i class="bi bi-image" style="font-size: 4rem"></i>
                     <span class="ms-2">No Image Available</span>
                   </div>
                 </ng-template>
@@ -38,7 +46,9 @@
                   <dd class="col-sm-9">{{ product.description }}</dd>
 
                   <dt class="col-sm-3">Precio:</dt>
-                  <dd class="col-sm-9">{{ product.price | currency:'USD':'symbol':'1.2-2' }}</dd>
+                  <dd class="col-sm-9">
+                    {{ product.price | currency : "USD" : "symbol" : "1.2-2" }}
+                  </dd>
 
                   <dt class="col-sm-3">Categoría:</dt>
                   <dd class="col-sm-9">{{ product.category }}</dd>
@@ -52,10 +62,13 @@
         </div>
 
         <div class="d-flex justify-content-end gap-2 mt-4 mb-4">
-          <button [routerLink]="['/admin/products/edit', product.id]" class="btn btn-primary">
+          <button
+            [routerLink]="['/admin/products/edit', product.id]"
+            class="btn btn-primary"
+          >
             <i class="bi bi-pencil-square"></i> Editar
           </button>
-          <button (click)="deleteProduct()" class="btn btn-danger">
+          <button (click)="confirmDeleteProduct()" class="btn btn-danger">
             <i class="bi bi-trash"></i> Eliminar
           </button>
         </div>
@@ -69,4 +82,3 @@
     </div>
   </div>
 </div>
-

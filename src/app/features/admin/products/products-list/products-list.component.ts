@@ -4,8 +4,11 @@ import { Router, RouterModule } from '@angular/router';
 import { ProductService } from '@core/services/product.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { Product } from '@core/models/product.model';
-import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ConfirmDeleteModalComponent } from '../../shared/components/confirm-delete-modal/confirm-delete-modal.component';
+
 
 @Component({
   selector: 'app-products-list',
@@ -24,14 +27,14 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   public products$!: Observable<Product[]>;
   private _productService = inject(ProductService);
   private _router = inject(Router);
+  private _modalService = inject(BsModalService);
+
+  // --- Referencia al modal abierto de NGX-Bootstrap ---
+  bsModalRef?: BsModalRef;
 
   public searchTermSubject = new BehaviorSubject<string>('');
-
-
   public filterCategorySubject = new BehaviorSubject<string>('all');
-
   public categoryOptions = ['todo', 'indumentaria', 'accesorios', 'bermudas', 'camisas'];
-
   public currentPageSubject = new BehaviorSubject<number>(1);
   public itemsPerPageSubject = new BehaviorSubject<number>(10);
   public itemsPerPageOptions = [5, 10, 20, 50];
@@ -63,7 +66,6 @@ export class ProductsListComponent implements OnInit, OnDestroy {
           );
         }
 
-
         if (filterCategory !== 'all') {
           filteredProducts = filteredProducts.filter(product =>
             product.category.toLowerCase() === filterCategory.toLowerCase()
@@ -74,6 +76,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
         this.totalProducts = filteredProducts.length;
         this.totalPages = Math.ceil(this.totalProducts / itemsPerPage);
 
+        // Ajustar currentPage si está fuera de rango
         if (currentPage > this.totalPages && this.totalPages > 0) {
           this.currentPageSubject.next(this.totalPages);
           currentPage = this.totalPages;
@@ -81,6 +84,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
           this.currentPageSubject.next(1);
           currentPage = 1;
         }
+
 
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
@@ -96,13 +100,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.currentPageSubject.next(1);
   }
 
-  // Método para el filtro de categoría
   onFilterCategoryChange(newValue: string): void {
     this.filterCategorySubject.next(newValue);
     this.currentPageSubject.next(1);
   }
 
-  // Métodos para la paginación
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPageSubject.next(page);
@@ -114,12 +116,12 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.currentPageSubject.next(1);
   }
 
-
   ngOnDestroy(): void {
     this.searchTermSubject.complete();
     this.filterCategorySubject.complete();
     this.currentPageSubject.complete();
     this.itemsPerPageSubject.complete();
+    this.bsModalRef?.hide();
   }
 
   editProduct(product: Product): void {
@@ -127,22 +129,35 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this._router.navigate(['/admin/products/edit', product.id]);
   }
 
-  deleteProduct(product: Product): void {
-    console.log('Intento de eliminar producto:', product.name);
-    const confirmed = confirm(`¿Estás seguro de que quieres eliminar el producto "${product.name}"?`);
+  confirmDelete(product: Product): void {
+    this.bsModalRef = this._modalService.show(ConfirmDeleteModalComponent, {
+      initialState: {
+        title: 'Confirmar Eliminación de Producto',
+        message: `¿Estás seguro de que deseas eliminar el producto "${product.name}"? Esta acción no se puede deshacer.`,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+      },
+      class: 'modal-md modal-dialog-centered',
+      backdrop: 'static',
+      keyboard: false
+    });
 
-    if (confirmed) {
-      this._productService.deleteProduct(product.id)
-        .then(() => {
-          console.log('Producto eliminado con éxito:', product.name);
-          this.searchTermSubject.next(this.searchTermSubject.value);
-        })
-        .catch((err) => {
-          console.error('Error al eliminar el producto:', err);
-        });
-    } else {
-      console.log('Eliminación cancelada para el producto:', product.name);
-    }
+    this.bsModalRef.content.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this._productService.deleteProduct(product.id)
+          .then(() => {
+            console.log('Producto eliminado con éxito:', product.name);
+            this.currentPageSubject.next(this.currentPageSubject.value);
+          })
+          .catch((err) => {
+            console.error('Error al eliminar el producto:', err);
+          });
+      } else {
+        console.log('Eliminación cancelada para el producto:', product.name);
+      }
+
+      this.bsModalRef = undefined;
+    });
   }
 
   newProduct(): void {

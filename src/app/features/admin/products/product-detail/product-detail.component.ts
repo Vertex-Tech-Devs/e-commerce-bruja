@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Product } from 'src/app/core/models/product.model';
 import { ProductService } from 'src/app/core/services/product.service';
-import { HeaderComponent } from '@features/admin/shared/header/header.component';
-import { SidebarComponent } from '@features/admin/shared/sidebar/sidebar.component';
-import { from } from 'rxjs';
+import { HeaderComponent } from '@features/admin/shared/components/header/header.component';
+import { SidebarComponent } from '@features/admin/shared/components/sidebar/sidebar.component';
+import { from, Subscription } from 'rxjs';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ConfirmDeleteModalComponent } from '@features/admin/shared/components/confirm-delete-modal/confirm-delete-modal.component';
+
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -19,9 +22,13 @@ import { from } from 'rxjs';
     CurrencyPipe
   ]
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   product: Product | undefined;
   productId: string | null = null;
+  private productSubscription: Subscription | undefined;
+  private _modalService = inject(BsModalService);
+  // --- Referencia al modal abierto de NGX-BOOTSTRAP ---
+  bsModalRef?: BsModalRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,7 +40,7 @@ export class ProductDetailComponent implements OnInit {
     this.productId = this.route.snapshot.paramMap.get('id');
 
     if (this.productId) {
-      this.productService.getProductById(this.productId).subscribe({
+      this.productSubscription = this.productService.getProductById(this.productId).subscribe({
         next: (data: Product) => {
           this.product = data;
         },
@@ -48,6 +55,14 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
+
+  ngOnDestroy(): void {
+    if (this.productSubscription) {
+      this.productSubscription.unsubscribe();
+    }
+    this.bsModalRef?.hide();
+  }
+
   goBack(): void {
     this.router.navigate(['/admin/products']);
   }
@@ -58,18 +73,42 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  deleteProduct(): void {
-    if (this.productId && confirm('¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.')) {
-      from(this.productService.deleteProduct(this.productId)).subscribe({
-        next: () => {
-          console.log('Producto eliminado con éxito.');
-          this.router.navigate(['/admin/products']);
-        },
-        error: (error: any) => {
-          console.error('Error al eliminar el producto:', error);
-        }
-      });
 
+  confirmDeleteProduct(): void {
+    if (!this.product || !this.product.id) {
+      console.warn('No hay producto o ID de producto para eliminar.');
+      return;
     }
+
+    this.bsModalRef = this._modalService.show(ConfirmDeleteModalComponent, {
+      initialState: {
+        title: 'Confirmar Eliminación de Producto',
+        message: `¿Estás seguro de que deseas eliminar el producto "${this.product.name}"? Esta acción no se puede deshacer.`,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+      },
+      class: 'modal-md modal-dialog-centered',
+      backdrop: 'static',
+      keyboard: false
+    });
+
+
+    this.bsModalRef.content.onClose.subscribe((result: boolean) => {
+      if (result) {
+        from(this.productService.deleteProduct(this.product!.id)).subscribe({
+          next: () => {
+            console.log('Producto eliminado con éxito.');
+            this.router.navigate(['/admin/products']);
+          },
+          error: (error: any) => {
+            console.error('Error al eliminar el producto:', error);
+          }
+        });
+      } else {
+        console.log('Eliminación cancelada para el producto:', this.product?.name);
+      }
+      this.bsModalRef = undefined;
+    });
   }
+
 }
