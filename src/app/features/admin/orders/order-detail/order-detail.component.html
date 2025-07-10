@@ -10,7 +10,6 @@
 
       <hr />
 
-      <!-- Contenido principal del detalle del pedido, se muestra solo si el pedido existe -->
       <div *ngIf="order$ | async as order; else loadingOrNotFound">
         <div class="card mb-4 shadow-sm">
           <div class="card-header bg-light">
@@ -40,7 +39,13 @@
                       (change)="onStatusChange($event)"
                     >
                       <option *ngFor="let status of statusOptions" [value]="status">
-                        {{ status | titlecase }}
+                        <ng-container [ngSwitch]="status">
+                          <span *ngSwitchCase="'pending'">Pendiente</span>
+                          <span *ngSwitchCase="'processing'">Procesando</span>
+                          <span *ngSwitchCase="'shipped'">Enviado</span>
+                          <span *ngSwitchCase="'delivered'">Entregado</span>
+                          <span *ngSwitchCase="'cancelled'">Cancelado</span>
+                          <span *ngSwitchDefault>{{ status | titlecase }}</span> </ng-container>
                       </option>
                     </select>
                   </dd>
@@ -50,7 +55,6 @@
           </div>
         </div>
 
-        <!-- Tarjeta de Información del Cliente y Dirección -->
         <div class="card mb-4 shadow-sm">
           <div class="card-header bg-light">
             <h5 class="mb-0">Información del Cliente y Envío</h5>
@@ -70,7 +74,6 @@
                   {{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{ order.shippingAddress.zipCode }}<br />
                   {{ order.shippingAddress.country }}
                 </address>
-                <!-- Mostrar dirección de facturación solo si es diferente o existe -->
                 <h6 *ngIf="order.billingAddress" class="mt-3">Dirección de Facturación:</h6>
                 <address *ngIf="order.billingAddress" class="mb-0">
                   {{ order.billingAddress.street }}<br />
@@ -82,7 +85,6 @@
           </div>
         </div>
 
-        <!-- Tarjeta de Productos Comprados -->
         <div class="card mb-4 shadow-sm">
           <div class="card-header bg-light">
             <h5 class="mb-0">Productos Comprados</h5>
@@ -103,7 +105,7 @@
                   <tr *ngFor="let item of order.items">
                     <td>
                       <img [src]="item.productImage || 'https://placehold.co/60x60/f0f0f0/6c757d?text=No+Img'"
-                           alt="{{ item.productName }}" class="img-fluid rounded" style="max-width: 60px; max-height: 60px; object-fit: cover;">
+                               alt="{{ item.productName }}" class="img-fluid rounded" style="max-width: 60px; max-height: 60px; object-fit: cover;">
                     </td>
                     <td>{{ item.productName }}</td>
                     <td class="text-center">{{ item.quantity }}</td>
@@ -116,7 +118,6 @@
           </div>
         </div>
 
-        <!-- Tarjeta de Resumen de Costos -->
         <div class="card mb-4 shadow-sm">
           <div class="card-header bg-light">
             <h5 class="mb-0">Resumen de Costos</h5>
@@ -128,7 +129,6 @@
                   <tbody>
                     <tr>
                       <td>Subtotal:</td>
-                      <!-- Si 'subtotal' no está en Firestore, se calcula la suma de los ítems -->
                       <td class="text-end">{{ order.subtotal || (order.items | sumItems:'price':'quantity') | currency:'ARS':'$' }}</td>
                     </tr>
                     <tr>
@@ -141,7 +141,7 @@
                     </tr>
                     <tr class="fw-bold">
                       <td>Total Pagado:</td>
-                      <td class="text-end">{{ order.totalAmount | currency:'ARS':'$' }}</td>
+                      <td class="text-end">{{ order.total | currency:'ARS':'$' }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -158,7 +158,6 @@
 
       </div>
 
-      <!-- Plantilla para cuando el pedido está cargando o no se encuentra -->
       <ng-template #loadingOrNotFound>
         <div class="alert alert-info text-center py-4" role="alert">
           <span *ngIf="orderId; else noIdMessage">

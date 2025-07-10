@@ -60,7 +60,7 @@
                 <td data-label="ID Pedido">{{ order.id }}</td>
                 <td data-label="Cliente">{{ order.clientName }}</td>
                 <td data-label="Fecha">{{ order.orderDate | date:'short' }}</td>
-                <td class="text-end" data-label="Total">{{ order.totalAmount | currency:'ARS':'$' }}</td>
+                <td class="text-end" data-label="Total">{{ order.total | currency:'ARS':'$' }}</td>
                 <td data-label="Estado">
                   <span [ngClass]="{
                     'badge bg-warning text-dark': order.status === 'pending',

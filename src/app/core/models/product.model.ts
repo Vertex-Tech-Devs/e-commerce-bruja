@@ -6,6 +6,7 @@ export interface Product {
   category: string;
   stock: number;
   image: string;
+  createdAt: Date;
 }
 
 export interface Review {

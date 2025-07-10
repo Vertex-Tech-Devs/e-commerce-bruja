@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Order, OrderItem } from '@core/models/order.model';
+import { Order, OrderItem, OrderStatus } from '@core/models/order.model';
 import { OrderService } from '@core/services/order.service';
 import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
@@ -33,7 +33,7 @@ export class OrderDetailComponent implements OnInit {
   pageTitle: string = 'Detalles del Pedido';
 
   // Propiedades para el control de estado del pedido
-  currentStatus: 'pending' | 'shipped' | 'delivered' | 'cancelled' = 'pending';
+  currentStatus: OrderStatus = 'pending';;
   statusOptions: ('pending' | 'shipped' | 'delivered' | 'cancelled')[] = ['pending', 'shipped', 'delivered', 'cancelled'];
 
   ngOnInit(): void {

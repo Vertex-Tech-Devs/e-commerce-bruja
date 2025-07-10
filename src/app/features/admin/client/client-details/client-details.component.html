@@ -64,7 +64,7 @@
                 <td>{{ order.id }}</td>
                 <td>{{ order.orderDate | date : "dd/MM/yyyy HH:mm" }}</td>
                 <td class="text-end">
-                  {{ order.totalAmount | currency : "ARS" : "$" }}
+                  {{ order.total | currency : "ARS" : "$" }}
                 </td>
                 <td>
                   <span

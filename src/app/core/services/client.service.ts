@@ -13,6 +13,7 @@ export class ClientService {
 
   constructor() { }
 
+
   getClients(): Observable<Client[]> {
     return this._orderService.getOrders().pipe(
       map((orders: Order[]) => {
@@ -27,21 +28,22 @@ export class ClientService {
           const email = order.clientEmail;
           const fullName = order.clientName;
           const phone = order.clientPhone ?? 'No proporcionado';
+          const orderDate = new Date(order.orderDate);
 
           if (!clientsMap.has(email)) {
             clientsMap.set(email, {
               email: email,
               fullName: fullName,
               phone: phone,
-              firstOrderDate: new Date(order.orderDate),
+              firstOrderDate: orderDate,
               numberOfOrders: 1,
             });
           } else {
             const existingClient = clientsMap.get(email)!;
             existingClient.numberOfOrders++;
 
-            if (new Date(order.orderDate) < existingClient.firstOrderDate) {
-              existingClient.firstOrderDate = new Date(order.orderDate);
+            if (orderDate < existingClient.firstOrderDate) {
+              existingClient.firstOrderDate = orderDate;
             }
             clientsMap.set(email, existingClient);
           }
@@ -52,12 +54,41 @@ export class ClientService {
     );
   }
 
-
   getOrdersByClientEmail(email: string): Observable<Order[]> {
     return this._orderService.getOrders().pipe(
       map((orders: Order[]) => {
         return orders.filter(order => order.clientEmail === email);
       })
+    );
+  }
+
+  getTotalClients(): Observable<number> {
+    return this.getClients().pipe(
+      map(clients => clients.length)
+    );
+  }
+
+  getNewClientsThisMonth(): Observable<number> {
+    return this.getClients().pipe(
+      map(clients => {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        return clients.filter(client => {
+          const firstOrderDate = new Date(client.firstOrderDate); // Asegúrate de que es un Date
+          return firstOrderDate.getMonth() === currentMonth && firstOrderDate.getFullYear() === currentYear;
+        }).length;
+      })
+    );
+  }
+
+  getLatestClients(limit: number = 10): Observable<Client[]> {
+    return this.getClients().pipe(
+      map(clients =>
+        clients.sort((a, b) => new Date(b.firstOrderDate).getTime() - new Date(a.firstOrderDate).getTime())
+          .slice(0, limit)
+      )
     );
   }
 }
