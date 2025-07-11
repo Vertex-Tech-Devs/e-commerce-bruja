@@ -4,7 +4,6 @@
       <div class="card-body">
         <h2 class="card-title text-center mb-4">Lista de Pedidos</h2>
 
-        <!-- Controles de Filtro y Búsqueda -->
         <div class="row mb-4 align-items-center">
           <div class="col-md-6 mb-3 mb-md-0">
             <input
@@ -25,7 +24,13 @@
             >
               <option value="all">Todos los Estados</option>
               <option *ngFor="let status of statusOptions.slice(1)" [value]="status">
-                {{ status | titlecase }}
+                <ng-container [ngSwitch]="status">
+                  <span *ngSwitchCase="'pending'">Pendiente</span>
+                  <span *ngSwitchCase="'processing'">Procesando</span>
+                  <span *ngSwitchCase="'shipped'">Enviado</span>
+                  <span *ngSwitchCase="'delivered'">Entregado</span>
+                  <span *ngSwitchCase="'cancelled'">Cancelado</span>
+                  <span *ngSwitchDefault>{{ status | titlecase }}</span> </ng-container>
               </option>
             </select>
           </div>
@@ -68,7 +73,13 @@
                     'badge bg-success': order.status === 'delivered',
                     'badge bg-danger': order.status === 'cancelled'
                   }">
-                    {{ order.status | titlecase }}
+                    <ng-container [ngSwitch]="order.status">
+                      <span *ngSwitchCase="'pending'">Pendiente</span>
+                      <span *ngSwitchCase="'processing'">Procesando</span>
+                      <span *ngSwitchCase="'shipped'">Enviado</span>
+                      <span *ngSwitchCase="'delivered'">Entregado</span>
+                      <span *ngSwitchCase="'cancelled'">Cancelado</span>
+                      <span *ngSwitchDefault>{{ order.status | titlecase }}</span> </ng-container>
                   </span>
                 </td>
                 <td class="text-center" data-label="Acciones">
@@ -110,7 +121,6 @@
           </table>
         </div>
 
-        <!-- Controles de Paginación -->
         <div *ngIf="totalOrders > 0" class="d-flex justify-content-center mt-4">
           <nav aria-label="Paginación de pedidos">
             <ul class="pagination">
