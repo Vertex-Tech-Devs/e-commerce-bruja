@@ -1,3 +1,7 @@
+import { Product } from "./product.model";
+
+export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+
 export interface OrderItem {
   productId: string;
   productName: string;
@@ -21,8 +25,8 @@ export interface Order {
   clientEmail?: string;
   clientPhone?: string;
   orderDate: Date;
-  totalAmount: number;
-  status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
+  total: number;
+  status: OrderStatus
   items: OrderItem[];
   shippingAddress: ShippingAddress;
   billingAddress?: ShippingAddress;

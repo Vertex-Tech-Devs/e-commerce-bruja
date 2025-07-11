@@ -33,7 +33,7 @@ export class OrdersListComponent implements OnInit {
   totalPages = 0;
 
   searchTermSubject = new BehaviorSubject<string>('');
-  filterStatusSubject = new BehaviorSubject<string>('all'); // 'all', 'pending', 'shipped', 'delivered', 'cancelled'
+  filterStatusSubject = new BehaviorSubject<string>('all');
   statusOptions = ['all', 'pending', 'shipped', 'delivered', 'cancelled'];
 
   orders$!: Observable<Order[]>;
