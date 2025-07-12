@@ -18,7 +18,7 @@
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         class="sidebar-link"
-      >
+        (click)="hideSidebarOnMobile()" >
         <i class="bi bi-speedometer2"></i> Panel de Control
       </a>
     </li>
@@ -27,7 +27,7 @@
         routerLink="/admin/products"
         routerLinkActive="active"
         class="sidebar-link"
-      >
+        (click)="hideSidebarOnMobile()" >
         <i class="bi bi-box-seam"></i> Productos
       </a>
     </li>
@@ -36,7 +36,7 @@
         routerLink="/admin/orders"
         routerLinkActive="active"
         class="sidebar-link"
-      >
+        (click)="hideSidebarOnMobile()" >
         <i class="bi bi-cart"></i> Pedidos
       </a>
     </li>
@@ -45,7 +45,7 @@
         routerLink="/admin/customers"
         routerLinkActive="active"
         class="sidebar-link"
-      >
+        (click)="hideSidebarOnMobile()" >
         <i class="bi bi-people"></i> Clientes
       </a>
     </li>
