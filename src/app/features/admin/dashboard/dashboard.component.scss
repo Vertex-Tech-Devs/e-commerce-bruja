@@ -1,41 +1,206 @@
-$sidebar-width: 250px;
-
-.dashboard-wrapper {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  overflow-x: hidden;
-}
+@use 'variables' as vars;
+@use 'sass:color';
 
 #page-content-wrapper {
-  flex-grow: 1;
-  width: 100%;
-  padding-left: 0;
   transition: all 0.3s ease-in-out;
 
   .dashboard-title {
-    padding-top: 1rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding-top: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-bottom: 2rem;
+    color: vars.$dashboard-header-text-color;
+    font-size: 2.5rem;
+    font-weight: vars.$font-weight-bold;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
-  .container {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+  hr {
+    border-color: rgba(vars.$text-light, 0.1);
+    margin: 3rem 0;
   }
-}
 
+  section {
+    padding: 0 2rem;
+    margin-bottom: 4rem;
 
-@media (min-width: 768px) {
-  #page-content-wrapper {
-    margin-left: $sidebar-width;
+    h2 {
+      font-size: 1.8rem;
+      font-weight: vars.$font-weight-semibold;
+      color: vars.$dashboard-section-title-color;
+      margin-bottom: 2rem;
+      letter-spacing: 0.03em;
+      text-align: center;
+    }
   }
-}
 
+  .card {
+    background: linear-gradient(160deg, vars.$dark-bg-card-gradient-start, vars.$dark-bg-card-gradient-end);
+    border: 1px solid rgba(vars.$accent-purple, 0.2);
+    border-radius: vars.$border-radius-md;
+    box-shadow: vars.$box-shadow-dark;
+    color: vars.$text-light;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
-@media (max-width: 767.98px) {
-  #page-content-wrapper {
-    margin-left: 0;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(vars.$text-light, 0.1);
+      font-weight: vars.$font-weight-semibold;
+      font-size: 1.1rem;
+      border-top-left-radius: vars.$border-radius-md;
+      border-top-right-radius: vars.$border-radius-md;
+      background: none;
+      color: vars.$text-light;
+
+      &.header-sales {
+        background: vars.$card-header-sales-bg;
+        border-bottom-color: color.adjust(rgba(#6c757d, 0.2), $lightness: -10%);
+      }
+
+      &.header-orders {
+        background: vars.$card-header-orders-bg;
+        border-bottom-color: color.adjust(rgba(#007bff, 0.2), $lightness: -10%);
+      }
+
+      &.header-new-clients {
+        background: vars.$card-header-clients-bg;
+        border-bottom-color: color.adjust(rgba(#28a745, 0.2), $lightness: -10%);
+      }
+
+      &.header-total-sales {
+        background: vars.$card-header-total-sales-bg;
+        border-bottom-color: color.adjust(rgba(#6c757d, 0.2), $lightness: -10%);
+      }
+
+      &.header-total-orders {
+        background: vars.$card-header-total-orders-bg;
+        border-bottom-color: color.adjust(rgba(#343a40, 0.2), $lightness: -10%);
+      }
+
+      &.header-total-clients {
+        background: vars.$card-header-total-clients-bg;
+        border-bottom-color: color.adjust(rgba(#ffc107, 0.2), $lightness: -10%);
+      }
+
+      &.header-pending-orders {
+        background: vars.$card-header-pending-orders-bg;
+        border-bottom-color: color.adjust(rgba(#ffc107, 0.2), $lightness: -10%);
+      }
+
+      &.header-low-stock {
+        background: vars.$card-header-low-stock-bg;
+        border-bottom-color: color.adjust(rgba(#dc3545, 0.2), $lightness: -10%);
+      }
+
+      &.header-latest-orders {
+        background: vars.$card-header-latest-orders-bg;
+        border-bottom-color: color.adjust(rgba(#17a2b8, 0.2), $lightness: -10%);
+      }
+
+      &.header-latest-clients {
+        background: vars.$card-header-latest-clients-bg;
+        border-bottom-color: color.adjust(rgba(#007bff, 0.2), $lightness: -10%);
+      }
+
+      &.header-latest-products {
+        background: vars.$card-header-latest-products-bg;
+        border-bottom-color: color.adjust(rgba(#28a745, 0.2), $lightness: -10%);
+      }
+    }
+
+    .card-body {
+      padding: 2rem;
+      color: vars.$text-light;
+
+      .display-5 {
+        font-size: 3.5rem;
+        font-weight: vars.$font-weight-bold;
+        color: vars.$accent-purple;
+      }
+
+      .card-text {
+        color: vars.$text-muted-dark;
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  .list-group {
+    background-color: transparent;
+    border-radius: vars.$border-radius-sm;
+
+    .list-group-item {
+      background-color: transparent;
+      border-color: rgba(vars.$text-light, 0.08);
+      color: vars.$text-light;
+      padding: 1rem 0;
+
+      &:first-child {
+        border-top-left-radius: vars.$border-radius-sm;
+        border-top-right-radius: vars.$border-radius-sm;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: vars.$border-radius-sm;
+        border-bottom-right-radius: vars.$border-radius-sm;
+        border-bottom: none;
+      }
+
+      .fw-bold {
+        color: vars.$text-light;
+      }
+
+      .text-muted {
+        color: vars.$text-muted-dark !important;
+      }
+
+      .badge {
+        font-size: 0.8rem;
+        font-weight: vars.$font-weight-semibold;
+        padding: 0.4em 0.8em;
+        border-radius: 0.3em;
+
+        &.bg-info {
+          background-color: vars.$accent-blue !important;
+        }
+
+        &.bg-primary {
+          background-color: vars.$accent-purple !important;
+        }
+
+        &.bg-success {
+          background-color: vars.$accent-green !important;
+        }
+
+        &.bg-warning {
+          background-color: vars.$accent-yellow !important;
+          color: #333 !important;
+        }
+
+        &.bg-danger {
+          background-color: vars.$accent-red !important;
+        }
+      }
+
+      .btn-outline-primary,
+      .btn-outline-danger,
+      .btn-outline-info,
+      .btn-outline-success {
+        color: vars.$accent-purple;
+        border-color: rgba(vars.$accent-purple, 0.5);
+
+        &:hover {
+          background-color: vars.$accent-purple;
+          color: white;
+          border-color: vars.$accent-purple;
+        }
+      }
+    }
   }
 }

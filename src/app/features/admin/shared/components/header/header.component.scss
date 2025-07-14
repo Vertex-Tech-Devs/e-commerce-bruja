@@ -1,54 +1,126 @@
-$admin-header-bg: #020202;
-$admin-header-text: #f9f7f7;
-$sidebar-width: 250px;
-$header-height: 80px;
+@use 'variables' as vars;
+@use "sass:color";
 
 .admin-header {
-  background-color: $admin-header-bg;
+  background-color: vars.$admin-header-bg;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid rgba(vars.$text-light, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
-  top: 0;
-  z-index: 1040;
-  left: 0;
-  width: 100%;
-
-  left: 0;
-  width: 100%;
+  height: vars.$header-height;
 
   .welcome-message {
-    // Escondemos el mensaje en móvil para dar espacio
     display: none;
   }
 
-  @media (min-width: 768px) {
-    left: $sidebar-width;
-    width: calc(100% - #{$sidebar-width});
+  @media (min-width: vars.$breakpoint-md) {
+    padding: 1rem 2rem;
 
     .welcome-message {
-      display: inline; // Lo volvemos a mostrar en pantallas grandes
+      display: inline;
       font-size: 1.25rem;
-      font-weight: 500;
-      color: $admin-header-text;
+      font-weight: vars.$font-weight-medium;
+      color: vars.$admin-header-text;
     }
   }
 
   .user-info {
     display: flex;
     align-items: center;
+    position: relative;
 
-    .user-name {
-      font-size: 1.1rem;
-      color: $admin-header-text;
-      margin-right: 0.5rem;
+    .user-dropdown-toggle {
+      background: none;
+      border: none;
+      color: vars.$admin-header-text;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: vars.$border-radius-sm;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: rgba(vars.$admin-header-text, 0.1);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.25rem rgba(vars.$admin-header-text, 0.25);
+      }
+
+      .user-name {
+        font-size: 1.1rem;
+        color: vars.$admin-header-text;
+      }
+
+      .user-icon {
+        font-size: 1.6rem;
+        color: vars.$admin-header-text;
+      }
     }
 
-    .user-icon {
-      font-size: 1.8rem;
-      color: $admin-header-text;
+    .dropdown-menu {
+      background-color: vars.$dark-bg-secondary;
+      border: 1px solid rgba(vars.$text-light, 0.15);
+      padding: 0.5rem 0;
+      border-radius: vars.$border-radius-md;
+      min-width: 10rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+
+      .dropdown-item {
+        color: vars.$text-light;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+
+        &:hover,
+        &:focus {
+          background-color: vars.$accent-purple;
+          color: vars.$text-light;
+        }
+      }
+
+      .dropdown-divider {
+        border-top-color: rgba(vars.$text-light, 0.1);
+        margin: 0.5rem 0;
+      }
     }
+  }
+}
+
+.admin-header .menu-toggle {
+  background: vars.$dark-bg-secondary;
+  border: 1px solid rgba(vars.$text-light, 0.2);
+  border-radius: vars.$border-radius-sm;
+  color: vars.$text-light;
+  font-size: 1.5rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  z-index: 9999;
+
+  &:hover {
+    background: color.adjust(vars.$dark-bg-secondary, $lightness: 5%);
+    color: vars.$accent-purple;
+  }
+
+  &:active {
+    background: color.adjust(vars.$dark-bg-secondary, $lightness: -5%);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.25rem rgba(vars.$accent-purple, 0.25);
+  }
+
+  @media (min-width: vars.$breakpoint-md) {
+    display: none !important;
   }
 }

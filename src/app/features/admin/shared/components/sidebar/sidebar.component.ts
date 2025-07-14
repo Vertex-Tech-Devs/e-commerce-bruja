@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -11,34 +11,16 @@ import { RouterModule } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 
-  isOpen: boolean = false;
-  isMobile: boolean = false;
+  @Input() isOpen: boolean = false;
+  @Output() linkClicked = new EventEmitter<void>();
 
   constructor() { }
 
   ngOnInit() {
-    this.checkMobileStatus();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
-    this.checkMobileStatus();
+  onLinkClick(): void {
+    this.linkClicked.emit();
   }
 
-  private checkMobileStatus(): void {
-    this.isMobile = window.innerWidth < 768;
-    if (!this.isMobile && this.isOpen) {
-      this.isOpen = false;
-    }
-  }
-
-  toggleSidebar(): void {
-    this.isOpen = !this.isOpen;
-  }
-
-  hideSidebarOnMobile(): void {
-    if (this.isMobile) {
-      this.isOpen = false;
-    }
-  }
 }

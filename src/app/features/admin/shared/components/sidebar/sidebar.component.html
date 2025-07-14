@@ -1,15 +1,9 @@
-<button
-  type="button"
-  id="sidebarCollapse"
-  class="btn btn-outline-light d-md-none position-fixed top-0 start-0 m-3 z-index-top"
-  (click)="toggleSidebar()"
->
-  <i class="bi bi-list"></i>
-</button>
-
-<nav id="sidebar" class="sidebar bg-dark text-white" [class.active]="isOpen">
+<nav id="sidebar" class="sidebar bg-dark text-white">
   <div class="sidebar-header">
     <h3 class="text-center py-3">Panel Administrador</h3>
+    <button class="menu-toggle-close" (click)="onLinkClick()">
+      <i class="bi bi-x-lg"></i>
+    </button>
   </div>
 
   <ul class="list-unstyled components">
@@ -18,8 +12,7 @@
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         class="sidebar-link"
-        (click)="hideSidebarOnMobile()" >
-        <i class="bi bi-speedometer2"></i> Panel de Control
+        (click)="onLinkClick()" > <i class="bi bi-speedometer2"></i> Panel de Control
       </a>
     </li>
     <li>
@@ -27,7 +20,7 @@
         routerLink="/admin/products"
         routerLinkActive="active"
         class="sidebar-link"
-        (click)="hideSidebarOnMobile()" >
+        (click)="onLinkClick()" >
         <i class="bi bi-box-seam"></i> Productos
       </a>
     </li>
@@ -36,7 +29,7 @@
         routerLink="/admin/orders"
         routerLinkActive="active"
         class="sidebar-link"
-        (click)="hideSidebarOnMobile()" >
+        (click)="onLinkClick()" >
         <i class="bi bi-cart"></i> Pedidos
       </a>
     </li>
@@ -45,7 +38,7 @@
         routerLink="/admin/customers"
         routerLinkActive="active"
         class="sidebar-link"
-        (click)="hideSidebarOnMobile()" >
+        (click)="onLinkClick()" >
         <i class="bi bi-people"></i> Clientes
       </a>
     </li>

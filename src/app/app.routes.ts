@@ -32,6 +32,4 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./features/admin/login/login.component').then((m) => m.LoginComponent)
   }
-  // Añade una ruta comodín para cualquier otra ruta no encontrada (ej. PageNotFoundComponent)
-  // { path: '**', redirectTo: '/admin/dashboard' } // O a una página 404
 ];
