@@ -4,6 +4,11 @@ import { authGuard } from '@core/guards/auth.guard';
 
 export const adminRoutes: Routes = [
   {
+    path: 'login',
+    loadComponent: () =>
+      import('./login/login.component').then((m) => m.LoginComponent),
+  },
+  {
     path: '',
     component: AdminComponent,
     canActivate: [authGuard],
