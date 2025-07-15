@@ -17,8 +17,6 @@ import { ConfirmDeleteModalComponent } from '@features/admin/shared/components/c
   imports: [
     CommonModule,
     RouterModule,
-    HeaderComponent,
-    SidebarComponent,
     CurrencyPipe
   ]
 })

@@ -1,4 +1,3 @@
-// admin.routes.ts
 import { Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { authGuard } from '@core/guards/auth.guard';
@@ -79,6 +78,11 @@ export const adminRoutes: Routes = [
           import('./client/client-details/client-details.component').then(
             (m) => m.ClientDetailsComponent
           ),
+      },
+      {
+        path: 'account',
+        loadComponent: () =>
+          import('./account/account.component').then((m) => m.AccountComponent),
       },
     ],
   },

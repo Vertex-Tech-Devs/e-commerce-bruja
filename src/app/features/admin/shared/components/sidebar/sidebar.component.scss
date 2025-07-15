@@ -1,31 +1,64 @@
 @use "sass:color";
-
-$sidebar-width: 250px;
-$sidebar-bg: #343a40;
-$sidebar-link-color: #dee2e6;
-$sidebar-link-hover-bg: #495057;
-$sidebar-active-bg: #0d6efd;
-$sidebar-active-color: #fff;
+@use 'variables' as vars;
 
 .z-index-top {
   z-index: 1050;
 }
 
 .sidebar {
-  width: $sidebar-width;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 1045;
-  background-color: $sidebar-bg;
+  background-color: vars.$dark-bg-secondary;
   padding-top: 1rem;
-  transition: all 0.3s ease-in-out;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.4);
 
   .sidebar-header {
     padding: 20px;
-    background: color.adjust($sidebar-bg, $lightness: -5%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: color.adjust(vars.$dark-bg-secondary, $lightness: -5%);
+    border-bottom: 1px solid rgba(vars.$text-light, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      color: vars.$text-light;
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: vars.$font-weight-medium;
+    }
+
+    .menu-toggle-close {
+      background: rgba(vars.$dark-bg-primary, 0.7);
+      border: none;
+      border-radius: vars.$border-radius-pill;
+      color: vars.$text-light;
+      font-size: 1.2rem;
+      width: 2.2rem;
+      height: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+      &:hover {
+        background: vars.$accent-red;
+        color: vars.$text-dark;
+        transform: scale(1.05);
+      }
+
+      &:active {
+        background: color.adjust(vars.$accent-red, $lightness: -10%);
+        transform: scale(0.95);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(vars.$accent-red, 0.3);
+      }
+
+      @media (min-width: vars.$breakpoint-md) {
+        display: none;
+      }
+    }
   }
 
   .components {
@@ -33,51 +66,32 @@ $sidebar-active-color: #fff;
     list-style: none;
 
     .sidebar-link {
-      padding: 10px 20px;
-      font-size: 1.1em;
+      padding: 12px 25px;
+      font-size: 1.05em;
       display: block;
-      color: $sidebar-link-color;
+      color: vars.$text-muted-dark;
       text-decoration: none;
-      transition: all 0.3s;
+      transition: all 0.3s ease-in-out;
 
       &:hover {
-        background: $sidebar-link-hover-bg;
-        color: $sidebar-active-color;
+        background: rgba(vars.$accent-purple, 0.2);
+        color: vars.$accent-purple;
         text-decoration: none;
+        padding-left: 30px;
       }
 
       &.active {
-        background: $sidebar-active-bg;
-        color: $sidebar-active-color;
-        font-weight: bold;
+        background: vars.$accent-purple;
+        color: vars.$text-light;
+        font-weight: vars.$font-weight-bold;
+        border-left: 5px solid vars.$accent-blue;
+        padding-left: 20px;
       }
 
       i {
-        margin-right: 10px;
-        font-size: 1.2em;
+        margin-right: 12px;
+        font-size: 1.1em;
       }
     }
-
-  }
-
-}
-
-@media (max-width: 767.98px) {
-  .sidebar {
-    left: -$sidebar-width;
-  }
-
-  .sidebar.active {
-    left: 0;
-  }
-}
-
-@media (min-width: 768px) {
-  .sidebar {
-    left: 0;
-  }
-
-  #sidebarCollapse {
-    display: none !important; // Usa !important para anular cualquier estilo de Bootstrap
   }
 }

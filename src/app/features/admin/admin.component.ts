@@ -1,11 +1,9 @@
-import { Auth } from '@angular/fire/auth';
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
-
 
 @Component({
   selector: 'app-admin',
@@ -14,4 +12,44 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
-export class AdminComponent { }
+export class AdminComponent implements OnInit {
+  isSidebarOpen: boolean = false;
+
+  private readonly breakpointMd = 768;
+
+  constructor() { }
+
+  ngOnInit(): void {
+    this.checkScreenSizeForInitialState();
+  }
+
+  toggleSidebar(): void {
+    if (window.innerWidth < this.breakpointMd) {
+      this.isSidebarOpen = !this.isSidebarOpen;
+      console.log('Sidebar toggled. isSidebarOpen:', this.isSidebarOpen);
+    } else {
+      // Si estamos en desktop, siempre se mantiene cerrado el sidebar móvil
+      this.isSidebarOpen = false;
+      console.log('Attempted to toggle sidebar in desktop view. isSidebarOpen kept as:', this.isSidebarOpen); // Log para desktop
+    }
+  }
+
+  closeSidebarOnOverlayClick(): void {
+    if (this.isSidebarOpen && window.innerWidth < this.breakpointMd) {
+      this.isSidebarOpen = false;
+      console.log('Sidebar closed by overlay click or link click. isSidebarOpen:', this.isSidebarOpen); // Log de depuración
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSizeForInitialState();
+    console.log('Window resized. New width:', window.innerWidth, 'isSidebarOpen:', this.isSidebarOpen);
+  }
+
+  private checkScreenSizeForInitialState(): void {
+    if (window.innerWidth >= this.breakpointMd) {
+      this.isSidebarOpen = false;
+    }
+  }
+}

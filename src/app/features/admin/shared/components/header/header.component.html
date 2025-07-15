@@ -1,9 +1,21 @@
-<header class="navbar navbar-expand-lg navbar-light admin-header">
-  <div class="container-fluid">
-    <span class="navbar-text welcome-message"> Bienvenido </span>
-    <div class="ms-auto user-info">
-      <span class="navbar-text user-name"> Federico </span>
+<header class="admin-header">
+  <div class="d-flex align-items-center">
+    <button class="menu-toggle" (click)="onToggleSidebar($event)">
+      <i class="bi bi-list"></i>
+    </button>
+    <span class="welcome-message">Bienvenido</span>
+  </div>
+
+  <div class="user-info">
+    <button class="user-dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <span class="user-name">{{ userName }}</span>
       <i class="bi bi-person-circle user-icon"></i>
-    </div>
+      </button>
+
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+      <li><a class="dropdown-item" routerLink="/admin/account">Perfil</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+    </ul>
   </div>
 </header>

@@ -1,0 +1,70 @@
+// -- Variables de Layout y Componentes Generales --
+$admin-header-bg: #020202;
+$admin-header-text: #f9f7f7;
+
+// Variables para el ancho del sidebar, diferenciando desktop de móvil/overlay
+$sidebar-width-desktop: 250px;
+$sidebar-width-mobile-overlay: 280px;
+$header-height: 80px;
+
+// -- Colores del Tema Oscuro --
+$dark-bg-primary: #1a1a2e;
+$dark-bg-secondary: #21213b;
+
+// Degradados para el fondo de las tarjetas (cards)
+$dark-bg-card-gradient-start: #2a2a47;
+$dark-bg-card-gradient-end: #1a1a2e;
+
+// Colores de texto
+$text-light: #f8f9fa;
+$text-dark: #212529;
+$text-muted-dark: #adb5bd;
+
+// Colores de acento (para botones, enlaces, números importantes, etc.)
+$accent-purple: #7b68ee;
+$accent-blue: #007bff;
+$accent-green: #28a745;
+$accent-red: #dc3545;
+$accent-yellow: #ffc107;
+
+// Sombras y bordes redondeados
+$border-radius-lg: 1rem;
+$border-radius-md: 0.75rem;
+$border-radius-sm: 0.5rem;
+$border-radius-pill: 50%;
+
+$box-shadow-dark: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+// Tipografía (asegúrate de importar la fuente 'Inter' en tu styles.scss principal)
+$font-family-primary: 'Inter', sans-serif;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// -- Breakpoints para Responsive Design --
+$breakpoint-sm: 576px; // Pequeño (móviles)
+$breakpoint-md: 768px; // Mediano (tablets)
+$breakpoint-lg: 992px; // Grande (desktops)
+$breakpoint-xl: 1200px; // Extra grande (desktops grandes)
+
+// -- Variables Específicas para el Dashboard --
+$dashboard-header-text-color: $text-light;
+$dashboard-section-title-color: $accent-purple;
+
+// Fondos de header de tarjeta específicos (degradados) para cada tipo de métrica
+$card-header-sales-bg: linear-gradient(135deg, #6c757d, #495057); // Gris para Ventas
+$card-header-orders-bg: linear-gradient(135deg, #007bff, #0056b3); // Azul para Pedidos
+$card-header-clients-bg: linear-gradient(135deg, #28a745, #1e7e34); // Verde para Clientes Nuevos
+
+$card-header-total-sales-bg: linear-gradient(135deg, #6c757d, #495057); // Gris para Ventas Totales
+$card-header-total-orders-bg: linear-gradient(135deg, #343a40, #212529); // Negro/Gris oscuro para Pedidos Totales
+$card-header-total-clients-bg: linear-gradient(135deg, #ffc107, #d39e00); // Amarillo para Clientes Totales
+
+$card-header-pending-orders-bg: linear-gradient(135deg, #ffc107, #d39e00); // Amarillo para Pedidos Pendientes
+$card-header-low-stock-bg: linear-gradient(135deg, #dc3545, #b02a37); // Rojo para Productos con Poco Stock
+
+$card-header-latest-orders-bg: linear-gradient(135deg, #17a2b8, #117a8b); // Cyan para Últimos Pedidos
+$card-header-latest-clients-bg: linear-gradient(135deg, #007bff, #0056b3); // Azul para Últimos Clientes
+$card-header-latest-products-bg: linear-gradient(135deg, #28a745, #1e7e34); // Verde para Últimos Productos
