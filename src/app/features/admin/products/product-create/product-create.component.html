@@ -22,8 +22,18 @@
           </div>
           <div class="col-md-6">
             <label for="category" class="form-label">Categoría</label>
-            <input type="text" id="category" class="form-control" formControlName="category"
+            <select
+              id="category"
+              class="form-select"
+              formControlName="category"
               [ngClass]="{ 'is-invalid': category?.invalid && (category?.dirty || category?.touched) }">
+              <option [ngValue]="null" disabled>Selecciona una categoría</option>
+              <ng-container *ngIf="categories$ | async as categories">
+                <option *ngFor="let cat of categories" [value]="cat.name">
+                  {{ cat.name }}
+                </option>
+              </ng-container>
+            </select>
             <div *ngIf="category?.invalid && (category?.dirty || category?.touched)" class="invalid-feedback">
               <div *ngIf="category?.errors?.['required']">La categoría es obligatoria.</div>
             </div>
@@ -73,7 +83,7 @@
           </div>
         </div>
 
-        <div *ngIf="image?.valid" class="mb-4 text-center">
+        <div *ngIf="image?.valid && image?.value" class="mb-4 text-center">
             <img [src]="image?.value" alt="Vista previa de la imagen" class="img-fluid rounded" style="max-height: 200px;">
         </div>
 

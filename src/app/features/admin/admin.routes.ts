@@ -57,6 +57,13 @@ export const adminRoutes: Routes = [
         ],
       },
       {
+        path: 'categories',
+        loadComponent: () =>
+          import('./categories/categories-list/categories-list.component').then(
+            (m) => m.CategoriesListComponent
+          ),
+      },
+      {
         path: 'orders',
         children: [
           {

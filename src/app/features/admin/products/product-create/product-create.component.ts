@@ -1,15 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ProductService } from '@core/services/product.service';
-import { Product } from '@core/models/product.model';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { WithFieldValue } from '@angular/fire/firestore';
+
+import { ProductService } from '@core/services/product.service';
+import { CategoryService } from '@core/services/category.service';
+import { Product } from '@core/models/product.model';
+import { Category } from '@core/models/category.model';
+import { SweetAlertService } from '@core/services/sweet-alert.service';
 
 @Component({
   selector: 'app-product-create',
@@ -19,12 +20,17 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./product-create.component.scss'],
 })
 export class ProductCreateComponent implements OnInit {
+
   private _fb = inject(FormBuilder);
   private _productService = inject(ProductService);
+  private _categoryService = inject(CategoryService);
   private _router = inject(Router);
   private _route = inject(ActivatedRoute);
+  private _sweetAlertService = inject(SweetAlertService);
+
 
   public productForm!: FormGroup;
+  public categories$!: Observable<Category[]>;
   public isSubmitting = false;
   public isEditMode = false;
   public productId: string | null = null;
@@ -32,15 +38,23 @@ export class ProductCreateComponent implements OnInit {
   public originalProductName: string = '';
 
   ngOnInit(): void {
+    this.categories$ = this._categoryService.getCategories();
+    this.initializeForm();
+    this.checkEditMode();
+  }
+
+  private initializeForm(): void {
     this.productForm = this._fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
       price: [null, [Validators.required, Validators.min(0)]],
       stock: [null, [Validators.required, Validators.min(0)]],
-      category: ['', Validators.required],
+      category: [null, Validators.required],
       image: ['', [Validators.required, Validators.pattern('https?://.+')]],
     });
+  }
 
+  private checkEditMode(): void {
     this.productId = this._route.snapshot.paramMap.get('id');
     if (this.productId) {
       this.isEditMode = true;
@@ -50,33 +64,24 @@ export class ProductCreateComponent implements OnInit {
   }
 
   private loadProductForEdit(id: string): void {
-    this._productService.getProductById(id).pipe(
-      take(1)
-    ).subscribe({
+    this._productService.getProductById(id).pipe(take(1)).subscribe({
       next: (product: Product) => {
         if (product) {
           this.originalProductName = product.name;
           this.pageTitle = `Editar: ${this.originalProductName}`;
-
-          this.productForm.patchValue({
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            stock: product.stock,
-            category: product.category,
-            image: product.image
-          });
+          this.productForm.patchValue(product);
         } else {
-          console.error('Producto no encontrado para editar:', id);
+          this._sweetAlertService.error('Error', 'Producto no encontrado para editar.');
           this._router.navigate(['/admin/products']);
         }
       },
       error: (error: any) => {
-        console.error('Error al cargar el producto para edición:', error);
+        this._sweetAlertService.error('Error', 'Hubo un problema al cargar el producto.');
         this._router.navigate(['/admin/products']);
-      }
+      },
     });
   }
+
 
   get name() { return this.productForm.get('name'); }
   get description() { return this.productForm.get('description'); }
@@ -92,26 +97,33 @@ export class ProductCreateComponent implements OnInit {
     }
 
     this.isSubmitting = true;
-    const productData = this.productForm.value;
+    const formValue = this.productForm.value;
 
     if (this.isEditMode && this.productId) {
-      this._productService.updateProduct(this.productId, productData)
+      // --- Lógica de Actualización ---
+      this._productService.updateProduct(this.productId, formValue)
         .then(() => {
-          console.log('Producto actualizado exitosamente!');
+          this._sweetAlertService.success('¡Éxito!', 'Producto actualizado correctamente.');
           this._router.navigate(['/admin/products/detail', this.productId]);
         })
         .catch((error) => {
-          console.error('Error al actualizar el producto:', error);
+          this._sweetAlertService.error('Error', 'No se pudo actualizar el producto.');
           this.isSubmitting = false;
         });
     } else {
-      this._productService.createProduct(productData)
+
+      const productToSend: WithFieldValue<Omit<Product, 'id'>> = {
+        ...formValue,
+        createdAt: new Date(),
+      };
+
+      this._productService.createProduct(productToSend as WithFieldValue<Product>)
         .then(() => {
-          console.log('Producto creado exitosamente!');
+          this._sweetAlertService.success('¡Éxito!', 'Producto creado correctamente.');
           this._router.navigate(['/admin/products']);
         })
         .catch((error) => {
-          console.error('Error al crear el producto:', error);
+          this._sweetAlertService.error('Error', 'No se pudo crear el producto.');
           this.isSubmitting = false;
         });
     }

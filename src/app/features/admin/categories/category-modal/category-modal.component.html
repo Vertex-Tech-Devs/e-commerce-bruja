@@ -1,0 +1,32 @@
+<div class="modal-header bg-primary text-white">
+  <h4 class="modal-title pull-left">{{ title }}</h4>
+  <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="cancel()">
+  </button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="categoryForm" (ngSubmit)="save()">
+    <div class="mb-3">
+      <label for="category-name" class="form-label">Nombre de la Categoría</label>
+      <input
+        type="text"
+        id="category-name"
+        class="form-control"
+        formControlName="name"
+        [ngClass]="{ 'is-invalid': name?.invalid && (name?.dirty || name?.touched) }"
+        (keydown.enter)="save()"
+      />
+      <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback" style="display: block;">
+        <div *ngIf="name?.errors?.['required']">El nombre es obligatorio.</div>
+        <div *ngIf="name?.errors?.['minlength']">Debe tener al menos 3 caracteres.</div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+  <button type="button" class="btn btn-primary" (click)="save()" [disabled]="categoryForm.invalid">
+    Guardar
+  </button>
+</div>
