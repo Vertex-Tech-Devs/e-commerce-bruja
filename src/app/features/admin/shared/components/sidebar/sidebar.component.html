@@ -12,7 +12,9 @@
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         class="sidebar-link"
-        (click)="onLinkClick()" > <i class="bi bi-speedometer2"></i> Panel de Control
+        (click)="onLinkClick()"
+      >
+        <i class="bi bi-speedometer2"></i> Panel de Control
       </a>
     </li>
     <li>
@@ -20,8 +22,20 @@
         routerLink="/admin/products"
         routerLinkActive="active"
         class="sidebar-link"
-        (click)="onLinkClick()" >
+        (click)="onLinkClick()"
+      >
         <i class="bi bi-box-seam"></i> Productos
+      </a>
+    </li>
+
+    <li>
+      <a
+        routerLink="/admin/categories"
+        routerLinkActive="active"
+        class="sidebar-link"
+        (click)="onLinkClick()"
+      >
+        <i class="bi bi-tags"></i> Categorías
       </a>
     </li>
     <li>
@@ -29,7 +43,8 @@
         routerLink="/admin/orders"
         routerLinkActive="active"
         class="sidebar-link"
-        (click)="onLinkClick()" >
+        (click)="onLinkClick()"
+      >
         <i class="bi bi-cart"></i> Pedidos
       </a>
     </li>
@@ -38,7 +53,8 @@
         routerLink="/admin/customers"
         routerLinkActive="active"
         class="sidebar-link"
-        (click)="onLinkClick()" >
+        (click)="onLinkClick()"
+      >
         <i class="bi bi-people"></i> Clientes
       </a>
     </li>
