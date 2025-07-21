@@ -52,16 +52,14 @@ export class LoginComponent implements OnInit {
         next: () => {
           this.router.navigate(['/admin']);
         },
-        error: () => {
+        error: (err: any) => {
           this.authErrorMessage = 'Error al iniciar sesión. Verifica tus credenciales.';
         }
       });
     }
   }
 
-  logout(): void {
-    this.authService.logout().pipe(take(1)).subscribe(() => {
-      this.router.navigate(['/admin/login']);
-    });
+  async logout(): Promise<void> {
+    await this.authService.logout();
   }
 }

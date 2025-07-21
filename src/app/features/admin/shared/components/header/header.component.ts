@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,8 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent implements OnInit {
   @Output() toggleSidebarEvent = new EventEmitter<void>();
 
+  private authService = inject(AuthService);
+
   userName: string = 'Federico';
 
   constructor() { }
@@ -27,4 +30,7 @@ export class HeaderComponent implements OnInit {
     this.toggleSidebarEvent.emit();
   }
 
+  logout(): void {
+    this.authService.logout();
+  }
 }
