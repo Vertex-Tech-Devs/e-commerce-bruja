@@ -1,27 +1,65 @@
-<div class="container d-flex align-items-center justify-content-center min-vh-100">
-  <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
-    <h2 class="mb-4 text-center">Iniciar sesión</h2>
+<div class="login-container">
+  <div class="card-gradient-wrapper">
+    <div class="card shadow-sm rounded-3">
 
-    <div *ngIf="authErrorMessage" class="alert alert-warning">
-      {{ authErrorMessage }}
-    </div>
-
-    <div *ngIf="isAlreadyLogged" class="alert alert-info">
-      Ya estás logueado. <a href="#" (click)="logout()">Cerrar sesión</a> para iniciar con otra cuenta.
-    </div>
-
-    <form *ngIf="!isAlreadyLogged" (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input class="form-control" type="email" formControlName="email" required />
+      <div class="card-header login-card-header text-center">
+        <h2 class="mb-0">Panel Administrador</h2>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Contraseña</label>
-        <input class="form-control" type="password" formControlName="password" required />
+      <div class="card-body p-4">
+        <h4 class="form-title text-center mb-4">Iniciar Sesión</h4>
+
+        <div *ngIf="authErrorMessage" class="alert alert-custom alert-warning">
+          {{ authErrorMessage }}
+        </div>
+
+        <div *ngIf="isAlreadyLogged" class="alert alert-custom alert-info">
+          Ya has iniciado sesión. <a href="#" (click)="logout()">Cerrar sesión</a> para usar otra cuenta.
+        </div>
+
+        <form *ngIf="!isAlreadyLogged" (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              id="email"
+              class="form-control"
+              type="email"
+              formControlName="email"
+              [class.is-invalid]="f['email'].invalid && f['email'].touched"
+            />
+             <div *ngIf="f['email'].invalid && f['email'].touched" class="invalid-feedback d-block">
+                <div *ngIf="f['email'].errors?.['required']">El email es obligatorio.</div>
+                <div *ngIf="f['email'].errors?.['email']">El formato del email no es válido.</div>
+              </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="password-input-wrapper" [class.is-invalid-wrapper]="f['password'].invalid && f['password'].touched">
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                class="form-control"
+                formControlName="password"
+              />
+              <button type="button" class="password-toggle-icon" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+              </button>
+            </div>
+            <div *ngIf="f['password'].invalid && f['password'].touched" class="invalid-feedback d-block">
+                <div *ngIf="f['password'].errors?.['required']">La contraseña es obligatoria.</div>
+              </div>
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button id="login-btn" class="btn" [disabled]="loginForm.invalid || isSubmitting">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+              Ingresar
+            </button>
+          </div>
+        </form>
       </div>
 
-      <button class="btn btn-primary w-100" [disabled]="loginForm.invalid">Ingresar</button>
-    </form>
+    </div>
   </div>
 </div>

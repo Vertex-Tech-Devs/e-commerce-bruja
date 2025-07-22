@@ -6,10 +6,11 @@ import {
   signOut,
   updatePassword,
   reauthenticateWithCredential,
-  EmailAuthProvider
+  EmailAuthProvider,
+  User
 } from '@angular/fire/auth';
-import { from, Observable, throwError } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { user } from '@angular/fire/auth';
 import { SweetAlertService } from './sweet-alert.service';
 
@@ -27,12 +28,16 @@ export class AuthService {
     return from(signInWithEmailAndPassword(this.auth, email, password));
   }
 
-
-  async logout(): Promise<void> {
+  async logout(options?: { title?: string; text?: string }): Promise<void> {
     try {
       await signOut(this.auth);
-      this.sweetAlertService.success('Sesión Cerrada', 'Has sido redirigido a la página de inicio de sesión.');
+
+      const title = options?.title || 'Sesión Cerrada';
+      const text = options?.text || 'Has sido redirigido a la página de inicio de sesión.';
+
+      this.sweetAlertService.success(title, text);
       this.router.navigate(['/admin/login']);
+
     } catch (err) {
       console.error('Error al cerrar sesión:', err);
       this.sweetAlertService.error('Error', 'No se pudo cerrar la sesión. Por favor, inténtalo de nuevo.');
@@ -46,24 +51,23 @@ export class AuthService {
     );
   }
 
-  changePassword(currentPassword: string, newPassword: string): Observable<boolean> {
-    return this.currentUser$.pipe(
-      switchMap(user => {
-        if (!user || !user.email) {
-          return throwError(() => new Error('No hay usuario autenticado o el email no está disponible.'));
-        }
+  async changePassword(currentPassword: string, newPassword: string): Promise<boolean> {
+    const user: User | null = this.auth.currentUser;
 
-        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+    if (!user || !user.email) {
+      throw new Error('No hay usuario autenticado o el email no está disponible.');
+    }
 
-        return from(reauthenticateWithCredential(user, credential)).pipe(
-          switchMap(() => from(updatePassword(user, newPassword))),
-          tap(() => {
-            console.log('Contraseña actualizada exitosamente.');
-          }),
-          switchMap(() => from(user.reload())),
-          switchMap(() => [true])
-        );
-      })
-    );
+    try {
+      const credential = EmailAuthProvider.credential(user.email, currentPassword);
+      await reauthenticateWithCredential(user, credential);
+      await updatePassword(user, newPassword);
+      console.log('Contraseña actualizada exitosamente en Firebase.');
+      return true;
+
+    } catch (error) {
+      console.error('Error en el proceso de cambio de contraseña:', error);
+      throw error;
+    }
   }
 }
