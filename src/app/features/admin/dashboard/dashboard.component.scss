@@ -1,5 +1,5 @@
-@use 'variables' as vars;
-@use 'sass:color';
+@use "variables" as vars;
+@use "sass:color";
 
 #page-content-wrapper {
   transition: all 0.3s ease-in-out;
@@ -36,7 +36,9 @@
   }
 
   .card {
-    background: linear-gradient(160deg, vars.$dark-bg-card-gradient-start, vars.$dark-bg-card-gradient-end);
+    background: linear-gradient(160deg,
+        vars.$dark-bg-card-gradient-start,
+        vars.$dark-bg-card-gradient-end );
     border: 1px solid rgba(vars.$accent-purple, 0.2);
     border-radius: vars.$border-radius-md;
     box-shadow: vars.$box-shadow-dark;
@@ -204,3 +206,68 @@
     }
   }
 }
+
+// ===============================================
+// ESTILOS RESPONSIVE
+// Aplicar en tablets y pantallas más pequeñas (lg)
+// ===============================================
+
+@media (max-width: 992px) {
+  #page-content-wrapper {
+
+    // Reducir el tamaño de la fuente para el título principal
+    .dashboard-title {
+      font-size: 2rem;
+      padding-top: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    section {
+      padding: 0 1rem; // Menos padding horizontal en pantallas chicas
+
+      // Reducir el tamaño de los subtítulos de sección
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    .card .card-body {
+      padding: 1.5rem; // Reducir padding dentro de las tarjetas
+
+      // La tipografía más grande debe ser más pequeña en tablets/móviles
+      .display-5 {
+        font-size: 2.5rem; // Reducción significativa
+      }
+    }
+
+    // Asegurar que el contenido de las listas no se apriete demasiado
+    .list-group-item {
+      padding: 0.75rem 0; // Ajuste de padding vertical
+      flex-wrap: wrap; // Permite que los elementos pasen a la línea de abajo si no caben
+      gap: 0.5rem; // Añade un pequeño espacio si los elementos se envuelven
+    }
+  }
+}
+
+// ===============================================
+// ESTILOS RESPONSIVE
+// Aplicar en móviles (sm)
+// ===============================================
+
+@media (max-width: 576px) {
+  #page-content-wrapper {
+    .dashboard-title {
+      font-size: 1.75rem;
+    }
+
+    section h2 {
+      font-size: 1.3rem;
+    }
+
+    // Reducción aún mayor para móviles
+    .card .card-body .display-5 {
+      font-size: 2rem;
+    }
+  }
+} 

@@ -15,7 +15,9 @@
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
       <li><a class="dropdown-item" routerLink="/admin/account">Perfil</a></li>
       <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+      <li>
+        <button class="dropdown-item" type="button" (click)="logout()">Cerrar Sesión</button>
+      </li>
     </ul>
   </div>
 </header>
