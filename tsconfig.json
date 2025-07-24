@@ -6,7 +6,7 @@
     "skipLibCheck": true,
     "target": "ES2022",
     "module": "ES2022",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "importHelpers": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -29,10 +29,6 @@
     "lib": [
       "ES2022",
       "dom"
-    ],
-    "types": [
-      "jasmine",
-      "node"
     ]
   },
   "angularCompilerOptions": {
