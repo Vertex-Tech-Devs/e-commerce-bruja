@@ -16,7 +16,6 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     CurrencyPipe,
     DatePipe,
-    TitleCasePipe,
     RouterModule
   ],
   standalone: true,

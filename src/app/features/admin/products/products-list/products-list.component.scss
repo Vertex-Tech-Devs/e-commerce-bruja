@@ -1,220 +1,221 @@
-@use "sass:color";
+@use 'variables' as vars;
+@use 'sass:color';
 
-$primary-color: #007bff;
-$text-light: #6c757d;
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
 
-.dashboard-wrapper {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-app-sidebar {
-  min-width: 250px;
-  max-width: 250px;
-  flex-shrink: 0;
-  height: 100vh;
-  overflow-y: auto;
-}
+// ===============================================
+// ESTILO DE LA TARJETA PRINCIPAL
+// ===============================================
+.product-list-card {
+  position: relative;
+  border-radius: vars.$border-radius-lg;
+  padding: 2px; // Espacio para el borde
+  background: transparent;
 
-#page-content-wrapper {
-  flex-grow: 1;
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    background: linear-gradient(90deg, vars.$accent-purple, vars.$accent-blue, vars.$accent-purple);
+    background-size: 200% 200%;
+    animation: gradient-animation 8s ease infinite;
+  }
 
+  .card-body {
+    position: relative;
+    z-index: 2;
+    background-color: #f4f6f9; // Fondo claro
+    border-radius: calc(#{vars.$border-radius-lg} - 2px);
+    padding: 1.5rem;
 
-.product-table-container {
-  display: flex;
-  justify-content: center;
-
-  .card {
-    width: 100%;
-    max-width: 1000px;
-    border: none;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05) !important;
+    @media(min-width: vars.$breakpoint-md) {
+      padding: 2rem;
+    }
   }
 
   .card-title {
-    color: #343a40;
-    font-weight: 600;
+    font-weight: vars.$font-weight-bold;
+    background: linear-gradient(45deg, vars.$accent-blue, vars.$accent-purple);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }
 
+// ===============================================
+// ESTILOS DE FILTROS
+// ===============================================
+.form-control,
+.form-select {
+  background-color: #ffffff;
+  color: #1c2a42;
+  border: 1px solid #dfe3e8; // Borde por defecto
+  border-radius: vars.$border-radius-md;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    border-color: color.adjust(vars.$accent-purple, $lightness: 15%, $saturation: -10%);
+  }
+
+  &:focus {
+    border-color: vars.$accent-purple;
+    box-shadow: 0 0 0 0.25rem rgba(vars.$accent-purple, 0.2);
+  }
+}
+
+.form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+// ===============================================
+// ESTILOS FINALES DE LA TABLA
+// ===============================================
 .product-table {
-  width: 100%;
-  margin-bottom: 0;
+  $table-text-dark: #1c2a42;
+  $table-border-soft: #dfe3e8;
+  $table-hover-bg-soft: rgba(233, 236, 239, 0.7);
+
+  &.table {
+    --bs-table-bg: transparent;
+    --bs-table-border-color: #{$table-border-soft};
+    --bs-table-color: #{$table-text-dark};
+    --bs-table-hover-color: #{$table-text-dark};
+    --bs-table-hover-bg: #{$table-hover-bg-soft};
+  }
 
   thead th {
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
-    color: #495057;
-    font-weight: 600;
-    padding: 0.75rem 1rem;
+    font-weight: vars.$font-weight-semibold;
   }
 
-  tbody td {
-    padding: 0.75rem 1rem;
-    vertical-align: middle;
-    border-top: 1px solid #e9ecef;
+  tbody tr {
+    position: relative;
+    border-radius: vars.$border-radius-md;
+    transition: transform 0.2s ease-in-out;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(120deg, vars.$accent-blue, vars.$accent-purple, vars.$accent-blue);
+      background-size: 200% 200%;
+      animation: gradient-animation 6s ease infinite;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      td {
+        color: #000;
+        font-weight: 500;
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// ===============================================
+// ESTILOS PARA PAGINACIÓN Y BOTÓN FLOTANTE
+// ===============================================
+.pagination {
+
+  .page-item .page-link {
+    border-radius: 50% !important; // Hacemos los botones circulares
+    margin: 0 4px;
+    border: none;
+    font-weight: vars.$font-weight-semibold;
+    color: #6c757d;
+    transition: all 0.3s ease;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: #e9ecef;
+      color: vars.$accent-purple;
+      transform: translateY(-2px);
+    }
+
+    &:focus {
+      box-shadow: none; // Quitamos el box-shadow por defecto de bootstrap
+    }
   }
 
-  .col-nombre {
-    min-width: 150px;
+  .page-item.active .page-link {
+    background-color: vars.$accent-purple;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(vars.$accent-purple, 0.4);
+    transform: translateY(-3px);
   }
 
-  .col-descripcion {
-    min-width: 200px;
-    max-width: 300px;
-    white-space: normal;
-  }
+  .page-item.disabled .page-link {
+    background-color: transparent;
+    color: #ced4da;
 
-  .col-precio {
-    width: 120px;
-  }
-
-  .col-categoria {
-    min-width: 120px;
-  }
-
-  .col-stock {
-    width: 80px;
-  }
-
-  .col-acciones {
-    width: 120px;
-  }
-
-  .btn-sm {
-    padding: 0.375rem 0.6rem;
-    font-size: 0.875rem;
-
-    .fas,
-    .bi {
-      font-size: 1rem;
+    &:hover {
+      transform: none;
     }
   }
 }
 
 .fab-button {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 1000;
-  width: 60px;
-  height: 60px;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1050;
+
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 1.8rem;
-  background-color: $primary-color;
-  border-color: $primary-color;
+  justify-content: center;
+
+  width: 56px;
+  height: 56px;
+  font-size: 1.6rem;
+
+  background: linear-gradient(45deg, vars.$accent-blue, vars.$accent-purple);
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: color.adjust($primary-color, $lightness: -10%);
-    border-color: color.adjust($primary-color, $lightness: -10%);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(vars.$accent-purple, 0.3);
   }
 }
 
-@media (max-width: 768px) {
-
-  .dashboard-wrapper {
-    flex-direction: column;
+// Estilos responsive
+@media (max-width: vars.$breakpoint-lg) {
+  .product-list-card::before {
+    display: none;
   }
 
-  app-sidebar {
-    width: 100%;
-    height: auto;
-    max-height: 80px;
+  .product-list-card .card-body {
+    background-color: transparent;
   }
 
-  #page-content-wrapper {
-    width: 100%;
-    flex-grow: 1;
-  }
-
-  .product-table-container {
-    padding: 1rem 0;
-  }
-
-  .product-table {
-    thead {
-      display: none;
-    }
-
-    tbody,
-    tr,
-    td {
-      display: block;
-      width: 100%;
-    }
-
-    tr {
-      margin-bottom: 1rem;
-      border: 1px solid #e9ecef;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    }
-
-    td {
-      text-align: right !important;
-      position: relative;
-      padding-left: 50% !important;
-      border: none;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-
-      &::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 1rem;
-        font-weight: 600;
-        text-align: left;
-        color: #495057;
-      }
-    }
-
-    td:nth-of-type(1)::before {
-      content: "Nombre";
-    }
-
-    td:nth-of-type(2)::before {
-      content: "Descripción";
-    }
-
-    td:nth-of-type(3)::before {
-      content: "Precio";
-    }
-
-    td:nth-of-type(4)::before {
-      content: "Categoría";
-    }
-
-    td:nth-of-type(5)::before {
-      content: "Stock";
-    }
-
-    td:nth-of-type(6)::before {
-      content: "Acciones";
-    }
-
-    .col-acciones {
-      text-align: center !important;
-      padding-top: 1rem;
-      border-top: 1px solid #e9ecef;
-      margin-top: 0.5rem;
-    }
-  }
-
-  .fab-button {
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
+  // ... resto de estilos responsive
 }

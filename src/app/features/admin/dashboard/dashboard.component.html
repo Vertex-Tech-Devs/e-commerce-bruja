@@ -6,92 +6,93 @@
       <hr />
 
       <section class="mb-5">
-        <h2 class="mb-3">Resumen Rápido</h2>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4" *ngIf="monthlyMetrics$ | async as monthlyMetrics">
-          <div class="col">
-            <div class="card h-100 shadow-sm">
-              <div class="card-header fw-bold header-sales">Ventas del Mes</div>
-              <div class="card-body text-center d-flex flex-column justify-content-center">
-                <h3 class="display-5 fw-bold">
-                  {{ monthlyMetrics.sales | currency : "ARS" : "$" : "1.0-0" }}
-                </h3>
-                <p class="card-text">Hasta la fecha actual</p>
+        <h2 class="section-title">Resumen Rápido</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+          
+          <ng-container *ngIf="monthlyMetrics$ | async as monthlyMetrics">
+            <div class="col">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header fw-bold header-sales">Ventas del Mes</div>
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                  <h3 class="display-5 fw-bold">
+                    {{ monthlyMetrics.sales | currency : "ARS" : "$" : "1.0-0" }}
+                  </h3>
+                  <p class="card-text">Hasta la fecha actual</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="card h-100 shadow-sm">
-              <div class="card-header fw-bold header-orders">Pedidos del Mes</div>
-              <div class="card-body text-center d-flex flex-column justify-content-center">
-                <h3 class="display-5 fw-bold">{{ monthlyMetrics.orders }}</h3>
-                <p class="card-text">Nuevas órdenes este mes</p>
+            <div class="col">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header fw-bold header-orders">Pedidos del Mes</div>
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                  <h3 class="display-5 fw-bold">{{ monthlyMetrics.orders }}</h3>
+                  <p class="card-text">Nuevas órdenes este mes</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="card h-100 shadow-sm">
-              <div class="card-header fw-bold header-new-clients">Clientes Nuevos del Mes</div>
-              <div class="card-body text-center d-flex flex-column justify-content-center">
-                <h3 class="display-5 fw-bold">{{ monthlyMetrics.newClients }}</h3>
-                <p class="card-text">Primeras compras en el mes</p>
+            <div class="col">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header fw-bold header-new-clients">Clientes Nuevos del Mes</div>
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                  <h3 class="display-5 fw-bold">{{ monthlyMetrics.newClients }}</h3>
+                  <p class="card-text">Primeras compras en el mes</p>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </ng-container>
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="globalMetrics$ | async as globalMetrics">
-          <div class="col">
-            <div class="card h-100 shadow-sm">
-              <div class="card-header fw-bold header-total-sales">Ventas Totales</div>
-              <div class="card-body text-center d-flex flex-column justify-content-center">
-                <h3 class="display-5 fw-bold">
-                  {{ globalMetrics.totalSales | currency : "ARS" : "$" : "1.0-0" }}
-                </h3>
-                <p class="card-text">Ingresos acumulados</p>
+          <ng-container *ngIf="globalMetrics$ | async as globalMetrics">
+            <div class="col">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header fw-bold header-total-sales">Ventas Totales</div>
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                  <h3 class="display-5 fw-bold">
+                    {{ globalMetrics.totalSales | currency : "ARS" : "$" : "1.0-0" }}
+                  </h3>
+                  <p class="card-text">Ingresos acumulados</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="card h-100 shadow-sm">
-              <div class="card-header fw-bold header-total-orders">Pedidos Totales</div>
-              <div class="card-body text-center d-flex flex-column justify-content-center">
-                <h3 class="display-5 fw-bold">{{ globalMetrics.totalOrders }}</h3>
-                <p class="card-text">Órdenes procesadas en total</p>
+            <div class="col">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header fw-bold header-total-orders">Pedidos Totales</div>
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                  <h3 class="display-5 fw-bold">{{ globalMetrics.totalOrders }}</h3>
+                  <p class="card-text">Órdenes procesadas en total</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="card h-100 shadow-sm">
-              <div class="card-header fw-bold header-total-clients">Clientes Totales</div>
-              <div class="card-body text-center d-flex flex-column justify-content-center">
-                <h3 class="display-5 fw-bold">{{ globalMetrics.totalClients }}</h3>
-                <p class="card-text">Base de clientes única</p>
+            <div class="col">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header fw-bold header-total-clients">Clientes Totales</div>
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                  <h3 class="display-5 fw-bold">{{ globalMetrics.totalClients }}</h3>
+                  <p class="card-text">Base de clientes única</p>
+                </div>
               </div>
             </div>
-          </div>
+          </ng-container>
+
         </div>
       </section>
 
       <hr />
 
       <section class="mb-5">
-        <h2 class="mb-3">Tareas Pendientes</h2>
+        <h2 class="section-title">Tareas Pendientes</h2>
         <div class="row g-4">
           <div class="col-12 col-lg-6">
             <div class="card h-100 shadow-sm">
               <div class="card-header fw-bold header-pending-orders"><i class="bi bi-box-seam me-2"></i>Pedidos por Enviar</div>
               <div class="card-body">
-                <div *ngIf="(pendingOrders$ | async)?.length === 0; else pendingOrdersList">
-                  <p class="text-center py-3"><i class="bi bi-check-circle me-1"></i>¡No hay pedidos pendientes!</p>
-                </div>
-                <ng-template #pendingOrdersList>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let order of pendingOrders$ | async">
-                      <div>
-                        <span class="fw-bold">{{ order.clientName }}</span>
-                        <small class="d-block">#{{ order.id }} - {{ order.orderDate | date : "short" }}</small>
+                <ng-container *ngIf="(pendingOrders$ | async) as pendingOrders; else noPendingOrders">
+                  <ul *ngIf="pendingOrders.length > 0; else noPendingOrders" class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let order of pendingOrders">
+                      <div class="item-content">
+                        <span class="fw-bold text-truncate">{{ order.clientName }}</span>
+                        <small class="d-block text-muted">#{{ order.id }} - {{ order.orderDate | date : "short" }}</small>
                       </div>
-                      <span class="badge rounded-pill" [ngClass]="{
+                      <span class="badge rounded-pill flex-shrink-0 mx-2" [ngClass]="{
                           'bg-info': order.status === 'pending',
                           'bg-primary': order.status === 'processing',
                           'bg-success': order.status === 'delivered',
@@ -104,14 +105,16 @@
                           <span *ngSwitchCase="'shipped'">Enviado</span>
                           <span *ngSwitchCase="'delivered'">Entregado</span>
                           <span *ngSwitchCase="'cancelled'">Cancelado</span>
-                          <span *ngSwitchDefault>{{ order.status | titlecase }}</span>
                         </ng-container>
                       </span>
-                      <a [routerLink]="['/admin/orders/detail', order.id]" class="btn btn-sm btn-outline-primary ms-2" title="Ver Pedido">
+                      <a [routerLink]="['/admin/orders/detail', order.id]" class="btn btn-sm btn-outline-primary ms-auto flex-shrink-0" title="Ver Pedido">
                         <i class="bi bi-arrow-right-circle"></i>
                       </a>
                     </li>
                   </ul>
+                </ng-container>
+                <ng-template #noPendingOrders>
+                  <p class="text-center py-3"><i class="bi bi-check-circle me-1"></i>¡No hay pedidos pendientes!</p>
                 </ng-template>
               </div>
             </div>
@@ -120,21 +123,21 @@
             <div class="card h-100 shadow-sm">
               <div class="card-header fw-bold header-low-stock"><i class="bi bi-exclamation-triangle-fill me-2"></i>Productos con Poco Stock</div>
               <div class="card-body">
-                <div *ngIf="(lowStockProducts$ | async)?.length === 0; else lowStockProductsList">
-                  <p class="text-center py-3"><i class="bi bi-check-circle me-1"></i>¡Todos los productos tienen buen stock!</p>
-                </div>
-                <ng-template #lowStockProductsList>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let product of lowStockProducts$ | async">
-                      <div>
-                        <span class="fw-bold">{{ product.name }}</span>
+                <ng-container *ngIf="(lowStockProducts$ | async) as lowStockProducts; else noLowStock">
+                   <ul *ngIf="lowStockProducts.length > 0; else noLowStock" class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let product of lowStockProducts">
+                      <div class="item-content">
+                        <span class="fw-bold text-truncate">{{ product.name }}</span>
                       </div>
-                      <span class="badge bg-danger rounded-pill">{{ product.stock }} unidades</span>
-                      <a [routerLink]="['/admin/products/edit', product.id]" class="btn btn-sm btn-outline-danger ms-2" title="Editar Producto">
+                      <span class="badge bg-danger rounded-pill flex-shrink-0 mx-2">{{ product.stock }} unidades</span>
+                      <a [routerLink]="['/admin/products/edit', product.id]" class="btn btn-sm btn-outline-danger ms-auto flex-shrink-0" title="Editar Producto">
                         <i class="bi bi-pencil"></i>
                       </a>
                     </li>
                   </ul>
+                </ng-container>
+                <ng-template #noLowStock>
+                  <p class="text-center py-3"><i class="bi bi-check-circle me-1"></i>¡Todos los productos tienen buen stock!</p>
                 </ng-template>
               </div>
             </div>
@@ -144,80 +147,73 @@
 
       <hr />
 
-      <section class="mb-5">
-        <h2 class="mb-3">Actividad Reciente</h2>
+      <section>
+        <h2 class="section-title">Actividad Reciente</h2>
         <div class="row g-4">
-          <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-lg-6 col-xl-4">
             <div class="card h-100 shadow-sm">
               <div class="card-header fw-bold header-latest-orders">Últimos 10 Pedidos</div>
               <div class="card-body">
-                <div *ngIf="(latestOrders$ | async)?.length === 0; else latestOrdersList">
-                  <p class="text-center py-3">No hay pedidos recientes.</p>
-                </div>
-                <ng-template #latestOrdersList>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let order of latestOrders$ | async">
-                      <div>
-                        <span class="fw-bold">{{ order.clientName }}</span>
-                        <small class="d-block">{{ order.total | currency : "ARS" : "$" }} -
-                          {{ order.orderDate | date : "short" }}</small>
+                <ng-container *ngIf="(latestOrders$ | async) as latestOrders; else noLatestOrders">
+                  <ul *ngIf="latestOrders.length > 0; else noLatestOrders" class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let order of latestOrders">
+                      <div class="item-content">
+                        <span class="fw-bold text-truncate">{{ order.clientName }}</span>
+                        <small class="d-block text-muted">{{ order.total | currency : "ARS" : "$" }} - {{ order.orderDate | date : "short" }}</small>
                       </div>
-                      <a [routerLink]="['/admin/orders/detail', order.id]" class="btn btn-sm btn-outline-info ms-2" title="Ver Pedido">
+                      <a [routerLink]="['/admin/orders/detail', order.id]" class="btn btn-sm btn-outline-info ms-auto flex-shrink-0" title="Ver Pedido">
                         <i class="bi bi-arrow-right-circle"></i>
                       </a>
                     </li>
                   </ul>
-                </ng-template>
+                </ng-container>
+                <ng-template #noLatestOrders><p class="text-center py-3">No hay pedidos recientes.</p></ng-template>
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-lg-6 col-xl-4">
             <div class="card h-100 shadow-sm">
               <div class="card-header fw-bold header-latest-clients">Últimos 10 Clientes</div>
               <div class="card-body">
-                <div *ngIf="(latestClients$ | async)?.length === 0; else latestClientsList">
-                  <p class="text-center py-3">No hay clientes recientes.</p>
-                </div>
-                <ng-template #latestClientsList>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let client of latestClients$ | async">
-                      <div>
-                        <span class="fw-bold">{{ client.fullName }}</span>
-                        <small class="d-block">{{ client.email }}</small>
+                <ng-container *ngIf="(latestClients$ | async) as latestClients; else noLatestClients">
+                  <ul *ngIf="latestClients.length > 0; else noLatestClients" class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let client of latestClients">
+                      <div class="item-content">
+                        <span class="fw-bold text-truncate">{{ client.fullName }}</span>
+                        <small class="d-block text-truncate">{{ client.email }}</small>
                       </div>
-                      <i class="bi bi-person-fill" style="font-size: 1.5rem"></i>
+                      <i class="bi bi-person-fill fs-4 flex-shrink-0 text-muted"></i>
                     </li>
                   </ul>
-                </ng-template>
+                </ng-container>
+                <ng-template #noLatestClients><p class="text-center py-3">No hay clientes recientes.</p></ng-template>
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-12 col-lg-4">
+          <div class="col-12 col-lg-6 col-xl-4">
             <div class="card h-100 shadow-sm">
-              <div class="card-header fw-bold header-latest-products">Últimos 10 Productos Añadidos</div>
+              <div class="card-header fw-bold header-latest-products">Últimos 10 Productos</div>
               <div class="card-body">
-                <div *ngIf="(latestProducts$ | async)?.length === 0; else latestProductsList">
-                  <p class="text-center py-3">No hay productos recientes.</p>
-                </div>
-                <ng-template #latestProductsList>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let product of latestProducts$ | async">
-                      <div>
-                        <span class="fw-bold">{{ product.name }}</span>
-                        <small class="d-block">{{ product.price | currency : "ARS" : "$" }} -
-                          {{ product.createdAt | date : "shortDate" }}</small>
+                <ng-container *ngIf="(latestProducts$ | async) as latestProducts; else noLatestProducts">
+                  <ul *ngIf="latestProducts.length > 0; else noLatestProducts" class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let product of latestProducts">
+                      <div class="item-content">
+                        <span class="fw-bold text-truncate">{{ product.name }}</span>
+                        <small class="d-block text-muted">{{ product.price | currency : "ARS" : "$" }} - {{ product.createdAt | date : "shortDate" }}</small>
                       </div>
-                      <a [routerLink]="['/admin/products/detail', product.id]" class="btn btn-sm btn-outline-success ms-2" title="Ver Producto">
+                      <a [routerLink]="['/admin/products/detail', product.id]" class="btn btn-sm btn-outline-success ms-auto flex-shrink-0" title="Ver Producto">
                         <i class="bi bi-eye"></i>
                       </a>
                     </li>
                   </ul>
-                </ng-template>
+                </ng-container>
+                <ng-template #noLatestProducts><p class="text-center py-3">No hay productos recientes.</p></ng-template>
               </div>
             </div>
           </div>
         </div>
       </section>
+
     </div>
   </div>
 </div>
