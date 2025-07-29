@@ -2,8 +2,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { HeaderComponent } from './shared/components/header/header.component';
-import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { HeaderComponent } from './components/shared/components/header/header.component';
+import { SidebarComponent } from './components/shared/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-admin',

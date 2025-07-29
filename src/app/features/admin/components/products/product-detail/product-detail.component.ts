@@ -3,11 +3,11 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Product } from 'src/app/core/models/product.model';
 import { ProductService } from 'src/app/core/services/product.service';
-import { HeaderComponent } from '@features/admin/shared/components/header/header.component';
-import { SidebarComponent } from '@features/admin/shared/components/sidebar/sidebar.component';
+import { HeaderComponent } from '@features/admin/components/shared/components/header/header.component';
+import { SidebarComponent } from '@features/admin/components/shared/components/sidebar/sidebar.component';
 import { from, Subscription } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { ConfirmDeleteModalComponent } from '@features/admin/shared/components/confirm-delete-modal/confirm-delete-modal.component';
+import { ConfirmDeleteModalComponent } from '@features/admin/components/shared/components/confirm-delete-modal/confirm-delete-modal.component';
 
 @Component({
   selector: 'app-product-detail',

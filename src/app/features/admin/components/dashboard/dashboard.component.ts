@@ -1,14 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { Observable, combineLatest, map } from 'rxjs';
-import { ProductService } from '../../../core/services/product.service';
-import { OrderService } from '../../../core/services/order.service';
-import { ClientService } from '../../../core/services/client.service';
-import { OrdersListComponent } from '../orders/orders-list/orders-list.component';
-import { Product } from '../../../core/models/product.model';
-import { Order } from '../../../core/models/order.model';
-import { Client } from '../../../core/models/client.model';
 import { RouterModule } from '@angular/router';
+import { ProductService } from '@core/services/product.service';
+import { OrderService } from '@core/services/order.service';
+import { ClientService } from '@core/services/client.service';
+import { Order } from '@core/models/order.model';
+import { Product } from '@core/models/product.model';
+import { Client } from '@core/models/client.model';
 
 @Component({
   selector: 'app-dashboard',

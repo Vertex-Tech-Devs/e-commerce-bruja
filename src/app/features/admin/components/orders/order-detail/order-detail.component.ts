@@ -6,7 +6,7 @@ import { OrderService } from '@core/services/order.service';
 import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
-import { SumItemsPipe } from '@features/admin/shared/pipes/sum-items/sum-items.pipe';
+import { SumItemsPipe } from '@features/admin/components/shared/pipes/sum-items/sum-items.pipe';
 
 @Component({
   selector: 'app-order-details',

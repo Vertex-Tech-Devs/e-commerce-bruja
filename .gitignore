@@ -13,7 +13,7 @@ node_modules/
 dist/
 
 # Environment files
-src/environments/environment*.ts
+src/environments/environment.ts
 
 # Firebase
 .firebase/

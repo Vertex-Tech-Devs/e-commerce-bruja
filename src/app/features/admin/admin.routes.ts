@@ -6,7 +6,7 @@ export const adminRoutes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./login/login.component').then((m) => m.LoginComponent),
+      import('./components/login/login.component').then((m) => m.LoginComponent),
   },
   {
     path: '',
@@ -21,7 +21,7 @@ export const adminRoutes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
+          import('./components/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
         path: 'products',
@@ -29,7 +29,7 @@ export const adminRoutes: Routes = [
           {
             path: '',
             loadComponent: () =>
-              import('./products/products-list/products-list.component').then(
+              import('./components/products/products-list/products-list.component').then(
                 (m) => m.ProductsListComponent
               ),
           },
@@ -37,20 +37,20 @@ export const adminRoutes: Routes = [
             path: 'create',
             loadComponent: () =>
               import(
-                './products/product-create/product-create.component'
+                './components/products/product-create/product-create.component'
               ).then((m) => m.ProductCreateComponent),
           },
           {
             path: 'detail/:id',
             loadComponent: () =>
-              import('./products/product-detail/product-detail.component').then(
+              import('./components/products/product-detail/product-detail.component').then(
                 (m) => m.ProductDetailComponent
               ),
           },
           {
             path: 'edit/:id',
             loadComponent: () =>
-              import('./products/product-create/product-create.component').then(
+              import('./components/products/product-create/product-create.component').then(
                 (m) => m.ProductCreateComponent
               ),
           },
@@ -59,7 +59,7 @@ export const adminRoutes: Routes = [
       {
         path: 'categories',
         loadComponent: () =>
-          import('./categories/categories-list/categories-list.component').then(
+          import('./components/categories/categories-list/categories-list.component').then(
             (m) => m.CategoriesListComponent
           ),
       },
@@ -69,12 +69,12 @@ export const adminRoutes: Routes = [
           {
             path: '',
             loadComponent: () =>
-              import('./orders/orders-list/orders-list.component').then((m) => m.OrdersListComponent),
+              import('./components/orders/orders-list/orders-list.component').then((m) => m.OrdersListComponent),
           },
           {
             path: 'detail/:id',
             loadComponent: () =>
-              import('./orders/order-detail/order-detail.component').then((m) => m.OrderDetailComponent),
+              import('./components/orders/order-detail/order-detail.component').then((m) => m.OrderDetailComponent),
           },
         ],
       },
@@ -82,19 +82,19 @@ export const adminRoutes: Routes = [
       {
         path: 'customers',
         loadComponent: () =>
-          import('./client/clients-list/clients-list.component').then((m) => m.ClientsListComponent),
+          import('./components/client/clients-list/clients-list.component').then((m) => m.ClientsListComponent),
       },
       {
         path: 'clients/:email/details',
         loadComponent: () =>
-          import('./client/client-details/client-details.component').then(
+          import('./components/client/client-details/client-details.component').then(
             (m) => m.ClientDetailsComponent
           ),
       },
       {
         path: 'account',
         loadComponent: () =>
-          import('./account/account.component').then((m) => m.AccountComponent),
+          import('./components/account/account.component').then((m) => m.AccountComponent),
       },
     ],
   },
