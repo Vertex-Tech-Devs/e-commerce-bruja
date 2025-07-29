@@ -4,9 +4,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ClientService } from '../../../../core/services/client.service';
-import { Client } from '../../../../core/models/client.model';
-import { Order } from '../../../../core/models/order.model';
+import { ClientService } from '../../../../../core/services/client.service';
+import { Client } from '../../../../../core/models/client.model';
+import { Order } from '../../../../../core/models/order.model';
 
 @Component({
   selector: 'app-client-details',

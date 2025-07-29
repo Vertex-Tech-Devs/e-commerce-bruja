@@ -3,8 +3,8 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-import { ClientService } from '../../../../core/services/client.service';
-import { Client } from '../../../../core/models/client.model';
+import { ClientService } from '../../../../../core/services/client.service';
+import { Client } from '../../../../../core/models/client.model';
 import {
   Observable,
   BehaviorSubject,
