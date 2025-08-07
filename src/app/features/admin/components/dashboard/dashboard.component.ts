@@ -8,6 +8,7 @@ import { ClientService } from '@core/services/client.service';
 import { Order } from '@core/models/order.model';
 import { Product } from '@core/models/product.model';
 import { Client } from '@core/models/client.model';
+import { TruncatePipe } from '../shared/pipes/truncate.pipe';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,8 @@ import { Client } from '@core/models/client.model';
     CommonModule,
     CurrencyPipe,
     DatePipe,
-    RouterModule
+    RouterModule,
+    TruncatePipe
   ],
   standalone: true,
   templateUrl: './dashboard.component.html',

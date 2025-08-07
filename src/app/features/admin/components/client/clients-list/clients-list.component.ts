@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -8,10 +8,11 @@ import { Client } from '../../../../../core/models/client.model';
 import {
   Observable,
   BehaviorSubject,
-  Subscription,
-  combineLatest
+  combineLatest,
+  map,
+  debounceTime,
+  distinctUntilChanged
 } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clients-list',
@@ -20,70 +21,71 @@ import { debounceTime, distinctUntilChanged, startWith, map } from 'rxjs/operato
     CommonModule,
     RouterModule,
     FormsModule,
-    DatePipe,
   ],
   templateUrl: './clients-list.component.html',
   styleUrls: ['./clients-list.component.scss'],
 })
-export class ClientsListComponent implements OnInit, OnDestroy {
-  searchTermSubject = new BehaviorSubject<string>('');
+export class ClientsListComponent implements OnInit {
+  public searchTermSubject = new BehaviorSubject<string>('');
+  public currentPageSubject = new BehaviorSubject<number>(1);
+  public itemsPerPageSubject = new BehaviorSubject<number>(10);
+  public itemsPerPageOptions = [5, 10, 20, 50];
 
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-  totalPages: number = 1;
+  public totalClients = 0;
+  public totalPages = 0;
 
-  clients$!: Observable<Client[]>;
+  public clients$!: Observable<Client[]>;
 
   private _clientService = inject(ClientService);
   private _router = inject(Router);
 
-  constructor() { }
   ngOnInit(): void {
     this.clients$ = combineLatest([
       this._clientService.getClients(),
       this.searchTermSubject.pipe(debounceTime(300), distinctUntilChanged()),
+      this.currentPageSubject,
+      this.itemsPerPageSubject
     ]).pipe(
-      map(([allClients, searchTerm]) => {
-        let tempClients = allClients;
-
+      map(([allClients, searchTerm, currentPage, itemsPerPage]) => {
+        let filteredClients = allClients;
         if (searchTerm) {
           const lowerCaseSearchTerm = searchTerm.toLowerCase();
-          tempClients = tempClients.filter(client =>
+          filteredClients = filteredClients.filter(client =>
             client.fullName.toLowerCase().includes(lowerCaseSearchTerm) ||
             client.email.toLowerCase().includes(lowerCaseSearchTerm)
           );
         }
 
+        this.totalClients = filteredClients.length;
+        this.totalPages = Math.ceil(this.totalClients / itemsPerPage);
 
-        this.totalPages = Math.max(1, Math.ceil(tempClients.length / this.itemsPerPage));
-
-
-        if (this.currentPage > this.totalPages) {
-          this.currentPage = this.totalPages;
+        if (currentPage > this.totalPages && this.totalPages > 0) {
+          this.currentPageSubject.next(this.totalPages);
+          currentPage = this.totalPages;
+        } else if (this.totalPages === 0) {
+          this.currentPageSubject.next(1);
+          currentPage = 1;
         }
 
-
-        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        const endIndex = startIndex + this.itemsPerPage;
-
-        return tempClients.slice(startIndex, endIndex);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        return filteredClients.slice(startIndex, startIndex + itemsPerPage);
       })
     );
   }
 
-  ngOnDestroy(): void {
-    this.searchTermSubject.complete();
+  onSearchChange(newValue: string): void {
+    this.searchTermSubject.next(newValue);
+    this.currentPageSubject.next(1);
   }
 
-  onSearchChange(newValue: string): void {
-    console.log('ClientsListComponent: onSearchChange - Nuevo valor del input:', newValue);
-    this.searchTermSubject.next(newValue);
-    this.currentPage = 1;
+  onItemsPerPageChange(newValue: string): void {
+    this.itemsPerPageSubject.next(Number(newValue));
+    this.currentPageSubject.next(1);
   }
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
+      this.currentPageSubject.next(page);
     }
   }
 

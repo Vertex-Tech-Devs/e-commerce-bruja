@@ -1,6 +1,20 @@
 @use "variables" as vars;
 @use "sass:color";
 
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 #page-content-wrapper {
   transition: all 0.3s ease-in-out;
 
@@ -9,19 +23,25 @@
     padding-right: 1rem;
   }
 
+  .dashboard-header {
+    margin-bottom: 2rem;
+  }
+
   .dashboard-title {
-    padding: 1.5rem 0;
-    margin-bottom: 1.5rem;
-    color: vars.$dashboard-header-text-color;
+    padding-top: 0;
+    margin-bottom: 0.5rem;
     font-size: 1.75rem;
     font-weight: vars.$font-weight-bold;
     text-align: center;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(45deg, vars.$accent-blue, vars.$accent-purple);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   hr {
     border-color: rgba(vars.$text-light, 0.1);
-    margin: 2rem 0;
+    margin: 0;
   }
 
   .section-title {
@@ -34,18 +54,71 @@
   }
 
   .card {
+    position: relative;
+    z-index: 1;
     background: linear-gradient(160deg,
         vars.$dark-bg-card-gradient-start,
-        vars.$dark-bg-card-gradient-end);
+        vars.$dark-bg-card-gradient-end );
     border: 1px solid rgba(vars.$accent-purple, 0.2);
     border-radius: vars.$border-radius-md;
     box-shadow: vars.$box-shadow-dark;
     color: vars.$text-light;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: none;
+
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(90deg,
+          vars.$accent-purple,
+          vars.$accent-blue,
+          vars.$accent-purple );
+      background-size: 200% 200%;
+      animation: gradient-animation 8s ease infinite;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
 
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      &::before {
+        opacity: 1;
+      }
+
+      .card-body .display-5 {
+        color: vars.$text-light;
+      }
+
+      .list-group-item a.btn {
+        border-color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .list-group-item a.btn-outline-success:hover {
+        background: vars.$card-header-latest-products-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
+
+      .list-group-item a.btn-outline-info:hover {
+        background: vars.$card-header-latest-orders-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
+
+      .list-group-item a.btn-outline-danger:hover {
+        background: vars.$card-header-low-stock-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
+
+      .list-group-item a.btn-outline-primary:hover {
+        background: vars.$card-header-pending-orders-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
     }
 
     .card-header {
@@ -107,6 +180,7 @@
         font-size: 2.5rem;
         font-weight: vars.$font-weight-bold;
         color: vars.$accent-purple;
+        transition: color 0.3s ease-in-out;
       }
 
       .card-text {
@@ -129,6 +203,11 @@
       padding: 0.75rem 0;
       flex-wrap: wrap;
 
+      a.btn {
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out,
+          border-color 0.2s ease-in-out;
+      }
+
       &:first-child {
         border-top: none;
       }
@@ -144,7 +223,6 @@
     }
   }
 }
-
 
 @media (min-width: 768px) {
   #page-content-wrapper {
@@ -187,22 +265,21 @@
   }
 }
 
-
 @media (min-width: 992px) {
   #page-content-wrapper {
-    .dashboard-title {
-      font-size: 2.25rem;
-      padding-top: 2rem;
+    .dashboard-header {
+      margin-bottom: 3rem;
     }
 
-    hr {
-      margin: 3rem 0;
+    .dashboard-title {
+      font-size: 2.25rem;
+      padding-top: 1rem;
     }
 
     .section-title {
       font-size: 1.8rem;
       margin-bottom: 2rem;
-      text-align: left;
+      text-align: center;
     }
 
     .card .card-body .display-5 {
@@ -210,7 +287,6 @@
     }
   }
 }
-
 
 @media (min-width: 1200px) {
   #page-content-wrapper {

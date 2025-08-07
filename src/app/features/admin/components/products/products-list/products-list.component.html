@@ -68,7 +68,9 @@
             </tr>
             <tr *ngFor="let product of products">
               <td data-label="Nombre" class="col-nombre">{{ product.name }}</td>
-              <td data-label="Descripción" class="col-descripcion">{{ product.description }}</td>
+              <td data-label="Descripción" class="col-descripcion">
+                {{ product.description | truncate:30 }}
+              </td>
               <td data-label="Precio" class="text-end col-precio">
                 {{ product.price | currency : "ARS" : "$" }}
               </td>
@@ -138,4 +140,3 @@
 <a routerLink="/admin/products/create" class="btn btn-primary btn-lg rounded-circle fab-button shadow-lg" title="Nuevo Producto">
   <i class="bi bi-plus-lg"></i>
 </a>
-
