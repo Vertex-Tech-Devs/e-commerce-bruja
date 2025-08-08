@@ -1,12 +1,5 @@
-<nav id="sidebar" class="sidebar bg-dark text-white">
-  <div class="sidebar-header">
-    <h3 class="text-center py-3">Panel Administrador</h3>
-    <button class="menu-toggle-close" (click)="onLinkClick()">
-      <i class="bi bi-x-lg"></i>
-    </button>
-  </div>
-
-  <ul class="list-unstyled components">
+<nav id="sidebar" class="sidebar">
+  <ul class="nav-links">
     <li>
       <a
         routerLink="/admin/dashboard"
@@ -14,7 +7,8 @@
         class="sidebar-link"
         (click)="onLinkClick()"
       >
-        <i class="bi bi-speedometer2"></i> Panel de Control
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
       </a>
     </li>
     <li>
@@ -24,10 +18,10 @@
         class="sidebar-link"
         (click)="onLinkClick()"
       >
-        <i class="bi bi-box-seam"></i> Productos
+        <i class="bi bi-box-seam"></i>
+        <span>Productos</span>
       </a>
     </li>
-
     <li>
       <a
         routerLink="/admin/categories"
@@ -35,7 +29,8 @@
         class="sidebar-link"
         (click)="onLinkClick()"
       >
-        <i class="bi bi-tags"></i> Categorías
+        <i class="bi bi-tags"></i>
+        <span>Categorías</span>
       </a>
     </li>
     <li>
@@ -45,7 +40,8 @@
         class="sidebar-link"
         (click)="onLinkClick()"
       >
-        <i class="bi bi-cart"></i> Pedidos
+        <i class="bi bi-receipt"></i>
+        <span>Pedidos</span>
       </a>
     </li>
     <li>
@@ -55,7 +51,8 @@
         class="sidebar-link"
         (click)="onLinkClick()"
       >
-        <i class="bi bi-people"></i> Clientes
+        <i class="bi bi-people"></i>
+        <span>Clientes</span>
       </a>
     </li>
   </ul>

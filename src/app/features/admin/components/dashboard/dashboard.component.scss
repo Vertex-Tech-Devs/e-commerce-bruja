@@ -1,41 +1,61 @@
 @use "variables" as vars;
 @use "sass:color";
 
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 #page-content-wrapper {
   transition: all 0.3s ease-in-out;
 
-  .dashboard-title {
-    padding-top: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .dashboard-header {
     margin-bottom: 2rem;
-    color: vars.$dashboard-header-text-color;
-    font-size: 2.5rem;
+  }
+
+  .dashboard-title {
+    padding-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
     font-weight: vars.$font-weight-bold;
     text-align: center;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, vars.$accent-blue, vars.$accent-purple);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   hr {
     border-color: rgba(vars.$text-light, 0.1);
-    margin: 3rem 0;
+    margin: 0;
   }
 
-  section {
-    padding: 0 2rem;
-    margin-bottom: 4rem;
-
-    h2 {
-      font-size: 1.8rem;
-      font-weight: vars.$font-weight-semibold;
-      color: vars.$dashboard-section-title-color;
-      margin-bottom: 2rem;
-      letter-spacing: 0.03em;
-      text-align: center;
-    }
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: vars.$font-weight-semibold;
+    color: vars.$dashboard-section-title-color;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.03em;
+    text-align: center;
   }
 
   .card {
+    position: relative;
+    z-index: 1;
     background: linear-gradient(160deg,
         vars.$dark-bg-card-gradient-start,
         vars.$dark-bg-card-gradient-end );
@@ -43,231 +63,245 @@
     border-radius: vars.$border-radius-md;
     box-shadow: vars.$box-shadow-dark;
     color: vars.$text-light;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: none;
+
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(90deg,
+          vars.$accent-purple,
+          vars.$accent-blue,
+          vars.$accent-purple );
+      background-size: 200% 200%;
+      animation: gradient-animation 8s ease infinite;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
 
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      &::before {
+        opacity: 1;
+      }
+
+      .card-body .display-5 {
+        color: vars.$text-light;
+      }
+
+      .list-group-item a.btn {
+        border-color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .list-group-item a.btn-outline-success:hover {
+        background: vars.$card-header-latest-products-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
+
+      .list-group-item a.btn-outline-info:hover {
+        background: vars.$card-header-latest-orders-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
+
+      .list-group-item a.btn-outline-danger:hover {
+        background: vars.$card-header-low-stock-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
+
+      .list-group-item a.btn-outline-primary:hover {
+        background: vars.$card-header-pending-orders-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
     }
 
     .card-header {
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.25rem;
       border-bottom: 1px solid rgba(vars.$text-light, 0.1);
       font-weight: vars.$font-weight-semibold;
-      font-size: 1.1rem;
-      border-top-left-radius: vars.$border-radius-md;
-      border-top-right-radius: vars.$border-radius-md;
-      background: none;
-      color: vars.$text-light;
+      font-size: 1rem;
 
       &.header-sales {
         background: vars.$card-header-sales-bg;
-        border-bottom-color: color.adjust(rgba(#6c757d, 0.2), $lightness: -10%);
       }
 
       &.header-orders {
         background: vars.$card-header-orders-bg;
-        border-bottom-color: color.adjust(rgba(#007bff, 0.2), $lightness: -10%);
       }
 
       &.header-new-clients {
         background: vars.$card-header-clients-bg;
-        border-bottom-color: color.adjust(rgba(#28a745, 0.2), $lightness: -10%);
       }
 
       &.header-total-sales {
         background: vars.$card-header-total-sales-bg;
-        border-bottom-color: color.adjust(rgba(#6c757d, 0.2), $lightness: -10%);
       }
 
       &.header-total-orders {
         background: vars.$card-header-total-orders-bg;
-        border-bottom-color: color.adjust(rgba(#343a40, 0.2), $lightness: -10%);
       }
 
       &.header-total-clients {
         background: vars.$card-header-total-clients-bg;
-        border-bottom-color: color.adjust(rgba(#ffc107, 0.2), $lightness: -10%);
       }
 
       &.header-pending-orders {
         background: vars.$card-header-pending-orders-bg;
-        border-bottom-color: color.adjust(rgba(#ffc107, 0.2), $lightness: -10%);
       }
 
       &.header-low-stock {
         background: vars.$card-header-low-stock-bg;
-        border-bottom-color: color.adjust(rgba(#dc3545, 0.2), $lightness: -10%);
       }
 
       &.header-latest-orders {
         background: vars.$card-header-latest-orders-bg;
-        border-bottom-color: color.adjust(rgba(#17a2b8, 0.2), $lightness: -10%);
       }
 
       &.header-latest-clients {
         background: vars.$card-header-latest-clients-bg;
-        border-bottom-color: color.adjust(rgba(#007bff, 0.2), $lightness: -10%);
       }
 
       &.header-latest-products {
         background: vars.$card-header-latest-products-bg;
-        border-bottom-color: color.adjust(rgba(#28a745, 0.2), $lightness: -10%);
       }
     }
 
     .card-body {
-      padding: 2rem;
+      padding: 1.25rem;
       color: vars.$text-light;
 
       .display-5 {
-        font-size: 3.5rem;
+        font-size: 2.5rem;
         font-weight: vars.$font-weight-bold;
         color: vars.$accent-purple;
+        transition: color 0.3s ease-in-out;
       }
 
       .card-text {
         color: vars.$text-muted-dark;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
     }
   }
 
   .list-group {
     background-color: transparent;
-    border-radius: vars.$border-radius-sm;
 
     .list-group-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
       background-color: transparent;
       border-color: rgba(vars.$text-light, 0.08);
       color: vars.$text-light;
-      padding: 1rem 0;
+      padding: 0.75rem 0;
+      flex-wrap: wrap;
+
+      a.btn {
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out,
+          border-color 0.2s ease-in-out;
+      }
 
       &:first-child {
-        border-top-left-radius: vars.$border-radius-sm;
-        border-top-right-radius: vars.$border-radius-sm;
+        border-top: none;
       }
 
       &:last-child {
-        border-bottom-left-radius: vars.$border-radius-sm;
-        border-bottom-right-radius: vars.$border-radius-sm;
         border-bottom: none;
       }
 
-      .fw-bold {
-        color: vars.$text-light;
-      }
-
-      .text-muted {
-        color: vars.$text-muted-dark !important;
-      }
-
-      .badge {
-        font-size: 0.8rem;
-        font-weight: vars.$font-weight-semibold;
-        padding: 0.4em 0.8em;
-        border-radius: 0.3em;
-
-        &.bg-info {
-          background-color: vars.$accent-blue !important;
-        }
-
-        &.bg-primary {
-          background-color: vars.$accent-purple !important;
-        }
-
-        &.bg-success {
-          background-color: vars.$accent-green !important;
-        }
-
-        &.bg-warning {
-          background-color: vars.$accent-yellow !important;
-          color: #333 !important;
-        }
-
-        &.bg-danger {
-          background-color: vars.$accent-red !important;
-        }
-      }
-
-      .btn-outline-primary,
-      .btn-outline-danger,
-      .btn-outline-info,
-      .btn-outline-success {
-        color: vars.$accent-purple;
-        border-color: rgba(vars.$accent-purple, 0.5);
-
-        &:hover {
-          background-color: vars.$accent-purple;
-          color: white;
-          border-color: vars.$accent-purple;
-        }
+      .item-content {
+        flex: 1;
+        min-width: 0;
       }
     }
   }
 }
 
-// ===============================================
-// ESTILOS RESPONSIVE
-// Aplicar en tablets y pantallas más pequeñas (lg)
-// ===============================================
-
-@media (max-width: 992px) {
+@media (min-width: 768px) {
   #page-content-wrapper {
+    .container-fluid {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
 
-    // Reducir el tamaño de la fuente para el título principal
     .dashboard-title {
       font-size: 2rem;
-      padding-top: 1.5rem;
-      margin-bottom: 1.5rem;
     }
 
-    section {
-      padding: 0 1rem; // Menos padding horizontal en pantallas chicas
+    .section-title {
+      font-size: 1.6rem;
+    }
 
-      // Reducir el tamaño de los subtítulos de sección
-      h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
+    .card {
+      .card-header {
+        font-size: 1.1rem;
+        padding: 1.25rem 1.5rem;
+      }
+
+      .card-body {
+        padding: 1.5rem;
+
+        .display-5 {
+          font-size: 3rem;
+        }
+
+        .card-text {
+          font-size: 0.95rem;
+        }
       }
     }
 
-    .card .card-body {
-      padding: 1.5rem; // Reducir padding dentro de las tarjetas
-
-      // La tipografía más grande debe ser más pequeña en tablets/móviles
-      .display-5 {
-        font-size: 2.5rem; // Reducción significativa
-      }
-    }
-
-    // Asegurar que el contenido de las listas no se apriete demasiado
     .list-group-item {
-      padding: 0.75rem 0; // Ajuste de padding vertical
-      flex-wrap: wrap; // Permite que los elementos pasen a la línea de abajo si no caben
-      gap: 0.5rem; // Añade un pequeño espacio si los elementos se envuelven
+      padding: 1rem 0;
+      flex-wrap: nowrap;
     }
   }
 }
 
-// ===============================================
-// ESTILOS RESPONSIVE
-// Aplicar en móviles (sm)
-// ===============================================
-
-@media (max-width: 576px) {
+@media (min-width: 992px) {
   #page-content-wrapper {
+    .dashboard-header {
+      margin-bottom: 3rem;
+    }
+
     .dashboard-title {
-      font-size: 1.75rem;
+      font-size: 2.25rem;
+      padding-top: 1rem;
     }
 
-    section h2 {
-      font-size: 1.3rem;
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      text-align: center;
     }
 
-    // Reducción aún mayor para móviles
     .card .card-body .display-5 {
-      font-size: 2rem;
+      font-size: 3.25rem;
     }
   }
-} 
+}
+
+@media (min-width: 1200px) {
+  #page-content-wrapper {
+    .dashboard-title {
+      font-size: 2.5rem;
+    }
+
+    .card .card-body .display-5 {
+      font-size: 3.5rem;
+    }
+  }
+}
+
+.card-header.header-latest-clients+.card-body {
+  .list-group-item .bi-person-fill {
+    color: vars.$text-muted-dark !important;
+  }
+}

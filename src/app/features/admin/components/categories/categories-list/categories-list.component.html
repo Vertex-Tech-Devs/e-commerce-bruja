@@ -1,60 +1,65 @@
-<div class="container my-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Gestión de Categorías</h2>
-    <button class="btn btn-primary" (click)="openCategoryModal()">
-      <i class="bi bi-plus-lg me-2"></i>
-      Nueva Categoría
-    </button>
-  </div>
+<div class="container-fluid my-4">
+  <div class="card-gradient-wrapper">
+    <div class="card list-card shadow-sm">
+      <div class="card-body">
 
-  <div class="card p-3 shadow-sm rounded-3">
-    <ng-container *ngIf="categories$ | async as categories; else loading">
-      <div *ngIf="categories.length > 0; else emptyState" class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-light">
-            <tr>
-              <th scope="col">Nombre</th>
-              <th scope="col" class="text-end">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let category of categories">
-              <td>{{ category.name }}</td>
-              <td class="text-end">
-                <button
-                  class="btn btn-outline-secondary btn-sm me-2"
-                  (click)="openCategoryModal(category)"
-                  title="Editar"
-                >
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button
-                  class="btn btn-outline-danger btn-sm"
-                  (click)="onDelete(category)"
-                  title="Eliminar"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <h2 class="card-title text-center mb-4">Gestión de Categorías</h2>
+
+        <ng-container *ngIf="categories$ | async as categories; else loading">
+          <div *ngIf="categories.length > 0; else emptyState" class="table-responsive">
+            <table class="table table-hover align-middle mb-0 category-table">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col" class="text-end">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let category of categories">
+                  <td data-label="Nombre">{{ category.name }}</td>
+                  <td data-label="Acciones" class="text-end">
+                    <button
+                      class="btn btn-outline-primary btn-sm me-2"
+                      (click)="openCategoryModal(category)"
+                      title="Editar">
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="onDelete(category)"
+                      title="Eliminar">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <ng-template #emptyState>
+            <div class="text-center text-muted-custom py-5">
+              <i class="bi bi-tags fs-2 d-block mb-2"></i>
+              <p class="lead">Aún no hay categorías creadas.</p>
+              <p>¡Crea la primera para empezar a organizar tus productos!</p>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        <ng-template #loading>
+          <div class="d-flex justify-content-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        </ng-template>
       </div>
-
-      <ng-template #emptyState>
-        <div class="text-center p-5">
-          <p class="lead text-muted">Aún no hay categorías creadas.</p>
-          <p>¡Crea la primera para empezar a organizar tus productos!</p>
-        </div>
-      </ng-template>
-    </ng-container>
-
-    <ng-template #loading>
-      <div class="d-flex justify-content-center p-5">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Cargando...</span>
-        </div>
-      </div>
-    </ng-template>
+    </div>
   </div>
 </div>
+
+<button
+  class="btn btn-primary btn-lg rounded-circle fab-button shadow-lg"
+  (click)="openCategoryModal()"
+  title="Nueva Categoría">
+  <i class="bi bi-plus-lg"></i>
+</button>

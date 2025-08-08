@@ -1,174 +1,177 @@
-<div class="container-fluid mt-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">{{ pageTitle }}</h2>
-        <button (click)="goBack()" class="btn btn-outline-secondary">
-          <i class="bi bi-arrow-left"></i> Volver a la lista de pedidos
-        </button>
-      </div>
-
-      <hr />
-
-      <div *ngIf="order$ | async as order; else loadingOrNotFound">
-        <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-light">
-            <h5 class="mb-0">Resumen del Pedido</h5>
+<div class="container-fluid my-4">
+  <div class="card-gradient-wrapper">
+    <div class="card list-card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
+          <div class="page-title-container">
+            <h2 class="card-title mb-0">{{ pageTitle }}</h2>
+            <small *ngIf="order$ | async as order" class="text-muted truncate-text order-id-subtitle">#{{ order.id }}</small>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <dl class="row mb-0">
-                  <dt class="col-sm-4">ID de Pedido:</dt>
-                  <dd class="col-sm-8">{{ order.id }}</dd>
-
-                  <dt class="col-sm-4">Fecha del Pedido:</dt>
-                  <dd class="col-sm-8">{{ order.orderDate | date:'medium' }}</dd>
-
-                  <dt class="col-sm-4">Método de Pago:</dt>
-                  <dd class="col-sm-8">{{ order.paymentMethod || 'N/A' }}</dd>
-                </dl>
-              </div>
-              <div class="col-md-6">
-                <dl class="row mb-0">
-                  <dt class="col-sm-4">Estado:</dt>
-                  <dd class="col-sm-8">
-                    <select
-                      class="form-select form-select-sm d-inline-block w-auto"
-                      [ngModel]="currentStatus"
-                      (change)="onStatusChange($event)"
-                    >
-                      <option *ngFor="let status of statusOptions" [value]="status">
-                        <ng-container [ngSwitch]="status">
-                          <span *ngSwitchCase="'pending'">Pendiente</span>
-                          <span *ngSwitchCase="'processing'">Procesando</span>
-                          <span *ngSwitchCase="'shipped'">Enviado</span>
-                          <span *ngSwitchCase="'delivered'">Entregado</span>
-                          <span *ngSwitchCase="'cancelled'">Cancelado</span>
-                          <span *ngSwitchDefault>{{ status | titlecase }}</span> </ng-container>
-                      </option>
-                    </select>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-light">
-            <h5 class="mb-0">Información del Cliente y Envío</h5>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <h6>Cliente:</h6>
-                <p class="mb-1"><strong>{{ order.clientName }}</strong></p>
-                <p class="mb-1">Email: {{ order.clientEmail || 'N/A' }}</p>
-                <p class="mb-1">Teléfono: {{ order.clientPhone || 'N/A' }}</p>
-              </div>
-              <div class="col-md-6">
-                <h6>Dirección de Envío:</h6>
-                <address class="mb-0">
-                  {{ order.shippingAddress.street }}<br />
-                  {{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{ order.shippingAddress.zipCode }}<br />
-                  {{ order.shippingAddress.country }}
-                </address>
-                <h6 *ngIf="order.billingAddress" class="mt-3">Dirección de Facturación:</h6>
-                <address *ngIf="order.billingAddress" class="mb-0">
-                  {{ order.billingAddress.street }}<br />
-                  {{ order.billingAddress.city }}, {{ order.billingAddress.state }} {{ order.billingAddress.zipCode }}<br />
-                  {{ order.billingAddress.country }}
-                </address>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-light">
-            <h5 class="mb-0">Productos Comprados</h5>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-striped table-hover align-middle">
-                <thead>
-                  <tr>
-                    <th style="width: 80px;"></th>
-                    <th>Producto</th>
-                    <th class="text-center">Cantidad</th>
-                    <th class="text-end">Precio Unitario</th>
-                    <th class="text-end">Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of order.items">
-                    <td>
-                      <img [src]="item.productImage || 'https://placehold.co/60x60/f0f0f0/6c757d?text=No+Img'"
-                               alt="{{ item.productName }}" class="img-fluid rounded" style="max-width: 60px; max-height: 60px; object-fit: cover;">
-                    </td>
-                    <td>{{ item.productName }}</td>
-                    <td class="text-center">{{ item.quantity }}</td>
-                    <td class="text-end">{{ item.price | currency:'ARS':'$' }}</td>
-                    <td class="text-end">{{ getItemSubtotal(item) | currency:'ARS':'$' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-light">
-            <h5 class="mb-0">Resumen de Costos</h5>
-          </div>
-          <div class="card-body">
-            <div class="row justify-content-end">
-              <div class="col-md-6 col-lg-4">
-                <table class="table table-borderless table-sm">
-                  <tbody>
-                    <tr>
-                      <td>Subtotal:</td>
-                      <td class="text-end">{{ order.subtotal || (order.items | sumItems:'price':'quantity') | currency:'ARS':'$' }}</td>
-                    </tr>
-                    <tr>
-                      <td>Costo de Envío:</td>
-                      <td class="text-end">{{ order.shippingCost || 0 | currency:'ARS':'$' }}</td>
-                    </tr>
-                    <tr>
-                      <td>Impuestos:</td>
-                      <td class="text-end">{{ order.taxAmount || 0 | currency:'ARS':'$' }}</td>
-                    </tr>
-                    <tr class="fw-bold">
-                      <td>Total Pagado:</td>
-                      <td class="text-end">{{ order.total | currency:'ARS':'$' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex justify-content-end gap-2 mt-4 mb-4">
-          <button (click)="generateReceipt()" class="btn btn-secondary">
-            <i class="bi bi-receipt"></i> Ver Recibo
+          <button (click)="goBack()" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Volver a la lista
           </button>
         </div>
 
-      </div>
+        <div *ngIf="order$ | async as order; else loadingOrNotFound">
+          <div class="card-gradient-wrapper mb-4">
+            <div class="card details-sub-card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">
+                  <i class="bi bi-card-list me-2"></i>
+                  Resumen del Pedido
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="card-text"><strong>ID de Pedido:</strong> <span class="truncate-text">{{ order.id }}</span></p>
+                    <p class="card-text mb-md-0"><strong>Fecha:</strong> {{ order.orderDate | date:'medium' }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="card-text"><strong>Método de Pago:</strong> {{ order.paymentMethod || 'N/A' }}</p>
+                    <div class="d-flex align-items-center flex-wrap">
+                      <strong class="me-2">Estado:</strong>
+                      <select
+                        class="form-select form-select-sm d-inline-block w-auto"
+                        [ngModel]="currentStatus"
+                        (change)="onStatusChange($event)"
+                      >
+                        <option *ngFor="let status of statusOptions" [value]="status">
+                          <ng-container [ngSwitch]="status">
+                            <span *ngSwitchCase="'pending'">Pendiente</span>
+                            <span *ngSwitchCase="'processing'">Procesando</span>
+                            <span *ngSwitchCase="'shipped'">Enviado</span>
+                            <span *ngSwitchCase="'delivered'">Entregado</span>
+                            <span *ngSwitchCase="'cancelled'">Cancelado</span>
+                            <span *ngSwitchDefault>{{ status | titlecase }}</span>
+                          </ng-container>
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <ng-template #loadingOrNotFound>
-        <div class="alert alert-info text-center py-4" role="alert">
-          <span *ngIf="orderId; else noIdMessage">
-            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-            Cargando detalles del pedido...
-          </span>
-          <ng-template #noIdMessage>
-            <i class="bi bi-exclamation-triangle-fill me-2"></i> No se proporcionó un ID de pedido.
-          </ng-template>
+          <div class="card-gradient-wrapper mb-4">
+            <div class="card details-sub-card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">
+                  <i class="bi bi-truck me-2"></i>
+                  Información del Cliente y Envío
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6>Cliente</h6>
+                    <p class="mb-1"><strong>{{ order.clientName }}</strong></p>
+                    <p class="mb-1">{{ order.clientEmail || 'N/A' }}</p>
+                    <p class="mb-1">{{ order.clientPhone || 'N/A' }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <h6>Dirección de Envío</h6>
+                    <address class="mb-0">
+                      {{ order.shippingAddress.street }}<br />
+                      {{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{ order.shippingAddress.zipCode }}<br />
+                      {{ order.shippingAddress.country }}
+                    </address>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-gradient-wrapper mb-4">
+            <div class="card details-sub-card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">
+                  <i class="bi bi-box-seam me-2"></i>
+                  Productos Comprados
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle details-table mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width: 80px;"></th>
+                        <th>Producto</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-end">Precio Unitario</th>
+                        <th class="text-end">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of order.items">
+                        <td>
+                          <img [src]="item.productImage || 'https://placehold.co/60x60/f0f0f0/6c757d?text=No+Img'"
+                               alt="{{ item.productName }}" class="img-fluid rounded">
+                        </td>
+                        <td data-label="Producto">{{ item.productName }}</td>
+                        <td data-label="Cantidad" class="text-center">{{ item.quantity }}</td>
+                        <td data-label="Precio Unitario" class="text-end">{{ item.price | currency:'ARS':'$' }}</td>
+                        <td data-label="Subtotal" class="text-end">{{ getItemSubtotal(item) | currency:'ARS':'$' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-gradient-wrapper">
+            <div class="card details-sub-card">
+               <div class="card-header">
+                <h5 class="card-title mb-0">
+                  <i class="bi bi-cash-coin me-2"></i>
+                  Resumen de Costos
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="row justify-content-end">
+                  <div class="col-lg-5">
+                    <table class="table table-borderless table-sm mb-0 summary-table">
+                      <tbody>
+                        <tr>
+                          <td>Subtotal:</td>
+                          <td class="text-end">{{ order.subtotal || (order.items | sumItems:'price':'quantity') | currency:'ARS':'$' }}</td>
+                        </tr>
+                        <tr>
+                          <td>Costo de Envío:</td>
+                          <td class="text-end">{{ order.shippingCost || 0 | currency:'ARS':'$' }}</td>
+                        </tr>
+                        <tr>
+                          <td>Impuestos:</td>
+                          <td class="text-end">{{ order.taxAmount || 0 | currency:'ARS':'$' }}</td>
+                        </tr>
+                        <tr class="fw-bold total-row">
+                          <td>Total Pagado:</td>
+                          <td class="text-end">{{ order.total | currency:'ARS':'$' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                  <button (click)="generateReceipt()" class="btn btn-secondary">
+                    <i class="bi bi-receipt"></i> Ver Recibo
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </ng-template>
+
+        <ng-template #loadingOrNotFound>
+          <div class="text-center text-muted-custom py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>

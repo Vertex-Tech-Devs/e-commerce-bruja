@@ -1,7 +1,6 @@
-<div class="modal-header bg-primary text-white">
-  <h4 class="modal-title pull-left">{{ title }}</h4>
-  <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="cancel()">
-  </button>
+<div class="modal-header modal-header-custom">
+  <h4 class="modal-title w-100 text-center">{{ title }}</h4>
+  <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="cancel()"></button>
 </div>
 
 <div class="modal-body">
@@ -15,8 +14,9 @@
         formControlName="name"
         [ngClass]="{ 'is-invalid': name?.invalid && (name?.dirty || name?.touched) }"
         (keydown.enter)="save()"
+        placeholder="Ej: Indumentaria"
       />
-      <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback" style="display: block;">
+      <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback">
         <div *ngIf="name?.errors?.['required']">El nombre es obligatorio.</div>
         <div *ngIf="name?.errors?.['minlength']">Debe tener al menos 3 caracteres.</div>
       </div>
@@ -26,7 +26,7 @@
 
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
-  <button type="button" class="btn btn-primary" (click)="save()" [disabled]="categoryForm.invalid">
+  <button type="button" class="btn btn-save-gradient" (click)="save()" [disabled]="categoryForm.invalid">
     Guardar
   </button>
 </div>

@@ -1,97 +1,84 @@
 @use "sass:color";
 @use 'variables' as vars;
 
-.z-index-top {
-  z-index: 1050;
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
   background-color: vars.$dark-bg-secondary;
-  padding-top: 1rem;
-  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.4);
+  border-right: 1px solid rgba(vars.$text-light, 0.1);
+  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+}
 
-  .sidebar-header {
-    padding: 20px;
-    background: color.adjust(vars.$dark-bg-secondary, $lightness: -5%);
-    border-bottom: 1px solid rgba(vars.$text-light, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.nav-links {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+  flex-grow: 1;
+}
 
-    h3 {
-      color: vars.$text-light;
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: vars.$font-weight-medium;
-    }
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 2rem;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  border-radius: 0;
+  position: relative;
+  cursor: pointer;
 
-    .menu-toggle-close {
-      background: rgba(vars.$dark-bg-primary, 0.7);
-      border: none;
-      border-radius: vars.$border-radius-pill;
-      color: vars.$text-light;
-      font-size: 1.2rem;
-      width: 2.2rem;
-      height: 2.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  span,
+  i {
+    font-size: 1rem;
+    font-weight: vars.$font-weight-medium;
+    color: vars.$text-muted-dark;
+    transition: color 0.3s ease;
+  }
 
-      &:hover {
-        background: vars.$accent-red;
-        color: vars.$text-dark;
-        transform: scale(1.05);
-      }
+  i {
+    font-size: 1.25rem;
+    margin-right: 1rem;
+    width: 24px;
+  }
 
-      &:active {
-        background: color.adjust(vars.$accent-red, $lightness: -10%);
-        transform: scale(0.95);
-      }
+  &:hover:not(.active) {
 
-      &:focus {
-        outline: none;
-        box-shadow: 0 0 0 0.2rem rgba(vars.$accent-red, 0.3);
-      }
-
-      @media (min-width: vars.$breakpoint-md) {
-        display: none;
-      }
+    span,
+    i {
+      background: linear-gradient(90deg, vars.$accent-purple, vars.$accent-blue, vars.$accent-purple);
+      background-size: 200% 200%;
+      animation: gradient-animation 6s ease infinite;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
   }
 
-  .components {
-    padding: 20px 0;
-    list-style: none;
+  &.active {
+    color: vars.$text-light;
+    background: linear-gradient(90deg, vars.$accent-purple, vars.$accent-blue);
+    background-size: 200% 200%;
+    animation: gradient-animation 6s ease infinite;
 
-    .sidebar-link {
-      padding: 12px 25px;
-      font-size: 1.05em;
-      display: block;
-      color: vars.$text-muted-dark;
-      text-decoration: none;
-      transition: all 0.3s ease-in-out;
-
-      &:hover {
-        background: rgba(vars.$accent-purple, 0.2);
-        color: vars.$accent-purple;
-        text-decoration: none;
-        padding-left: 30px;
-      }
-
-      &.active {
-        background: vars.$accent-purple;
-        color: vars.$text-light;
-        font-weight: vars.$font-weight-bold;
-        border-left: 5px solid vars.$accent-blue;
-        padding-left: 20px;
-      }
-
-      i {
-        margin-right: 12px;
-        font-size: 1.1em;
-      }
+    span,
+    i {
+      color: vars.$text-light;
+      background: none;
+      -webkit-background-clip: initial;
+      background-clip: initial;
     }
   }
 }

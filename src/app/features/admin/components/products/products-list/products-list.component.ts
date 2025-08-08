@@ -8,7 +8,7 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ConfirmDeleteModalComponent } from '../../shared/components/confirm-delete-modal/confirm-delete-modal.component';
-
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 
 @Component({
   selector: 'app-products-list',
@@ -19,7 +19,8 @@ import { ConfirmDeleteModalComponent } from '../../shared/components/confirm-del
     RouterModule,
     CurrencyPipe,
     FormsModule,
-    TitleCasePipe
+    TitleCasePipe,
+    TruncatePipe
   ],
   standalone: true,
 })
@@ -29,7 +30,6 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   private _router = inject(Router);
   private _modalService = inject(BsModalService);
 
-  // --- Referencia al modal abierto de NGX-Bootstrap ---
   bsModalRef?: BsModalRef;
 
   public searchTermSubject = new BehaviorSubject<string>('');

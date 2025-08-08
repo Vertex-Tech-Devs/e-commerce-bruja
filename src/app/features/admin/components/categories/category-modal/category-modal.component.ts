@@ -10,6 +10,7 @@ import { Category } from '@core/models/category.model';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './category-modal.component.html',
+  styleUrls: ['./category-modal.component.scss']
 })
 export class CategoryModalComponent implements OnInit {
 
