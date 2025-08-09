@@ -1,0 +1,62 @@
+.shop-header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .brand-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .main-nav {
+    a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: color 0.2s;
+
+      &:hover,
+      &.active {
+        color: #ed4b0a;
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    .cart-icon,
+    .admin-login {
+      font-size: 1.5rem;
+      color: #333;
+      position: relative;
+      text-decoration: none;
+
+      .cart-count {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: #dc3545;
+        color: white;
+        border-radius: 50%;
+        padding: 0.15rem 0.4rem;
+        font-size: 0.75rem;
+        font-weight: bold;
+      }
+    }
+  }
+}
