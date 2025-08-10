@@ -1,11 +1,14 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'admin/dashboard',
+    redirectTo: 'shop',
     pathMatch: 'full'
+  },
+  {
+    path: 'shop',
+    loadChildren: () => import('./features/shop/shop.routes').then(m => m.SHOP_ROUTES)
   },
   {
     path: 'admin',
