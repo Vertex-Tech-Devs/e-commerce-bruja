@@ -1,3 +1,4 @@
+
 import { Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { authGuard } from '@core/guards/auth.guard';
@@ -78,7 +79,6 @@ export const adminRoutes: Routes = [
           },
         ],
       },
-
       {
         path: 'customers',
         loadComponent: () =>
@@ -95,6 +95,11 @@ export const adminRoutes: Routes = [
         path: 'account',
         loadComponent: () =>
           import('./components/account/account.component').then((m) => m.AccountComponent),
+      },
+      {
+        path: 'home-management',
+        loadComponent: () =>
+          import('./components/home-management/home-management.component').then((m) => m.HomeManagementComponent),
       },
     ],
   },

@@ -1,0 +1,100 @@
+<div class="container-fluid my-4">
+  <div class="card-gradient-wrapper">
+    <div class="card list-card shadow-sm">
+      <div class="card-body">
+        <div class="page-title-container text-center mb-4">
+          <h2 class="card-title mb-0">Gestión de la Página de Inicio</h2>
+        </div>
+
+        <form [formGroup]="bannerForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="card-gradient-wrapper mb-4">
+            <div class="card details-sub-card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">
+                  <i class="bi bi-image me-2"></i>Banner Principal (Hero)
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="imageUrl" class="form-label">URL de la Imagen del Banner</label>
+                  <input type="url" id="imageUrl" class="form-control" formControlName="imageUrl"
+                    [ngClass]="{ 'is-invalid': imageUrl?.invalid && (imageUrl?.dirty || imageUrl?.touched) }">
+                  <div *ngIf="imageUrl?.invalid && (imageUrl?.dirty || imageUrl?.touched)" class="invalid-feedback">
+                    <div *ngIf="imageUrl?.errors?.['required']">La URL de la imagen es obligatoria.</div>
+                    <div *ngIf="imageUrl?.errors?.['pattern']">Por favor, introduce una URL válida.</div>
+                  </div>
+                </div>
+                <div *ngIf="imageUrl?.valid && imageUrl?.value" class="mb-4 text-center">
+                  <p class="form-text text-muted">Vista Previa:</p>
+                  <img [src]="imageUrl?.value" alt="Vista previa del banner" class="img-fluid rounded shadow-sm" style="max-height: 250px;">
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="title" class="form-label">Título General (Opcional)</label>
+                    <input type="text" id="title" class="form-control" formControlName="title" placeholder="Ej: ¡Nueva Colección!">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="buttonText" class="form-label">Texto del Botón (Opcional)</label>
+                    <input type="text" id="buttonText" class="form-control" formControlName="buttonText" placeholder="Ej: Ver ahora">
+                  </div>
+                </div>
+                <div>
+                  <label for="buttonLink" class="form-label">Enlace del Botón (Opcional)</label>
+                  <input type="text" id="buttonLink" class="form-control" formControlName="buttonLink" placeholder="Ej: /shop/category/new">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-gradient-wrapper">
+            <div class="card details-sub-card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                  <i class="bi bi-tags me-2"></i>Categorías Destacadas (Máx. 3)
+                </h5>
+                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="addFeaturedCategory()" [disabled]="featuredCategories.length >= 3">
+                  <i class="bi bi-plus-lg"></i> Añadir
+                </button>
+              </div>
+              <div class="card-body" formArrayName="featuredCategories">
+                <div *ngFor="let categoryControl of featuredCategories.controls; let i = index" [formGroupName]="i" class="featured-category-item mb-3">
+                  <div class="row align-items-end">
+                    <div class="col-md-5 mb-2 mb-md-0">
+                      <label [for]="'categoryName' + i" class="form-label">Categoría</label>
+                      <select [id]="'categoryName' + i" class="form-select" formControlName="name">
+                        <option [ngValue]="null" disabled>Selecciona...</option>
+                        <ng-container *ngIf="categories$ | async as categories">
+                          <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-2 mb-md-0">
+                      <label [for]="'categoryImageUrl' + i" class="form-label">URL de Imagen</label>
+                      <input type="url" [id]="'categoryImageUrl' + i" class="form-control" formControlName="imageUrl">
+                    </div>
+                    <div class="col-md-1">
+                      <button type="button" class="btn btn-outline-danger w-100" (click)="removeFeaturedCategory(i)" title="Eliminar">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="featuredCategories.length === 0" class="text-center text-muted-custom p-3">
+                  No hay categorías destacadas. Haz clic en "Añadir" para empezar.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="bannerForm.invalid || isSubmitting">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              {{ isSubmitting ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
