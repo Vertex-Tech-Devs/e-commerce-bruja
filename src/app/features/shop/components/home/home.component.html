@@ -1,4 +1,49 @@
 <div class="home-container">
-  <h1>Bienvenido a Nuestra Tienda</h1>
-  <p>Explora nuestros productos y encuentra lo que buscas.</p>
+  <ng-container *ngIf="heroBanner$ | async as banner">
+    <section class="hero-banner" *ngIf="banner.imageUrl" [style.backgroundImage]="'url(' + banner.imageUrl + ')'">
+      <div class="hero-content">
+        <h1 *ngIf="banner.title">{{ banner.title }}</h1>
+        <a *ngIf="banner.buttonText && banner.buttonLink" [routerLink]="banner.buttonLink" class="btn hero-btn">
+          {{ banner.buttonText }}
+        </a>
+      </div>
+    </section>
+
+    <section class="featured-categories container py-5" *ngIf="banner.featuredCategories && banner.featuredCategories.length > 0">
+      <h2 class="section-title">Categorías Destacadas</h2>
+      <div class="category-grid">
+        <a [routerLink]="['/shop/category', category.name.toLowerCase()]" class="category-card" *ngFor="let category of banner.featuredCategories">
+          <div class="category-image" [style.backgroundImage]="'url(' + category.imageUrl + ')'"></div>
+          <div class="category-name">{{ category.name }}</div>
+        </a>
+      </div>
+    </section>
+  </ng-container>
+
+  <section class="new-arrivals container py-5">
+    <h2 class="section-title">Nuevos ingresos</h2>
+    <div *ngIf="newArrivals$ | async as products; else loadingProducts">
+      <div class="product-grid" *ngIf="products.length > 0; else noProducts">
+        <div class="product-card" *ngFor="let product of products">
+          <div class="product-image">
+            <img [src]="product.image" [alt]="product.name">
+          </div>
+          <div class="product-info">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-price">{{ product.price | currency:'ARS':'$' }}</p>
+          </div>
+        </div>
+      </div>
+      <ng-template #noProducts>
+        <p class="text-center text-muted">No hay productos nuevos para mostrar en este momento.</p>
+      </ng-template>
+    </div>
+    <ng-template #loadingProducts>
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    </ng-template>
+  </section>
 </div>
