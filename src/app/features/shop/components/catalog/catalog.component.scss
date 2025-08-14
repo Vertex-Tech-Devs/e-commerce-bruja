@@ -1,11 +1,104 @@
-// src/app/features/shop/components/catalog/catalog.component.scss
+@use "variables" as vars;
+@use "sass:color";
 
 .catalog-title {
   text-align: center;
   font-size: 2.8rem;
   font-weight: 700;
-  margin-bottom: 3rem;
-  color: #333;
+  margin-bottom: 2.5rem;
+  color: vars.$text-light;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+}
+
+.filter-sidebar {
+  background-color: vars.$dark-bg-secondary;
+  padding: 1.5rem;
+  border-radius: vars.$border-radius-md;
+  height: -moz-fit-content;
+  height: fit-content;
+  border: 1px solid rgba(vars.$accent-purple, 0.2);
+}
+
+.filter-sidebar .filter-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(vars.$text-light, 0.1);
+  color: vars.$text-light;
+}
+
+.filter-sidebar .filter-group {
+  margin-bottom: 2rem;
+}
+
+.filter-sidebar .filter-group-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: vars.$accent-blue;
+}
+
+.filter-sidebar .form-check-label {
+  color: vars.$text-muted-dark;
+  cursor: pointer;
+}
+
+.filter-sidebar .form-check-input {
+  cursor: pointer;
+}
+
+.filter-sidebar .form-check-input:checked {
+  background-color: vars.$accent-purple;
+  border-color: vars.$accent-purple;
+}
+
+.filter-sidebar .price-inputs input {
+  background-color: vars.$dark-bg-primary;
+  border-color: rgba(vars.$text-light, 0.2);
+  color: vars.$text-light;
+}
+
+.filter-sidebar .price-inputs input::-moz-placeholder {
+  color: vars.$text-muted-dark;
+}
+
+.filter-sidebar .price-inputs input::placeholder {
+  color: vars.$text-muted-dark;
+}
+
+.filter-sidebar .price-inputs input:focus {
+  background-color: vars.$dark-bg-primary;
+  border-color: vars.$accent-blue;
+  box-shadow: 0 0 0 0.25rem rgba(vars.$accent-blue, 0.25);
+  color: vars.$text-light;
+}
+
+.filter-sidebar .price-inputs span {
+  color: vars.$text-muted-dark;
+}
+
+.filter-sidebar .btn-light {
+  background-color: rgba(vars.$text-light, 0.1);
+  color: vars.$text-light;
+  border: 1px solid rgba(vars.$text-light, 0.2);
+}
+
+.filter-sidebar .btn-light:hover {
+  background-color: rgba(vars.$text-light, 0.2);
+}
+
+.product-list .sorting-controls .form-select {
+  max-width: 250px;
+  background-color: vars.$dark-bg-secondary;
+  color: vars.$text-light;
+  border-color: rgba(vars.$text-light, 0.2);
 }
 
 .product-grid {
@@ -15,49 +108,64 @@
 }
 
 .product-card {
-  text-decoration: none; // Para quitar el subrayado del enlace
-  background-color: #ffffff;
-  border-radius: 8px;
+  text-decoration: none;
+  background-color: vars.$dark-bg-secondary;
+  border-radius: vars.$border-radius-md;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  border: 1px solid rgba(vars.$accent-purple, 0.2);
+}
 
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.product-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 16px 45px rgba(vars.$accent-purple, 0.3);
+}
+
+.product-card .product-image {
+  width: 100%;
+  height: 300px;
+  padding: 1rem;
+  background-color: color.adjust(vars.$dark-bg-secondary, $lightness: 2%);
+}
+
+.product-card .product-image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+  object-fit: contain;
+  border-radius: vars.$border-radius-md;
+}
+
+.product-card .product-info {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.product-card .product-info .product-name {
+  color: vars.$text-light;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-card .product-info .product-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: vars.$accent-blue;
+  margin: 0;
+}
+
+@media (max-width: 992px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
   }
 
-  .product-image {
-    width: 100%;
-    height: 300px;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .product-info {
-    padding: 1.5rem;
-    text-align: center;
-    color: #333;
-
-    .product-name {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin: 0 0 0.5rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .product-price {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #007bff;
-      margin: 0;
-    }
+  .filter-sidebar {
+    margin-bottom: 2rem;
   }
 }

@@ -1,27 +1,78 @@
-<div class="catalog-container container py-5">
+<div class="container py-5">
   <h1 class="catalog-title">Nuestro Catálogo</h1>
 
-  <div *ngIf="products$ | async as products; else loading">
-    <div class="product-grid" *ngIf="products.length > 0; else noProducts">
-      <a [routerLink]="['/product', product.id]" class="product-card" *ngFor="let product of products">
-        <div class="product-image">
-          <img [src]="product.image" [alt]="product.name">
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">{{ product.name }}</h3>
-          <p class="product-price">{{ product.price | currency:'ARS':'$' }}</p>
-        </div>
-      </a>
-    </div>
-    <ng-template #noProducts>
-      <p class="text-center text-muted mt-5">No hay productos disponibles en este momento.</p>
-    </ng-template>
-  </div>
-  <ng-template #loading>
-    <div class="text-center mt-5">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Cargando productos...</span>
+  <div class="catalog-layout">
+    <aside class="filter-sidebar" [formGroup]="filterForm">
+      <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+        <h3 class="filter-title mb-0">Filtros</h3>
+        <button class="btn btn-sm btn-light" (click)="clearFilters()">Limpiar</button>
       </div>
-    </div>
-  </ng-template>
+
+      <div class="filter-group">
+        <h5 class="filter-group-title">Categorías</h5>
+        <div class="form-check" *ngIf="categories$ | async as categories">
+          <input class="form-check-input" type="radio" name="category" id="cat-all" value="all" formControlName="category">
+          <label class="form-check-label" for="cat-all">Todas</label>
+        </div>
+        <div class="form-check" *ngFor="let cat of categories$ | async">
+          <input class="form-check-input" type="radio" name="category" [id]="'cat-' + cat.id" [value]="cat.name" formControlName="category">
+          <label class="form-check-label" [for]="'cat-' + cat.id">{{ cat.name }}</label>
+        </div>
+      </div>
+
+      <div class="filter-group" formGroupName="sizes">
+        <h5 class="filter-group-title">Talles</h5>
+        <div class="form-check" *ngFor="let size of availableSizes">
+          <input class="form-check-input" type="checkbox" [id]="'size-' + size" [formControlName]="size">
+          <label class="form-check-label" [for]="'size-' + size">{{ size }}</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h5 class="filter-group-title">Precio</h5>
+        <div class="price-inputs d-flex align-items-center gap-2">
+          <input type="number" class="form-control form-control-sm" placeholder="Mín" formControlName="minPrice">
+          <span>-</span>
+          <input type="number" class="form-control form-control-sm" placeholder="Máx" formControlName="maxPrice">
+        </div>
+      </div>
+    </aside>
+
+    <main class="product-list">
+      <div class="sorting-controls mb-4">
+        <select class="form-select" (change)="onSortChange($event)">
+          <option value="newest">Lo más nuevo</option>
+          <option value="priceAsc">Precio: Menor a Mayor</option>
+          <option value="priceDesc">Precio: Mayor a Menor</option>
+        </select>
+      </div>
+
+      <div *ngIf="products$ | async as products; else loading">
+        <div class="product-grid" *ngIf="products.length > 0; else noProducts">
+          <a [routerLink]="['/product', product.id]" class="product-card" *ngFor="let product of products">
+            <div class="product-image">
+              <img [src]="product.image" [alt]="product.name">
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">{{ product.name }}</h3>
+              <p class="product-price">{{ product.price | currency:'ARS':'$' }}</p>
+            </div>
+          </a>
+        </div>
+        <ng-template #noProducts>
+          <div class="text-center text-muted py-5">
+            <i class="bi bi-search fs-1"></i>
+            <p class="mt-3">No se encontraron productos con los filtros seleccionados.</p>
+          </div>
+        </ng-template>
+      </div>
+      <ng-template #loading>
+        <div class="text-center mt-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Cargando productos...</span>
+          </div>
+        </div>
+      </ng-template>
+    </main>
+  </div>
 </div>

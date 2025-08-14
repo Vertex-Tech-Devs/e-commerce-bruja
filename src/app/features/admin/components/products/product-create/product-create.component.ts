@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -28,7 +28,6 @@ export class ProductCreateComponent implements OnInit {
   private _route = inject(ActivatedRoute);
   private _sweetAlertService = inject(SweetAlertService);
 
-
   public productForm!: FormGroup;
   public categories$!: Observable<Category[]>;
   public isSubmitting = false;
@@ -36,6 +35,7 @@ export class ProductCreateComponent implements OnInit {
   public productId: string | null = null;
   public pageTitle = 'Crear Nuevo Producto';
   public originalProductName: string = '';
+  public availableSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   ngOnInit(): void {
     this.categories$ = this._categoryService.getCategories();
@@ -51,6 +51,7 @@ export class ProductCreateComponent implements OnInit {
       stock: [null, [Validators.required, Validators.min(0)]],
       category: [null, Validators.required],
       image: ['', [Validators.required, Validators.pattern('https?://.+')]],
+      sizes: this._fb.array(this.availableSizes.map(() => this._fb.control(false)))
     });
   }
 
@@ -70,6 +71,15 @@ export class ProductCreateComponent implements OnInit {
           this.originalProductName = product.name;
           this.pageTitle = `Editar: ${this.originalProductName}`;
           this.productForm.patchValue(product);
+
+          if (product.sizes) {
+            const sizeControls = this.sizes;
+            this.availableSizes.forEach((size, index) => {
+              if (product.sizes?.includes(size)) {
+                sizeControls.at(index).setValue(true);
+              }
+            });
+          }
         } else {
           this._sweetAlertService.error('Error', 'Producto no encontrado para editar.');
           this._router.navigate(['/admin/products']);
@@ -82,13 +92,13 @@ export class ProductCreateComponent implements OnInit {
     });
   }
 
-
   get name() { return this.productForm.get('name'); }
   get description() { return this.productForm.get('description'); }
   get price() { return this.productForm.get('price'); }
   get stock() { return this.productForm.get('stock'); }
   get category() { return this.productForm.get('category'); }
   get image() { return this.productForm.get('image'); }
+  get sizes() { return this.productForm.get('sizes') as FormArray; }
 
   onSubmit(): void {
     if (this.productForm.invalid) {
@@ -97,10 +107,17 @@ export class ProductCreateComponent implements OnInit {
     }
 
     this.isSubmitting = true;
-    const formValue = this.productForm.value;
+
+    const selectedSizes = this.productForm.value.sizes
+      .map((checked: boolean, i: number) => checked ? this.availableSizes[i] : null)
+      .filter((value: string | null) => value !== null);
+
+    const formValue = {
+      ...this.productForm.value,
+      sizes: selectedSizes
+    };
 
     if (this.isEditMode && this.productId) {
-      // --- Lógica de Actualización ---
       this._productService.updateProduct(this.productId, formValue)
         .then(() => {
           this._sweetAlertService.success('¡Éxito!', 'Producto actualizado correctamente.');
@@ -111,12 +128,10 @@ export class ProductCreateComponent implements OnInit {
           this.isSubmitting = false;
         });
     } else {
-
       const productToSend: WithFieldValue<Omit<Product, 'id'>> = {
         ...formValue,
         createdAt: new Date(),
       };
-
       this._productService.createProduct(productToSend as WithFieldValue<Product>)
         .then(() => {
           this._sweetAlertService.success('¡Éxito!', 'Producto creado correctamente.');

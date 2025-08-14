@@ -7,6 +7,7 @@ export interface Product {
   stock: number;
   image: string;
   createdAt: Date;
+  sizes?: string[];
 }
 
 export interface Review {
