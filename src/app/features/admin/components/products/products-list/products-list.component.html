@@ -49,7 +49,7 @@
               <th scope="col" class="col-descripcion">Descripción</th>
               <th scope="col" class="text-end col-precio">Precio</th>
               <th scope="col" class="col-categoria">Categoría</th>
-              <th scope="col" class="text-center col-stock">Stock</th>
+              <th scope="col" class="text-center col-stock">Stock Total</th>
               <th scope="col" class="text-center col-acciones">Acciones</th>
             </tr>
           </thead>
@@ -77,14 +77,17 @@
               <td data-label="Categoría" class="col-categoria">{{ product.category | titlecase }}</td>
               <td data-label="Stock" class="text-center col-stock">
                 <span class="badge" [ngClass]="{
-                  'bg-success': product.stock > 10,
-                  'bg-warning': product.stock > 0 && product.stock <= 10,
-                  'bg-danger': product.stock === 0
+                  'bg-success': calculateTotalStock(product) > 10,
+                  'bg-warning text-dark': calculateTotalStock(product) > 0 && calculateTotalStock(product) <= 10,
+                  'bg-danger': calculateTotalStock(product) === 0
                 }">
-                  {{ product.stock }}
+                  {{ calculateTotalStock(product) }}
                 </span>
               </td>
               <td data-label="Acciones" class="text-center col-acciones">
+                <a [routerLink]="['/admin/products/detail', product.id]" class="btn btn-outline-info btn-sm me-2" title="Ver Detalles">
+                    <i class="bi bi-eye"></i>
+                </a>
                 <a [routerLink]="['/admin/products/edit', product.id]" class="btn btn-outline-primary btn-sm me-2" title="Editar">
                     <i class="bi bi-pencil-square"></i>
                 </a>
@@ -112,7 +115,7 @@
         </table>
       </div>
 
-      <div *ngIf="totalProducts > 0" class="d-flex justify-content-center mt-4">
+      <div *ngIf="totalProducts > 0 && totalPages > 1" class="d-flex justify-content-center mt-4">
         <nav aria-label="Paginación de productos">
           <ul class="pagination">
             <li class="page-item" [class.disabled]="currentPageSubject.value === 1">

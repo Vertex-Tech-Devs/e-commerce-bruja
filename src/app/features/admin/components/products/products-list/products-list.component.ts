@@ -2,13 +2,13 @@ import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ProductService } from '@core/services/product.service';
-import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { Product } from '@core/models/product.model';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ConfirmDeleteModalComponent } from '../../shared/components/confirm-delete-modal/confirm-delete-modal.component';
-import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
+import { TruncatePipe } from "../../shared/pipes/truncate.pipe";
 
 @Component({
   selector: 'app-products-list',
@@ -42,15 +42,10 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   public totalProducts = 0;
   public totalPages = 0;
 
-  private productsSubscription: Subscription | undefined;
-
   ngOnInit(): void {
     this.products$ = combineLatest([
       this._productService.getProducts(),
-      this.searchTermSubject.pipe(
-        debounceTime(300),
-        distinctUntilChanged()
-      ),
+      this.searchTermSubject.pipe(debounceTime(300), distinctUntilChanged()),
       this.filterCategorySubject,
       this.currentPageSubject,
       this.itemsPerPageSubject
@@ -72,11 +67,9 @@ export class ProductsListComponent implements OnInit, OnDestroy {
           );
         }
 
-        // Paginación
         this.totalProducts = filteredProducts.length;
         this.totalPages = Math.ceil(this.totalProducts / itemsPerPage);
 
-        // Ajustar currentPage si está fuera de rango
         if (currentPage > this.totalPages && this.totalPages > 0) {
           this.currentPageSubject.next(this.totalPages);
           currentPage = this.totalPages;
@@ -85,16 +78,19 @@ export class ProductsListComponent implements OnInit, OnDestroy {
           currentPage = 1;
         }
 
-
         const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-
-        return filteredProducts.slice(startIndex, endIndex);
+        return filteredProducts.slice(startIndex, startIndex + itemsPerPage);
       })
     );
   }
 
-  // Métodos de control
+  calculateTotalStock(product: Product): number {
+    if (product.variants && product.variants.length > 0) {
+      return product.variants.reduce((sum, variant) => sum + variant.stock, 0);
+    }
+    return 0;
+  }
+
   onSearchChange(newValue: string): void {
     this.searchTermSubject.next(newValue);
     this.currentPageSubject.next(1);
@@ -117,16 +113,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.searchTermSubject.complete();
-    this.filterCategorySubject.complete();
-    this.currentPageSubject.complete();
-    this.itemsPerPageSubject.complete();
     this.bsModalRef?.hide();
-  }
-
-  editProduct(product: Product): void {
-    console.log('Funcionalidad para editar producto:', product.name);
-    this._router.navigate(['/admin/products/edit', product.id]);
   }
 
   confirmDelete(product: Product): void {
@@ -134,29 +121,14 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       initialState: {
         title: 'Confirmar Eliminación de Producto',
         message: `¿Estás seguro de que deseas eliminar el producto "${product.name}"? Esta acción no se puede deshacer.`,
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar',
       },
       class: 'modal-md modal-dialog-centered',
-      backdrop: 'static',
-      keyboard: false
     });
 
     this.bsModalRef.content.onClose.subscribe((result: boolean) => {
       if (result) {
-        this._productService.deleteProduct(product.id)
-          .then(() => {
-            console.log('Producto eliminado con éxito:', product.name);
-            this.currentPageSubject.next(this.currentPageSubject.value);
-          })
-          .catch((err) => {
-            console.error('Error al eliminar el producto:', err);
-          });
-      } else {
-        console.log('Eliminación cancelada para el producto:', product.name);
+        this._productService.deleteProduct(product.id);
       }
-
-      this.bsModalRef = undefined;
     });
   }
 

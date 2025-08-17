@@ -96,6 +96,10 @@
         color: white;
       }
 
+      .list-group-item .bi-person-fill {
+        color: vars.$text-light;
+      }
+
       .list-group-item a.btn-outline-success:hover {
         background: vars.$card-header-latest-products-bg;
         border-color: transparent;
@@ -114,8 +118,14 @@
         color: vars.$text-light;
       }
 
-      .list-group-item a.btn-outline-primary:hover {
+      .header-pending-orders+.card-body .list-group-item a.btn-outline-primary:hover {
         background: vars.$card-header-pending-orders-bg;
+        border-color: transparent;
+        color: vars.$text-light;
+      }
+
+      .header-latest-clients+.card-body .list-group-item a.btn-outline-primary:hover {
+        background: vars.$card-header-latest-clients-bg;
         border-color: transparent;
         color: vars.$text-light;
       }
@@ -204,8 +214,11 @@
       flex-wrap: wrap;
 
       a.btn {
-        transition: background 0.2s ease-in-out, color 0.2s ease-in-out,
-          border-color 0.2s ease-in-out;
+        transition: background .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out;
+      }
+
+      .bi-person-fill {
+        transition: color 0.3s ease-in-out;
       }
 
       &:first-child {
@@ -297,11 +310,5 @@
     .card .card-body .display-5 {
       font-size: 3.5rem;
     }
-  }
-}
-
-.card-header.header-latest-clients+.card-body {
-  .list-group-item .bi-person-fill {
-    color: vars.$text-muted-dark !important;
   }
 }

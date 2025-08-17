@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { WithFieldValue } from '@angular/fire/firestore';
 
 import { ProductService } from '@core/services/product.service';
 import { CategoryService } from '@core/services/category.service';
-import { Product } from '@core/models/product.model';
+import { Product, ProductVariant } from '@core/models/product.model';
 import { Category } from '@core/models/category.model';
 import { SweetAlertService } from '@core/services/sweet-alert.service';
 
@@ -35,7 +35,6 @@ export class ProductCreateComponent implements OnInit {
   public productId: string | null = null;
   public pageTitle = 'Crear Nuevo Producto';
   public originalProductName: string = '';
-  public availableSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   ngOnInit(): void {
     this.categories$ = this._categoryService.getCategories();
@@ -48,10 +47,10 @@ export class ProductCreateComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
       price: [null, [Validators.required, Validators.min(0)]],
-      stock: [null, [Validators.required, Validators.min(0)]],
       category: [null, Validators.required],
       image: ['', [Validators.required, Validators.pattern('https?://.+')]],
-      sizes: this._fb.array(this.availableSizes.map(() => this._fb.control(false)))
+      images: this._fb.array([]),
+      variants: this._fb.array([], Validators.required),
     });
   }
 
@@ -70,15 +69,22 @@ export class ProductCreateComponent implements OnInit {
         if (product) {
           this.originalProductName = product.name;
           this.pageTitle = `Editar: ${this.originalProductName}`;
-          this.productForm.patchValue(product);
+          this.productForm.patchValue({
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            category: product.category,
+            image: product.image,
+          });
 
-          if (product.sizes) {
-            const sizeControls = this.sizes;
-            this.availableSizes.forEach((size, index) => {
-              if (product.sizes?.includes(size)) {
-                sizeControls.at(index).setValue(true);
-              }
-            });
+          this.variants.clear();
+          this.images.clear();
+
+          if (product.variants && product.variants.length > 0) {
+            product.variants.forEach(variant => this.addVariant(variant));
+          }
+          if (product.images && product.images.length > 0) {
+            product.images.forEach(imageUrl => this.addImage(imageUrl));
           }
         } else {
           this._sweetAlertService.error('Error', 'Producto no encontrado para editar.');
@@ -95,53 +101,60 @@ export class ProductCreateComponent implements OnInit {
   get name() { return this.productForm.get('name'); }
   get description() { return this.productForm.get('description'); }
   get price() { return this.productForm.get('price'); }
-  get stock() { return this.productForm.get('stock'); }
   get category() { return this.productForm.get('category'); }
   get image() { return this.productForm.get('image'); }
-  get sizes() { return this.productForm.get('sizes') as FormArray; }
+  get variants(): FormArray { return this.productForm.get('variants') as FormArray; }
+  get images(): FormArray { return this.productForm.get('images') as FormArray; }
+
+  createVariantGroup(variant?: ProductVariant): FormGroup {
+    return this._fb.group({
+      size: [variant?.size || '', Validators.required],
+      color: [variant?.color || '', Validators.required],
+      stock: [variant?.stock || 0, [Validators.required, Validators.min(0)]],
+    });
+  }
+
+  addVariant(variant?: ProductVariant): void {
+    this.variants.push(this.createVariantGroup(variant));
+  }
+
+  removeVariant(index: number): void {
+    this.variants.removeAt(index);
+  }
+
+  addImage(imageUrl: string = ''): void {
+    this.images.push(this._fb.control(imageUrl, [Validators.required, Validators.pattern('https?://.+')]));
+  }
+
+  removeImage(index: number): void {
+    this.images.removeAt(index);
+  }
 
   onSubmit(): void {
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
+      this._sweetAlertService.error('Formulario Inválido', 'Por favor, revisa todos los campos, incluidas las variantes e imágenes.');
       return;
     }
 
     this.isSubmitting = true;
+    const formValue = this.productForm.value;
 
-    const selectedSizes = this.productForm.value.sizes
-      .map((checked: boolean, i: number) => checked ? this.availableSizes[i] : null)
-      .filter((value: string | null) => value !== null);
+    const operation = this.isEditMode && this.productId
+      ? this._productService.updateProduct(this.productId, formValue)
+      : this._productService.createProduct({ ...formValue, createdAt: new Date() } as WithFieldValue<Product>);
 
-    const formValue = {
-      ...this.productForm.value,
-      sizes: selectedSizes
-    };
-
-    if (this.isEditMode && this.productId) {
-      this._productService.updateProduct(this.productId, formValue)
-        .then(() => {
-          this._sweetAlertService.success('¡Éxito!', 'Producto actualizado correctamente.');
-          this._router.navigate(['/admin/products/detail', this.productId]);
-        })
-        .catch((error) => {
-          this._sweetAlertService.error('Error', 'No se pudo actualizar el producto.');
-          this.isSubmitting = false;
-        });
-    } else {
-      const productToSend: WithFieldValue<Omit<Product, 'id'>> = {
-        ...formValue,
-        createdAt: new Date(),
-      };
-      this._productService.createProduct(productToSend as WithFieldValue<Product>)
-        .then(() => {
-          this._sweetAlertService.success('¡Éxito!', 'Producto creado correctamente.');
-          this._router.navigate(['/admin/products']);
-        })
-        .catch((error) => {
-          this._sweetAlertService.error('Error', 'No se pudo crear el producto.');
-          this.isSubmitting = false;
-        });
-    }
+    operation.then(() => {
+      const successMessage = this.isEditMode ? 'Producto actualizado correctamente.' : 'Producto creado correctamente.';
+      this._sweetAlertService.success('¡Éxito!', successMessage);
+      const redirectRoute = this.isEditMode ? ['/admin/products/detail', this.productId] : ['/admin/products'];
+      this._router.navigate(redirectRoute);
+    }).catch((error) => {
+      const errorMessage = this.isEditMode ? 'No se pudo actualizar el producto.' : 'No se pudo crear el producto.';
+      this._sweetAlertService.error('Error', errorMessage);
+    }).finally(() => {
+      this.isSubmitting = false;
+    });
   }
 
   onCancel(): void {

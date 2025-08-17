@@ -31,11 +31,12 @@ export class ProductService {
     return this.firestoreService.delete(this.collectionPath, id);
   }
 
-
   getProductsLowInStock(threshold: number = 5): Observable<Product[]> {
     return this.getProducts().pipe(
-      map(products => products.filter(product => product.stock <= threshold)
-        .sort((a, b) => a.name.localeCompare(b.name)))
+      map(products => products.filter(product => {
+        const totalStock = product.variants?.reduce((sum, variant) => sum + variant.stock, 0) ?? 0;
+        return totalStock <= threshold;
+      }).sort((a, b) => a.name.localeCompare(b.name)))
     );
   }
 

@@ -13,7 +13,7 @@
       <section class="featured-categories py-5" *ngIf="banner.featuredCategories && banner.featuredCategories.length > 0">
         <h2 class="section-title">Categorías Destacadas</h2>
         <div class="category-grid">
-          <a [routerLink]="['/shop/products']" [queryParams]="{ category: category.name }" class="category-card" *ngFor="let category of banner.featuredCategories">
+          <a [routerLink]="['/shop/catalog']" [queryParams]="{ category: category.name }" class="category-card" *ngFor="let category of banner.featuredCategories">
             <div class="category-image" [style.backgroundImage]="'url(' + category.imageUrl + ')'"></div>
             <div class="category-name">{{ category.name }}</div>
           </a>
@@ -27,7 +27,7 @@
       <h2 class="section-title">Nuevos Ingresos</h2>
       <div *ngIf="newArrivals$ | async as products; else loadingProducts">
         <div class="product-grid" *ngIf="products.length > 0; else noProducts">
-          <a [routerLink]="['/product', product.id]" class="product-card" *ngFor="let product of products">
+          <a [routerLink]="['/shop/product', product.id]" class="product-card" *ngFor="let product of products">
             <div class="product-image">
               <img [src]="product.image" [alt]="product.name">
             </div>

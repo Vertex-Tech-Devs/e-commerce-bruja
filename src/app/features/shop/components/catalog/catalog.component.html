@@ -49,7 +49,7 @@
 
       <div *ngIf="products$ | async as products; else loading">
         <div class="product-grid" *ngIf="products.length > 0; else noProducts">
-          <a [routerLink]="['/product', product.id]" class="product-card" *ngFor="let product of products">
+          <a [routerLink]="['/shop/product', product.id]" class="product-card" *ngFor="let product of products">
             <div class="product-image">
               <img [src]="product.image" [alt]="product.name">
             </div>

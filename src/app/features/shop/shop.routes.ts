@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { ShopComponent } from './layout/shop/shop.component';
-import { HomeComponent } from './components/home/home.component';
-import { CatalogComponent } from './components/catalog/catalog.component';
 
 export const SHOP_ROUTES: Routes = [
   {
@@ -10,12 +8,17 @@ export const SHOP_ROUTES: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent
+        pathMatch: 'full',
+        loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
       },
       {
-        path: 'products',
-        component: CatalogComponent
+        path: 'catalog',
+        loadComponent: () => import('./components/catalog/catalog.component').then(m => m.CatalogComponent)
+      },
+      {
+        path: 'product',
+        loadChildren: () => import('./components/product-detail/product.routes').then(m => m.PRODUCT_ROUTES)
       }
     ]
-  },
+  }
 ];

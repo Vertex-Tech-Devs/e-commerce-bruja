@@ -3,7 +3,7 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { map, startWith, debounceTime, take } from 'rxjs/operators';
+import { map, startWith, debounceTime, take, tap } from 'rxjs/operators';
 
 import { Product } from '@core/models/product.model';
 import { Category } from '@core/models/category.model';
@@ -25,24 +25,25 @@ export class CatalogComponent implements OnInit {
 
   public products$!: Observable<Product[]>;
   public categories$!: Observable<Category[]>;
-  public availableSizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  public availableSizes: string[] = [];
 
   public filterForm!: FormGroup;
   private sortSubject = new BehaviorSubject<string>('newest');
 
   ngOnInit(): void {
     this.categories$ = this.categoryService.getCategories();
-
     this.filterForm = this.fb.group({
       category: ['all'],
-      sizes: this.fb.group(this.availableSizes.reduce((acc, size) => ({ ...acc, [size]: false }), {})),
+      sizes: this.fb.group({}), // Se inicializa vacío y se llena dinámicamente
       minPrice: [null],
       maxPrice: [null]
     });
 
     this.applyInitialCategoryFilter();
 
-    const allProducts$ = this.productService.getProducts();
+    const allProducts$ = this.productService.getProducts().pipe(
+      tap(products => this.populateSizeFilters(products))
+    );
     const filters$ = this.filterForm.valueChanges.pipe(startWith(this.filterForm.value), debounceTime(300));
 
     this.products$ = combineLatest([allProducts$, filters$, this.sortSubject]).pipe(
@@ -55,7 +56,9 @@ export class CatalogComponent implements OnInit {
 
         const selectedSizes = Object.keys(filters.sizes).filter(size => filters.sizes[size]);
         if (selectedSizes.length > 0) {
-          filteredProducts = filteredProducts.filter(p => p.sizes && selectedSizes.some(size => p.sizes!.includes(size)));
+          filteredProducts = filteredProducts.filter(p =>
+            p.variants && p.variants.some(variant => selectedSizes.includes(variant.size))
+          );
         }
 
         if (filters.minPrice !== null) {
@@ -76,6 +79,19 @@ export class CatalogComponent implements OnInit {
         return filteredProducts;
       })
     );
+  }
+
+  private populateSizeFilters(products: Product[]): void {
+    const allSizes = new Set<string>();
+    products.forEach(p => {
+      if (p.variants) {
+        p.variants.forEach(v => allSizes.add(v.size));
+      }
+    });
+
+    this.availableSizes = Array.from(allSizes).sort(); // Ordena los talles
+    const sizeControls = this.availableSizes.reduce((acc, size) => ({ ...acc, [size]: false }), {});
+    this.filterForm.setControl('sizes', this.fb.group(sizeControls));
   }
 
   private applyInitialCategoryFilter(): void {

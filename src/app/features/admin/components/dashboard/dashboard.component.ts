@@ -28,21 +28,15 @@ export class DashboardComponent implements OnInit {
   private orderService = inject(OrderService);
   private clientService = inject(ClientService);
 
-  // --- Observables para el Resumen Rápido (Números Clave) ---
   public monthlyMetrics$!: Observable<{ sales: number; orders: number; newClients: number }>;
   public globalMetrics$!: Observable<{ totalSales: number; totalOrders: number; totalClients: number }>;
-
-  // --- Observables para Tareas Pendientes ---
   public pendingOrders$!: Observable<Order[]>;
   public lowStockProducts$!: Observable<Product[]>;
-
-  // --- Observables para Actividad Reciente ---
   public latestOrders$!: Observable<Order[]>;
   public latestClients$!: Observable<Client[]>;
   public latestProducts$!: Observable<Product[]>;
 
   ngOnInit(): void {
-    // 1. Resumen Rápido (Los Números Clave)
     this.monthlyMetrics$ = combineLatest([
       this.orderService.getMonthlySalesAndOrders(),
       this.clientService.getNewClientsThisMonth()
@@ -65,13 +59,17 @@ export class DashboardComponent implements OnInit {
       }))
     );
 
-    // 2. Tareas Pendientes
     this.pendingOrders$ = this.orderService.getPendingOrProcessingOrders();
     this.lowStockProducts$ = this.productService.getProductsLowInStock(5);
-
-    // 3. Actividad Reciente
     this.latestOrders$ = this.orderService.getLatestOrders(10);
     this.latestClients$ = this.clientService.getLatestClients(10);
     this.latestProducts$ = this.productService.getLatestProducts(10);
+  }
+
+  getTotalStock(product: Product): number {
+    if (product.variants && product.variants.length > 0) {
+      return product.variants.reduce((sum, variant) => sum + variant.stock, 0);
+    }
+    return 0;
   }
 }

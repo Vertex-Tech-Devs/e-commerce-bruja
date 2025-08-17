@@ -31,6 +31,12 @@
   border-radius: calc(#{vars.$border-radius-lg} - 2px);
   background-color: #f4f6f9;
 
+  .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #dfe3e8;
+    font-weight: 500;
+  }
+
   .card-body {
     padding: 1.5rem;
 
@@ -57,6 +63,7 @@
   .img-fluid {
     max-height: 350px;
     object-fit: contain;
+    width: 100%;
   }
 
   .no-image-placeholder {
@@ -176,12 +183,27 @@
   }
 }
 
-.text-muted-custom {
-  color: #6c757d;
-}
-
 @media (max-width: 991.98px) {
   .details-list>div {
     grid-template-columns: 120px 1fr;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .details-list>div {
+    grid-template-columns: 1fr;
+    grid-row-gap: 0.25rem;
+  }
+
+  .details-list dt {
+    padding-bottom: 0;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .product-name {
+    font-size: 1.25rem;
   }
 }
