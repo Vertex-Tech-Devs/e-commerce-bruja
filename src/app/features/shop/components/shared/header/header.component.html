@@ -1,11 +1,17 @@
 <header class="shop-header">
   <div class="container">
     <a routerLink="/shop" class="brand-logo">Bruja</a>
-    <nav class="main-nav">
-      <a routerLink="/shop" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
-      <a routerLink="/shop/products" routerLinkActive="active">Productos</a>
-      <a routerLink="/shop/about" routerLinkActive="active">Nosotros</a>
+
+    <button class="menu-toggle" (click)="toggleMenu()">
+      <i class="bi" [ngClass]="isMenuOpen ? 'bi-x' : 'bi-list'"></i>
+    </button>
+
+    <nav class="main-nav" [class.menu-open]="isMenuOpen">
+      <a routerLink="/shop" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="toggleMenu()">Inicio</a>
+      <a routerLink="/shop/catalog" routerLinkActive="active" (click)="toggleMenu()">Productos</a>
+      <a routerLink="/shop/about" routerLinkActive="active" (click)="toggleMenu()">Nosotros</a>
     </nav>
+
     <div class="header-actions">
       <a routerLink="/cart" class="cart-icon">
         <i class="bi bi-cart"></i>

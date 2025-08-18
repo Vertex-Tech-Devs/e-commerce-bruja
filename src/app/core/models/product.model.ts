@@ -1,13 +1,19 @@
+export interface ProductVariant {
+  size: string;
+  color: string;
+  stock: number;
+}
+
 export interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
   category: string;
-  stock: number;
   image: string;
+  images?: string[];
   createdAt: Date;
-  sizes?: string[];
+  variants?: ProductVariant[];
 }
 
 export interface Review {

@@ -80,7 +80,6 @@ export class OrderDetailComponent implements OnInit {
     return item.quantity * item.price;
   }
 
-  // --- MÉTODO AÑADIDO PARA SOLUCIONAR EL ERROR ---
   generateReceipt(): void {
     alert('Funcionalidad de generar recibo aún no implementada.');
     console.log('Generar recibo para el pedido:', this.orderId);

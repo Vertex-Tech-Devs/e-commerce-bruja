@@ -1,95 +1,132 @@
-<div class="container-fluid my-4">
-  <div class="card-gradient-wrapper">
-    <div class="card details-card shadow-sm">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
-          <h2 class="page-title mb-0">Detalles del Producto</h2>
-          <button (click)="goBack()" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left"></i> Volver a la lista
-          </button>
-        </div>
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0 page-title">
+          Detalles de: {{ product?.name || 'Cargando producto...' }}
+        </h2>
+        <button (click)="goBack()" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left"></i> Volver a la lista
+        </button>
+      </div>
 
-        <div *ngIf="product; else loadingOrNotFound">
-          <div class="row g-4">
-            <div class="col-lg-5 text-center">
-              <div class="image-container shadow-sm">
-                <img
-                  [src]="product.image"
-                  class="img-fluid rounded"
-                  alt="Imagen del producto"
-                  *ngIf="product.image; else noImage"
-                />
-                <ng-template #noImage>
-                  <div class="no-image-placeholder">
-                    <i class="bi bi-image"></i>
-                    <span>No hay imagen</span>
+      <hr />
+
+      <div *ngIf="product; else loadingOrNotFound">
+        <div class="card-gradient-wrapper mb-4">
+          <div class="card details-card">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                  <div class="image-container">
+                    <img
+                      [src]="product.image"
+                      class="img-fluid"
+                      alt="Imagen principal del producto"
+                      *ngIf="product.image; else noImage"
+                    />
+                    <ng-template #noImage>
+                      <div class="no-image-placeholder">
+                        <i class="bi bi-image"></i>
+                        <span>Sin Imagen Principal</span>
+                      </div>
+                    </ng-template>
                   </div>
-                </ng-template>
+                </div>
+                <div class="col-lg-7">
+                  <h3 class="product-name mb-4">{{ product.name }}</h3>
+                  <dl class="details-list">
+                    <div>
+                      <dt>ID:</dt>
+                      <dd>{{ product.id }}</dd>
+                    </div>
+                    <div>
+                      <dt>Descripción:</dt>
+                      <dd>{{ product.description }}</dd>
+                    </div>
+                    <div>
+                      <dt>Precio:</dt>
+                      <dd class="price">{{ product.price | currency : "ARS" : "$" }}</dd>
+                    </div>
+                    <div>
+                      <dt>Categoría:</dt>
+                      <dd>{{ product.category }}</dd>
+                    </div>
+                    <div>
+                      <dt>Stock Total:</dt>
+                      <dd>
+                        <span class="badge fs-6" [ngClass]="{
+                          'bg-success': totalStock > 10,
+                          'bg-warning text-dark': totalStock > 0 && totalStock <= 10,
+                          'bg-danger': totalStock === 0
+                        }">
+                          {{ totalStock }} unidades
+                        </span>
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
               </div>
             </div>
-            <div class="col-lg-7">
-              <h3 class="product-name mb-3">{{ product.name }}</h3>
-              <dl class="details-list">
-                <div>
-                  <dt>ID de Producto:</dt>
-                  <dd class="text-muted">{{ product.id }}</dd>
-                </div>
-                <div>
-                  <dt>Categoría:</dt>
-                  <dd>{{ product.category | titlecase }}</dd>
-                </div>
-                <div>
-                  <dt>Precio:</dt>
-                  <dd class="price">
-                    {{ product.price | currency : "ARS" : "$" }}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Stock Disponible:</dt>
-                  <dd>
-                    <span
-                      class="badge"
-                      [ngClass]="{
-                        'bg-success': product.stock > 10,
-                        'bg-warning': product.stock > 0 && product.stock <= 10,
-                        'bg-danger': product.stock === 0
-                      }"
-                    >
-                      {{ product.stock }} unidades
-                    </span>
-                  </dd>
-                </div>
-                <div>
-                  <dt>Descripción:</dt>
-                  <dd>{{ product.description }}</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-
-          <hr class="my-4" />
-
-          <div class="d-flex justify-content-end gap-2">
-            <a [routerLink]="['/admin/products/edit', product.id]" class="btn btn-primary">
-              <i class="bi bi-pencil-square me-2"></i>Editar
-            </a>
-            <button (click)="confirmDeleteProduct()" class="btn btn-danger">
-              <i class="bi bi-trash me-2"></i>Eliminar
-            </button>
           </div>
         </div>
 
-        <ng-template #loadingOrNotFound>
-          <div class="text-center text-muted-custom py-5">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Cargando...</span>
-            </div>
-            <p class="mt-2">
-              Cargando detalles del producto o el producto no fue encontrado...
-            </p>
+        <div class="card-gradient-wrapper mb-4" *ngIf="product.images && product.images.length > 0">
+           <div class="card details-card">
+            <div class="card-header"><h5 class="mb-0">Galería de Imágenes</h5></div>
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-6 col-md-3 mb-3" *ngFor="let imgUrl of product.images">
+                          <img [src]="imgUrl" class="img-fluid rounded shadow-sm" alt="Imagen adicional">
+                      </div>
+                  </div>
+              </div>
           </div>
-        </ng-template>
+        </div>
+
+        <div class="card-gradient-wrapper mb-4">
+          <div class="card details-card">
+            <div class="card-header"><h5 class="mb-0">Variantes Disponibles</h5></div>
+            <div class="card-body">
+              <div *ngIf="product.variants && product.variants.length > 0; else noVariants">
+                <div class="table-responsive">
+                  <table class="table table-striped table-hover mb-0">
+                    <thead>
+                      <tr>
+                        <th>Talle</th>
+                        <th>Color</th>
+                        <th class="text-end">Stock</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let variant of product.variants">
+                        <td>{{ variant.size }}</td>
+                        <td>{{ variant.color }}</td>
+                        <td class="text-end">{{ variant.stock }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <ng-template #noVariants>
+                <div class="alert alert-secondary text-center">Este producto no tiene variantes definidas.</div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4 mb-4">
+          <button (click)="editProduct()" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Editar</button>
+          <button (click)="confirmDeleteProduct()" class="btn btn-danger"><i class="bi bi-trash"></i> Eliminar</button>
+        </div>
       </div>
+
+      <ng-template #loadingOrNotFound>
+        <div class="alert alert-info text-center py-4" role="alert">
+          <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+          Cargando detalles del producto...
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>
