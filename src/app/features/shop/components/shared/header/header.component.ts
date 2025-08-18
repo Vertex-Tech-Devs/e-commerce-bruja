@@ -11,4 +11,9 @@ import { RouterModule } from '@angular/router';
 })
 export class HeaderComponent {
   cartItemCount = 0;
+  isMenuOpen = false;
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 }
