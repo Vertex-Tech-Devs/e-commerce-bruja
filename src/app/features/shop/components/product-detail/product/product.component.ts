@@ -98,7 +98,7 @@ export class ProductComponent implements OnInit {
 
   addToCart(): void {
     if (this.product && this.selectedVariant) {
-      this._cartService.addToCart(this.product, this.selectedVariant, this.quantity);
+      this._cartService.addItem(this.product, this.selectedVariant, this.quantity);
     }
   }
 }

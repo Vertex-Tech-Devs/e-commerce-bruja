@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Product, ProductVariant } from '@core/models/product.model';
 import { ICart, ICartItem } from '@core/models/cart.model';
 import { SweetAlertService } from './sweet-alert.service';
@@ -11,11 +11,20 @@ export class CartService {
   private sweetAlertService = inject(SweetAlertService);
 
   private readonly CART_STORAGE_KEY = 'my_cart';
+  private cartSubject: BehaviorSubject<ICart>;
 
-  private cartSubject = new BehaviorSubject<ICart>(this.getCartFromStorage());
-  public cart$: Observable<ICart> = this.cartSubject.asObservable();
+  public cart$: Observable<ICart>;
+  public itemCount$: Observable<number>;
 
-  constructor() { }
+  constructor() {
+    const initialCart = this.getCartFromStorage();
+    this.cartSubject = new BehaviorSubject<ICart>(initialCart);
+    this.cart$ = this.cartSubject.asObservable();
+
+    this.itemCount$ = this.cart$.pipe(
+      map(cart => cart.items.reduce((acc, item) => acc + item.quantity, 0))
+    );
+  }
 
   private getCartFromStorage(): ICart {
     try {
@@ -44,10 +53,9 @@ export class CartService {
     return items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   }
 
-  public addToCart(product: Product, variant: ProductVariant, quantity: number): void {
-    const currentCart = this.cartSubject.getValue();
+  public addItem(product: Product, variant: ProductVariant, quantity: number): void {
+    const currentCart = { ...this.cartSubject.getValue(), items: [...this.cartSubject.getValue().items] };
     const cartItemId = `${product.id}-${variant.size}-${variant.color}`;
-
     const existingItemIndex = currentCart.items.findIndex(item => item.id === cartItemId);
 
     if (existingItemIndex > -1) {
@@ -55,13 +63,13 @@ export class CartService {
       const newQuantity = existingItem.quantity + quantity;
 
       if (newQuantity > variant.stock) {
-        this.sweetAlertService.error('Stock insuficiente', `No puedes añadir más unidades de este producto. Stock disponible: ${variant.stock}.`);
+        this.sweetAlertService.error('Stock insuficiente', `No puedes añadir más. Stock disponible: ${variant.stock}.`);
         return;
       }
       existingItem.quantity = newQuantity;
     } else {
       if (quantity > variant.stock) {
-        this.sweetAlertService.error('Stock insuficiente', `No puedes añadir ${quantity} unidades. Stock disponible: ${variant.stock}.`);
+        this.sweetAlertService.error('Stock insuficiente', `No puedes añadir ${quantity}. Stock disponible: ${variant.stock}.`);
         return;
       }
       const newItem: ICartItem = {
@@ -80,11 +88,12 @@ export class CartService {
     this.sweetAlertService.success('¡Añadido!', 'Producto añadido al carrito.');
   }
 
-  public updateItemQuantity(itemId: string, quantity: number): void {
-    const currentCart = this.cartSubject.getValue();
+  public updateQuantity(itemId: string, quantity: number): void {
+    const currentCart = { ...this.cartSubject.getValue(), items: [...this.cartSubject.getValue().items] };
     const itemIndex = currentCart.items.findIndex(item => item.id === itemId);
 
     if (itemIndex > -1) {
+      // Aquí podrías añadir una validación de stock si lo necesitaras
       currentCart.items[itemIndex].quantity = quantity;
       currentCart.total = this.calculateTotal(currentCart.items);
       this.saveCartToStorage(currentCart);
