@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CartService } from '@core/services/cart.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-shop-header',
@@ -10,8 +12,14 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  cartItemCount = 0;
-  isMenuOpen = false;
+  private cartService = inject(CartService);
+
+  public cartItemCount$: Observable<number>;
+  public isMenuOpen = false;
+
+  constructor() {
+    this.cartItemCount$ = this.cartService.itemCount$;
+  }
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;

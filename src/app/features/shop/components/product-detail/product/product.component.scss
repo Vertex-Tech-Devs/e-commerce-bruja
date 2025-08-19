@@ -1,8 +1,19 @@
 :host {
   display: block;
-  padding: 2rem;
+  background-color: #f4f5f7;
+  padding: 2rem 1.5rem;
+}
+
+.product-detail-container {
   max-width: 1200px;
-  margin: 2rem auto;
+  margin: 0 auto;
+}
+
+.product-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
 }
 
 .product-grid {
@@ -47,7 +58,7 @@
       }
 
       &.selected {
-        border-color: #007bff;
+        border-color: #ff5722;
       }
     }
   }
@@ -55,21 +66,25 @@
 
 .product-info {
   .product-title {
-    font-size: 2.5rem;
-    font-weight: 600;
+    font-size: 2.25rem;
+    font-weight: 700;
     margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #fd7e14, #ff5722);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .product-price {
     font-size: 1.75rem;
     font-weight: 500;
-    color: #333;
+    color: #495057;
     margin-bottom: 1.5rem;
   }
 
   .product-description {
     line-height: 1.6;
-    color: #666;
+    color: #6c757d;
   }
 }
 
@@ -97,14 +112,16 @@
     cursor: pointer;
     transition: all 0.2s ease;
 
-    &:hover {
+    &:hover:not(.selected) {
       background-color: #f0f0f0;
+      border-color: #aaa;
     }
 
     &.selected {
-      background-color: #333;
+      background: linear-gradient(90deg, #fd7e14, #ff5722);
       color: #fff;
-      border-color: #333;
+      border-color: transparent;
+      font-weight: 500;
     }
   }
 }
@@ -131,16 +148,22 @@
   .quantity-selector {
     display: flex;
     align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    overflow: hidden;
 
     .quantity-btn {
       width: 40px;
       height: 40px;
       border: none;
-      background: #f5f5f5;
+      background: #f8f9fa;
       font-size: 1.5rem;
       cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background-color: #e9ecef;
+      }
 
       &:disabled {
         opacity: 0.5;
@@ -153,6 +176,7 @@
       text-align: center;
       font-size: 1.2rem;
       font-weight: 600;
+      color: #333;
     }
   }
 
@@ -161,21 +185,24 @@
     height: 42px;
     padding: 0 1.5rem;
     border: none;
-    background-color: #007bff;
-    color: #fff;
     font-weight: 600;
     font-size: 1rem;
-    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    border-radius: 6px;
+    color: #fff;
+    background: linear-gradient(90deg, #fd7e14, #ff5722);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 
     &:hover:not(:disabled) {
-      background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255, 87, 34, 0.3);
     }
 
     &:disabled {
-      background-color: #aaa;
+      background: #aaa;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
   }
 }

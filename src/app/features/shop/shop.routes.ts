@@ -18,6 +18,10 @@ export const SHOP_ROUTES: Routes = [
       {
         path: 'product',
         loadChildren: () => import('./components/product-detail/product.routes').then(m => m.PRODUCT_ROUTES)
+      },
+      {
+        path: 'cart',
+        loadComponent: () => import('./components/cart/cart.component').then(m => m.CartComponent)
       }
     ]
   }
