@@ -93,7 +93,6 @@ export class CartService {
     const itemIndex = currentCart.items.findIndex(item => item.id === itemId);
 
     if (itemIndex > -1) {
-      // Aquí podrías añadir una validación de stock si lo necesitaras
       currentCart.items[itemIndex].quantity = quantity;
       currentCart.total = this.calculateTotal(currentCart.items);
       this.saveCartToStorage(currentCart);
