@@ -1,78 +1,96 @@
-<div class="product-detail-container" *ngIf="product">
-  <div class="product-card">
-    <div class="product-grid">
-      <div class="product-gallery">
-        <div class="main-image-container">
-          <img [src]="mainImage" [alt]="product.name" class="main-image fade-in">
+@if (product) {
+  <div class="product-detail-container">
+    <div class="product-card">
+      <div class="product-grid">
+        <div class="product-gallery">
+          <div class="main-image-container">
+            <img [src]="mainImage" [alt]="product.name" class="main-image fade-in">
+          </div>
+          @if (galleryImages.length > 1) {
+            <div class="thumbnail-container">
+              @for (img of galleryImages; track img) {
+                <img
+                  [src]="img"
+                  [alt]="product.name + ' thumbnail'"
+                  class="thumbnail"
+                  [class.selected]="img === mainImage"
+                  (click)="changeMainImage(img)">
+              }
+            </div>
+          }
         </div>
-        <div class="thumbnail-container" *ngIf="galleryImages.length > 1">
-          <img
-            *ngFor="let img of galleryImages"
-            [src]="img"
-            [alt]="product.name + ' thumbnail'"
-            class="thumbnail"
-            [class.selected]="img === mainImage"
-            (click)="changeMainImage(img)">
-        </div>
-      </div>
 
-      <div class="product-info">
-        <h1 class="product-title">{{ product.name }}</h1>
-        <p class="product-price">{{ product.price | currency:'ARS':'$' }}</p>
-        <p class="product-description">{{ product.description }}</p>
+        <div class="product-info">
+          <h1 class="product-title">{{ product.name }}</h1>
+          <p class="product-price">{{ product.price | currency:'ARS':'$' }}</p>
+          <p class="product-description">{{ product.description }}</p>
 
-        <div class="variant-selector">
-          <label class="selector-label">TALLE:</label>
-          <div class="options-container">
+          <div class="variant-selector">
+            <label class="selector-label">TALLE:</label>
+            <div class="options-container">
+              @for (size of uniqueSizes; track size) {
+                <button
+                  class="option-btn"
+                  [class.selected]="size === selectedSize"
+                  (click)="selectSize(size)">
+                  {{ size }}
+                </button>
+              }
+            </div>
+          </div>
+
+          @if (selectedSize) {
+            <div class="variant-selector">
+              <label class="selector-label">COLOR:</label>
+              <div class="options-container">
+                @for (color of availableColorsForSelectedSize; track color) {
+                  <button
+                    class="option-btn"
+                    [class.selected]="color === selectedColor"
+                    (click)="selectColor(color)">
+                    {{ color }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+
+          @if (selectedVariant) {
+            <div class="stock-info">
+              @if (selectedVariant.stock > 0) {
+                <span class="in-stock">
+                  ¡Disponible! (Quedan {{ selectedVariant.stock }} unidades)
+                </span>
+              } @else {
+                <span class="out-of-stock">Agotado</span>
+              }
+            </div>
+          }
+
+          <div class="purchase-actions">
+            <div class="quantity-selector">
+              <button class="quantity-btn" (click)="decreaseQuantity()" [disabled]="quantity <= 1">-</button>
+              <span class="quantity-value">{{ quantity }}</span>
+              <button class="quantity-btn" (click)="increaseQuantity()" [disabled]="!selectedVariant || quantity >= selectedVariant.stock">+</button>
+            </div>
+
             <button
-              *ngFor="let size of uniqueSizes"
-              class="option-btn"
-              [class.selected]="size === selectedSize"
-              (click)="selectSize(size)">
-              {{ size }}
+              class="add-to-cart-btn"
+              (click)="addToCart()"
+              [disabled]="!selectedVariant || selectedVariant.stock === 0">
+              @if (!selectedVariant) {
+                <span>Selecciona talle y color</span>
+              }
+              @if (selectedVariant && selectedVariant.stock > 0) {
+                <span>Añadir al Carrito</span>
+              }
+              @if (selectedVariant && selectedVariant.stock === 0) {
+                <span>Agotado</span>
+              }
             </button>
           </div>
-        </div>
-
-        <div class="variant-selector" *ngIf="selectedSize">
-          <label class="selector-label">COLOR:</label>
-          <div class="options-container">
-              <button
-              *ngFor="let color of availableColorsForSelectedSize"
-              class="option-btn"
-              [class.selected]="color === selectedColor"
-              (click)="selectColor(color)">
-              {{ color }}
-            </button>
-          </div>
-        </div>
-
-        <div *ngIf="selectedVariant" class="stock-info">
-          <span *ngIf="selectedVariant.stock > 0; else outOfStock" class="in-stock">
-            ¡Disponible! (Quedan {{ selectedVariant.stock }} unidades)
-          </span>
-          <ng-template #outOfStock>
-            <span class="out-of-stock">Agotado</span>
-          </ng-template>
-        </div>
-
-        <div class="purchase-actions">
-          <div class="quantity-selector">
-            <button class="quantity-btn" (click)="decreaseQuantity()" [disabled]="quantity <= 1">-</button>
-            <span class="quantity-value">{{ quantity }}</span>
-            <button class="quantity-btn" (click)="increaseQuantity()" [disabled]="!selectedVariant || quantity >= selectedVariant.stock">+</button>
-          </div>
-
-          <button
-            class="add-to-cart-btn"
-            (click)="addToCart()"
-            [disabled]="!selectedVariant || selectedVariant.stock === 0">
-            <span *ngIf="!selectedVariant">Selecciona talle y color</span>
-            <span *ngIf="selectedVariant && selectedVariant.stock > 0">Añadir al Carrito</span>
-            <span *ngIf="selectedVariant && selectedVariant.stock === 0">Agotado</span>
-          </button>
         </div>
       </div>
     </div>
   </div>
-</div>
+}

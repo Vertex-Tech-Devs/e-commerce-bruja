@@ -1,58 +1,55 @@
 <div class="cart-container">
-  <ng-container *ngIf="cart$ | async as cart">
-    <div *ngIf="cart.items.length > 0; else emptyCart" class="cart-content">
-      <div class="cart-items-section">
-        <h1 class="cart-title">Tu Carrito</h1>
-        <div class="cart-items-list">
-          <div *ngFor="let item of cart.items; trackBy: trackByItemId" class="cart-item">
-            <img [src]="item.image || 'assets/placeholder.png'" [alt]="item.name" class="item-image">
-
-            <div class="item-details">
-              <span class="item-name">{{ item.name }}</span>
-              <span class="item-price">{{ item.price | currency:'ARS':'$' }}</span>
-            </div>
-
-            <div class="item-quantity">
-              <input
-                type="number"
-                [value]="item.quantity"
-                min="1"
-                class="quantity-input"
-                (change)="onUpdateQuantity(item.id, $event)">
-            </div>
-
-            <div class="item-subtotal">
-              <span>{{ (item.price * item.quantity) | currency:'ARS':'$' }}</span>
-            </div>
-
-            <div class="item-actions">
-              <button (click)="onRemoveItem(item.id)" class="remove-button" title="Eliminar producto">
-                <i class="bi bi-trash-fill"></i>
-              </button>
-            </div>
+  @if (cart$ | async; as cart) {
+    @if (cart.items.length > 0) {
+      <div class="cart-content">
+        <div class="cart-items-section">
+          <h1 class="cart-title">Tu Carrito</h1>
+          <div class="cart-items-list">
+            @for (item of cart.items; track trackByItemId($index, item)) {
+              <div class="cart-item">
+                <img [src]="item.image || 'assets/placeholder.png'" [alt]="item.name" class="item-image">
+                <div class="item-details">
+                  <span class="item-name">{{ item.name }}</span>
+                  <span class="item-price">{{ item.price | currency:'ARS':'$' }}</span>
+                </div>
+                <div class="item-quantity">
+                  <input
+                    type="number"
+                    [value]="item.quantity"
+                    min="1"
+                    class="quantity-input"
+                    (change)="onUpdateQuantity(item.id, $event)">
+                </div>
+                <div class="item-subtotal">
+                  <span>{{ (item.price * item.quantity) | currency:'ARS':'$' }}</span>
+                </div>
+                <div class="item-actions">
+                  <button (click)="onRemoveItem(item.id)" class="remove-button" title="Eliminar producto">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                </div>
+              </div>
+            }
           </div>
         </div>
-      </div>
-
-      <div class="cart-summary-section">
-        <h2 class="summary-title">Resumen de Compra</h2>
-        <div class="summary-details">
-          <div class="summary-row">
-            <span>Subtotal</span>
-            <span>{{ cart.total | currency:'ARS':'$' }}</span>
+        <div class="cart-summary-section">
+          <h2 class="summary-title">Resumen de Compra</h2>
+          <div class="summary-details">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>{{ cart.total | currency:'ARS':'$' }}</span>
+            </div>
+            <div class="summary-row total-row">
+              <span>Total</span>
+              <span>{{ cart.total | currency:'ARS':'$' }}</span>
+            </div>
           </div>
-          <div class="summary-row total-row">
-            <span>Total</span>
-            <span>{{ cart.total | currency:'ARS':'$' }}</span>
-          </div>
+          <button (click)="goToCheckout()" class="checkout-button">
+            Iniciar Compra
+          </button>
         </div>
-        <button routerLink="/checkout" class="checkout-button">
-          Iniciar Compra
-        </button>
       </div>
-    </div>
-
-    <ng-template #emptyCart>
+    } @else {
       <div class="empty-cart-container">
         <i class="bi bi-cart-x empty-cart-icon"></i>
         <h2>Tu carrito está vacío</h2>
@@ -61,6 +58,6 @@
           Explorar Productos
         </a>
       </div>
-    </ng-template>
-  </ng-container>
+    }
+  }
 </div>

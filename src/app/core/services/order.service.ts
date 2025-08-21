@@ -19,7 +19,7 @@ export class OrderService {
     return this.firestoreService.get(this.collectionPath, id);
   }
 
-  createOrder(order: WithFieldValue<Order>): Promise<DocumentReference<Order>> {
+  createOrder(order: WithFieldValue<Omit<Order, 'id'>>): Promise<DocumentReference<Order>> {
     return this.firestoreService.create(this.collectionPath, order) as Promise<DocumentReference<Order>>;
   }
 
@@ -64,7 +64,7 @@ export class OrderService {
     return this.getOrders().pipe(
       map(orders => orders.filter(order =>
         order.status === 'pending' || order.status === 'processing'
-      ).sort((a, b) => new Date(a.orderDate).getTime() - new Date(b.orderDate).getTime())) // Ordenar por fecha, los más antiguos primero
+      ).sort((a, b) => new Date(a.orderDate).getTime() - new Date(b.orderDate).getTime()))
     );
   }
 

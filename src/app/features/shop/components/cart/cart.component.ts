@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ICart, ICartItem } from '@core/models/cart.model';
 import { CartService } from '@core/services/cart.service';
@@ -18,10 +18,15 @@ import { CartService } from '@core/services/cart.service';
 })
 export class CartComponent {
   private cartService = inject(CartService);
+  private router = inject(Router);
   public cart$: Observable<ICart>;
 
   constructor() {
     this.cart$ = this.cartService.cart$;
+  }
+
+  public goToCheckout(): void {
+    this.router.navigate(['/shop/checkout']);
   }
 
   public onUpdateQuantity(itemId: string, event: Event): void {
